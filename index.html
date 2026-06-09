@@ -1108,7 +1108,7 @@
   <div class="footer-brand">Naturalfarma · <span>SSP3-Forte</span></div>
   <div class="footer-links">
     <a href="https://problemasnaprostata.blogspot.com/" target="_blank">Blog</a>
-    <a href="mailto:leptix@gmail.com">Contacto</a>
+    <a href="mailto:encomendas@ssp3forte.com">Contacto</a>
     <a href="#encomenda">
       <span data-lang-inline="pt">Encomendar</span>
       <span data-lang-inline="en">Order</span>
@@ -1141,7 +1141,8 @@ function submitOrder(e) {
   const address = data.get('address');
   const notes = data.get('notes');
   const body = `Nova encomenda SSP3-Forte%0A%0ANome: ${encodeURIComponent(name)}%0AEmail: ${encodeURIComponent(email)}%0ATelefone: ${encodeURIComponent(phone)}%0APaís: ${encodeURIComponent(country)}%0AProduto: ${encodeURIComponent(product)}%0AMorada: ${encodeURIComponent(address)}%0ANotas: ${encodeURIComponent(notes)}`;
-  window.location.href = `mailto:leptix@gmail.com?subject=Encomenda SSP3-Forte - ${encodeURIComponent(name)}&body=${body}`;
+  const toEmail = document.body.classList.contains('lang-en') ? 'orders@ssp3forte.com' : 'encomendas@ssp3forte.com';
+  window.location.href = `mailto:${toEmail}?subject=Encomenda SSP3-Forte - ${encodeURIComponent(name)}&body=${body}`;
   document.getElementById('successMsg').style.display = 'block';
   form.style.opacity = '0.4';
   form.style.pointerEvents = 'none';
@@ -1149,3 +1150,4 @@ function submitOrder(e) {
 </script>
 </body>
 </html>
+
