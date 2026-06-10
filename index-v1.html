@@ -1,0 +1,1154 @@
+﻿<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SSP3-Forte — Saúde Natural da Próstata | Natural Prostate Health</title>
+<meta name="description" content="SSP3-Forte: suplemento natural para próstata aumentada. Sem cirurgia, sem efeitos secundários. Distribuído por Naturalfarma para Portugal, Brasil, UK e Irlanda.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;1,500&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-deep: #0d3d2b;
+    --green-mid: #1a6645;
+    --green-light: #2a9460;
+    --green-pale: #e8f4ee;
+    --gold: #c9a84c;
+    --gold-light: #f0e0a8;
+    --cream: #faf8f3;
+    --warm-white: #ffffff;
+    --text-dark: #1a1a18;
+    --text-mid: #3d4038;
+    --text-muted: #7a7d72;
+    --border: rgba(26,102,69,0.15);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Source Sans 3', sans-serif;
+    background: var(--cream);
+    letter-spacing: 0.01em;
+    color: var(--text-dark);
+    font-size: 18px;
+    line-height: 1.75;
+  }
+
+  /* LANGUAGE SWITCHER */
+  .lang-bar {
+    background: var(--green-deep);
+    padding: 8px 2rem;
+    display: flex;
+    justify-content: flex-end;
+    gap: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .lang-btn {
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.5);
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    padding: 4px 12px;
+    transition: color 0.2s;
+  }
+  .lang-btn.active {
+    color: var(--gold);
+    border-bottom: 1px solid var(--gold);
+  }
+  .lang-btn:hover { color: white; }
+  .lang-divider { color: rgba(255,255,255,0.2); line-height: 1; align-self: center; font-size: 11px; }
+
+  /* CONTENT SWITCHING */
+  [data-lang] { display: none; }
+  body.lang-pt [data-lang="pt"] { display: block; }
+  body.lang-en [data-lang="en"] { display: block; }
+  body.lang-pt [data-lang-inline="en"] { display: none; }
+  body.lang-en [data-lang-inline="pt"] { display: none; }
+  [data-lang-inline] { display: inline; }
+
+  /* HERO */
+  .hero {
+    background: var(--green-deep);
+    min-height: 92vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 70% 50%, rgba(42,148,96,0.12) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .hero-pattern {
+    position: absolute;
+    top: 0; right: 0;
+    width: 55%;
+    height: 100%;
+    background:
+      repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(201,168,76,0.04) 40px, rgba(201,168,76,0.04) 41px),
+      repeating-linear-gradient(-45deg, transparent, transparent 40px, rgba(201,168,76,0.03) 40px, rgba(201,168,76,0.03) 41px);
+  }
+  .hero-content {
+    padding: 6rem 3rem 6rem 5vw;
+    position: relative;
+    z-index: 2;
+  }
+  .hero-eyebrow {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: block;
+    width: 28px;
+    height: 1px;
+    background: var(--gold);
+  }
+  .hero h1 {
+    font-family: 'Lora', serif;
+    font-size: clamp(2.8rem, 5vw, 4.2rem);
+    font-weight: 600;
+    line-height: 1.1;
+    color: white;
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--gold-light);
+  }
+  .hero-sub {
+    font-size: 1.05rem;
+    color: rgba(255,255,255,0.65);
+    max-width: 440px;
+    margin-bottom: 2.5rem;
+    line-height: 1.8;
+  }
+  .hero-cta {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .btn-primary {
+    background: var(--gold);
+    color: var(--green-deep);
+    border: none;
+    padding: 14px 32px;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .btn-primary:hover { background: var(--gold-light); transform: translateY(-1px); }
+  .btn-ghost {
+    color: rgba(255,255,255,0.7);
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 13px 28px;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .btn-ghost:hover { border-color: rgba(255,255,255,0.5); color: white; }
+
+  .hero-visual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 5vw 4rem 2rem;
+    position: relative;
+    z-index: 2;
+  }
+  .product-frame {
+    position: relative;
+    width: 280px;
+  }
+  .product-frame::before {
+    content: '';
+    position: absolute;
+    inset: -20px;
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 2px;
+  }
+  .product-frame::after {
+    content: '';
+    position: absolute;
+    bottom: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 24px;
+    background: radial-gradient(ellipse, rgba(0,0,0,0.4) 0%, transparent 70%);
+  }
+  .product-img {
+    width: 100%;
+    aspect-ratio: 3/4;
+    object-fit: contain;
+    display: block;
+    filter: drop-shadow(0 24px 48px rgba(0,0,0,0.5));
+  }
+  .product-img-placeholder {
+    width: 100%;
+    aspect-ratio: 3/4;
+    background: linear-gradient(160deg, rgba(42,148,96,0.3) 0%, rgba(13,61,43,0.6) 100%);
+    border: 1px solid rgba(201,168,76,0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+  .product-img-placeholder .prod-name {
+    font-family: 'Lora', serif;
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: white;
+    text-align: center;
+  }
+  .product-img-placeholder .prod-sub {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .product-img-placeholder .prod-caps {
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+  }
+  .badge-float {
+    position: absolute;
+    top: -12px;
+    right: -24px;
+    background: var(--gold);
+    color: var(--green-deep);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    padding: 6px 14px;
+    text-align: center;
+    line-height: 1.3;
+  }
+
+  /* SOCIAL PROOF BAR */
+  .proof-bar {
+    background: var(--green-pale);
+    border-bottom: 1px solid var(--border);
+    padding: 1.5rem 5vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4rem;
+    flex-wrap: wrap;
+  }
+  .proof-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--green-deep);
+  }
+  .proof-icon {
+    width: 28px;
+    height: 28px;
+    background: var(--green-mid);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .proof-icon svg { width: 14px; height: 14px; fill: white; }
+  .proof-text { font-size: 13px; }
+  .proof-num { font-weight: 500; display: block; font-size: 15px; }
+
+  /* SECTIONS */
+  section { padding: 6rem 5vw; }
+  .section-inner { max-width: 1100px; margin: 0 auto; }
+  .section-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--green-mid);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-label::before {
+    content: '';
+    display: block;
+    width: 20px;
+    height: 1px;
+    background: var(--green-mid);
+  }
+  h2 {
+    font-family: 'Lora', serif;
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--green-deep);
+    margin-bottom: 1rem;
+  }
+  .section-lead {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    max-width: 560px;
+    margin-bottom: 3rem;
+    line-height: 1.8;
+  }
+
+  /* SYMPTOMS */
+  .symptoms-section { background: white; }
+  .symptoms-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-bottom: 3rem;
+  }
+  .symptom-card {
+    background: white;
+    padding: 1.75rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .symptom-icon {
+    font-size: 1.6rem;
+    margin-bottom: 4px;
+  }
+  .symptom-title { font-weight: 500; font-size: 0.95rem; color: var(--text-dark); }
+  .symptom-desc { font-size: 0.95rem; color: var(--text-muted); line-height: 1.5; }
+
+  /* INGREDIENTS */
+  .ingredients-section { background: var(--cream); }
+  .ingredients-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+  .ingredient-list { display: flex; flex-direction: column; gap: 0; }
+  .ingredient-item {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: 16px;
+    align-items: start;
+    padding: 1.25rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .ingredient-item:first-child { border-top: 1px solid var(--border); }
+  .ingredient-num {
+    font-family: 'Lora', serif;
+    font-size: 1.3rem;
+    color: var(--gold);
+    font-weight: 600;
+    padding-top: 2px;
+  }
+  .ingredient-name { font-weight: 500; font-size: 0.95rem; margin-bottom: 3px; }
+  .ingredient-desc { font-size: 0.95rem; color: var(--text-muted); line-height: 1.5; }
+
+  .ingredients-callout {
+    background: var(--green-deep);
+    padding: 2.5rem;
+    position: sticky;
+    top: 80px;
+  }
+  .callout-label {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
+  }
+  .callout-quote {
+    font-family: 'Lora', serif;
+    font-size: 1.5rem;
+    font-style: italic;
+    color: white;
+    line-height: 1.4;
+    margin-bottom: 1.5rem;
+  }
+  .callout-author { font-size: 13px; color: rgba(255,255,255,0.5); }
+  .callout-divider { height: 1px; background: rgba(201,168,76,0.3); margin: 1.5rem 0; }
+  .callout-stat { margin-bottom: 1rem; }
+  .callout-stat-num {
+    font-family: 'Lora', serif;
+    font-size: 2.4rem;
+    font-weight: 600;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .callout-stat-label { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 4px; }
+
+  /* TESTIMONIALS */
+  .testimonials-section { background: var(--green-pale); }
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  .testimonial-card {
+    background: white;
+    padding: 1.75rem;
+    border-left: 3px solid var(--green-light);
+    position: relative;
+  }
+  .testimonial-stars {
+    color: var(--gold);
+    font-size: 14px;
+    letter-spacing: 2px;
+    margin-bottom: 1rem;
+  }
+  .testimonial-text {
+    font-size: 0.9rem;
+    line-height: 1.8;
+    color: var(--text-mid);
+    margin-bottom: 1.25rem;
+    font-style: italic;
+  }
+  .testimonial-author { font-size: 0.95rem; font-weight: 500; color: var(--green-deep); }
+  .testimonial-loc { font-size: 0.88rem; color: var(--text-muted); }
+
+  /* PRICING */
+  .pricing-section { background: white; }
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+    max-width: 700px;
+  }
+  .pricing-card {
+    border: 1px solid var(--border);
+    padding: 2rem;
+    position: relative;
+    background: white;
+    transition: border-color 0.2s;
+  }
+  .pricing-card:hover { border-color: var(--green-light); }
+  .pricing-card.featured {
+    border: 2px solid var(--green-mid);
+  }
+  .pricing-badge {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--green-mid);
+    color: white;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 4px 16px;
+    white-space: nowrap;
+  }
+  .pricing-title { font-weight: 500; margin-bottom: 0.5rem; font-size: 0.95rem; }
+  .pricing-price {
+    font-family: 'Lora', serif;
+    font-size: 2.8rem;
+    font-weight: 600;
+    color: var(--green-deep);
+    line-height: 1;
+    margin: 0.75rem 0 0.25rem;
+  }
+  .pricing-price sup { font-size: 1.2rem; vertical-align: super; }
+  .pricing-old { font-size: 13px; color: var(--text-muted); text-decoration: line-through; }
+  .pricing-desc { font-size: 0.92rem; color: var(--text-muted); margin: 0.75rem 0 1.5rem; line-height: 1.5; }
+  .btn-order {
+    display: block;
+    width: 100%;
+    background: var(--green-deep);
+    color: white;
+    border: none;
+    padding: 13px;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    text-align: center;
+    transition: background 0.2s;
+    text-decoration: none;
+  }
+  .btn-order:hover { background: var(--green-mid); }
+
+  /* ORDER FORM */
+  .order-section {
+    background: var(--green-deep);
+    padding: 6rem 5vw;
+  }
+  .order-inner {
+    max-width: 660px;
+    margin: 0 auto;
+  }
+  .order-section h2 { color: white; }
+  .order-section .section-label { color: var(--gold); }
+  .order-section .section-label::before { background: var(--gold); }
+  .order-section .section-lead { color: rgba(255,255,255,0.6); }
+
+  .order-form { margin-top: 2.5rem; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+  .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1rem; }
+  .form-group label {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+  }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: white;
+    padding: 12px 14px;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  .form-group input::placeholder,
+  .form-group textarea::placeholder { color: rgba(255,255,255,0.25); }
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus { border-color: var(--gold); }
+  .form-group select option { background: var(--green-deep); color: white; }
+  .form-group textarea { resize: vertical; min-height: 80px; }
+  .form-note {
+    font-size: 12px;
+    color: rgba(255,255,255,0.35);
+    margin-top: 0.5rem;
+    line-height: 1.5;
+  }
+  .btn-submit {
+    display: block;
+    width: 100%;
+    background: var(--gold);
+    color: var(--green-deep);
+    border: none;
+    padding: 16px;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin-top: 1.5rem;
+    transition: background 0.2s;
+  }
+  .btn-submit:hover { background: var(--gold-light); }
+
+  .success-msg {
+    display: none;
+    background: rgba(42,148,96,0.15);
+    border: 1px solid rgba(42,148,96,0.4);
+    padding: 1.5rem;
+    color: white;
+    margin-top: 1.5rem;
+    text-align: center;
+    font-size: 0.95rem;
+    line-height: 1.75;
+  }
+
+  /* FAQ */
+  .faq-section { background: var(--cream); }
+  .faq-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 4rem;
+    align-items: start;
+  }
+  .faq-item { padding: 1.5rem 0; border-bottom: 1px solid var(--border); }
+  .faq-q { font-weight: 500; font-size: 0.95rem; margin-bottom: 0.5rem; }
+  .faq-a { font-size: 0.95rem; color: var(--text-muted); line-height: 1.75; }
+
+  /* FOOTER */
+  footer {
+    background: var(--green-deep);
+    padding: 3rem 5vw;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+  }
+  .footer-brand {
+    font-family: 'Lora', serif;
+    font-size: 1.3rem;
+    color: white;
+  }
+  .footer-brand span { color: var(--gold); }
+  .footer-links { display: flex; gap: 2rem; }
+  .footer-links a { font-size: 12px; color: rgba(255,255,255,0.4); text-decoration: none; }
+  .footer-links a:hover { color: rgba(255,255,255,0.7); }
+  .footer-copy { font-size: 12px; color: rgba(255,255,255,0.3); width: 100%; }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .hero { grid-template-columns: 1fr; min-height: auto; }
+    .hero-visual { display: none; }
+    .hero-content { padding: 4rem 1.5rem 4rem; }
+    .ingredients-layout { grid-template-columns: 1fr; }
+    .ingredients-callout { position: static; }
+    .faq-grid { grid-template-columns: 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+    section { padding: 4rem 1.5rem; }
+    .proof-bar { gap: 2rem; }
+    footer { flex-direction: column; gap: 1rem; }
+  }
+</style>
+</head>
+<body class="lang-pt">
+
+<!-- LANGUAGE BAR -->
+<div class="lang-bar">
+  <button class="lang-btn active" onclick="setLang('pt')" id="btn-pt">PT</button>
+  <span class="lang-divider">|</span>
+  <button class="lang-btn" onclick="setLang('en')" id="btn-en">EN</button>
+</div>
+
+<!-- HERO -->
+<section class="hero" style="padding: 0;">
+  <div class="hero-pattern" aria-hidden="true"></div>
+  <div class="hero-content">
+
+    <div data-lang="pt">
+      <p class="hero-eyebrow">Naturalfarma · Distribuidor Exclusivo</p>
+      <h1>Trate a próstata<br><em>sem cirurgia.</em></h1>
+      <p class="hero-sub">SSP3-Forte é o suplemento natural com décadas de resultados comprovados. Ingredientes sinérgicos que aliviam os sintomas de HPB e devolvem a qualidade de vida masculina.</p>
+      <div class="hero-cta">
+        <a href="#encomenda" class="btn-primary">Encomendar agora</a>
+        <a href="#ingredientes" class="btn-ghost">Ver ingredientes</a>
+      </div>
+    </div>
+
+    <div data-lang="en">
+      <p class="hero-eyebrow">Naturalfarma · Exclusive Distributor</p>
+      <h1>Treat your prostate<br><em>without surgery.</em></h1>
+      <p class="hero-sub">SSP3-Forte is the natural supplement with decades of proven results. Synergistic ingredients that relieve BPH symptoms and restore men's quality of life.</p>
+      <div class="hero-cta">
+        <a href="#order" class="btn-primary">Order now</a>
+        <a href="#ingredients" class="btn-ghost">See ingredients</a>
+      </div>
+    </div>
+
+  </div>
+  <div class="hero-visual">
+    <div class="product-frame">
+      
+      <img src="data:image/jpeg;base64,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" class="product-img" alt="SSP3-Forte — Suplemento Natural para a Próstata">
+      <div class="badge-float">
+        <span data-lang-inline="pt">Fabricado<br>na Europa</span>
+        <span data-lang-inline="en">Made in<br>Europe</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROOF BAR -->
+<div class="proof-bar">
+  <div class="proof-item">
+    <div class="proof-icon"><svg viewBox="0 0 20 20"><path d="M10 1l2.4 7.4H20l-6.2 4.5 2.4 7.4L10 16l-6.2 4.3 2.4-7.4L0 8.4h7.6z"/></svg></div>
+    <div class="proof-text">
+      <span class="proof-num">+10 000</span>
+      <span data-lang-inline="pt">homens satisfeitos</span>
+      <span data-lang-inline="en">satisfied men</span>
+    </div>
+  </div>
+  <div class="proof-item">
+    <div class="proof-icon"><svg viewBox="0 0 20 20"><path d="M10 0C4.5 0 0 4.5 0 10s4.5 10 10 10 10-4.5 10-10S15.5 0 10 0zm4.7 7.7l-5.4 5.4c-.4.4-1 .4-1.4 0L5.3 10.5c-.4-.4-.4-1 0-1.4s1-.4 1.4 0l2 2 4.7-4.7c.4-.4 1-.4 1.4 0s.4 1-.1 1.3z"/></svg></div>
+    <div class="proof-text">
+      <span class="proof-num">
+        <span data-lang-inline="pt">+15 anos</span>
+        <span data-lang-inline="en">+15 years</span>
+      </span>
+      <span data-lang-inline="pt">no mercado</span>
+      <span data-lang-inline="en">on the market</span>
+    </div>
+  </div>
+  <div class="proof-item">
+    <div class="proof-icon"><svg viewBox="0 0 20 20"><path d="M10 0L8 7H1l5.5 4-2 7L10 14l5.5 4-2-7L19 7h-7z"/></svg></div>
+    <div class="proof-text">
+      <span class="proof-num">
+        <span data-lang-inline="pt">Sem efeitos</span>
+        <span data-lang-inline="en">No side</span>
+      </span>
+      <span data-lang-inline="pt">secundários</span>
+      <span data-lang-inline="en">effects</span>
+    </div>
+  </div>
+  <div class="proof-item">
+    <div class="proof-icon"><svg viewBox="0 0 20 20"><path d="M15 1H5C2.8 1 1 2.8 1 5v10c0 2.2 1.8 4 4 4h10c2.2 0 4-1.8 4-4V5c0-2.2-1.8-4-4-4zm-1 11H6c-.6 0-1-.4-1-1s.4-1 1-1h8c.6 0 1 .4 1 1s-.4 1-1 1zm0-4H6c-.6 0-1-.4-1-1s.4-1 1-1h8c.6 0 1 .4 1 1s-.4 1-1 1z"/></svg></div>
+    <div class="proof-text">
+      <span class="proof-num">ISO 22000</span>
+      <span data-lang-inline="pt">certificado</span>
+      <span data-lang-inline="en">certified</span>
+    </div>
+  </div>
+</div>
+
+<!-- SYMPTOMS -->
+<section class="symptoms-section">
+  <div class="section-inner">
+
+    <div data-lang="pt">
+      <p class="section-label">Reconhece estes sinais?</p>
+      <h2>Os sintomas da próstata aumentada não devem ser ignorados</h2>
+      <p class="section-lead">A Hiperplasia Benigna da Próstata (HBP) afecta a maioria dos homens acima dos 50 anos. Quanto mais cedo agir, melhores os resultados.</p>
+      <div class="symptoms-grid">
+        <div class="symptom-card"><div class="symptom-icon">🌙</div><div class="symptom-title">Noites interrompidas</div><div class="symptom-desc">Acordar 2, 3 ou mais vezes para urinar, sem conseguir voltar a dormir facilmente.</div></div>
+        <div class="symptom-card"><div class="symptom-icon">💧</div><div class="symptom-title">Jato fraco</div><div class="symptom-desc">Fluxo urinário reduzido, gotejamento após urinar, dificuldade em iniciar.</div></div>
+        <div class="symptom-card"><div class="symptom-icon">⚡</div><div class="symptom-title">Urgência urinária</div><div class="symptom-desc">Necessidade súbita e difícil de controlar de urinar, mesmo com bexiga pouco cheia.</div></div>
+        <div class="symptom-card"><div class="symptom-icon">💔</div><div class="symptom-title">Vida sexual afectada</div><div class="symptom-desc">Disfunção eréctil frequentemente associada à HBP — tratável com abordagem natural.</div></div>
+        <div class="symptom-card"><div class="symptom-icon">😓</div><div class="symptom-title">Fadiga crónica</div><div class="symptom-desc">O sono fragmentado e o desconforto constante drenam a energia e o bem-estar.</div></div>
+        <div class="symptom-card"><div class="symptom-icon">🔄</div><div class="symptom-title">Bexiga nunca vazia</div><div class="symptom-desc">Sensação persistente de esvaziamento incompleto após urinar.</div></div>
+      </div>
+    </div>
+
+    <div data-lang="en">
+      <p class="section-label">Do you recognise these signs?</p>
+      <h2>BPH symptoms should not be ignored</h2>
+      <p class="section-lead">Benign Prostatic Hyperplasia (BPH) affects most men over 50. The sooner you act, the better the results.</p>
+      <div class="symptoms-grid">
+        <div class="symptom-card"><div class="symptom-icon">🌙</div><div class="symptom-title">Disrupted nights</div><div class="symptom-desc">Waking 2, 3 or more times to urinate, unable to get back to sleep easily.</div></div>
+        <div class="symptom-card"><div class="symptom-icon">💧</div><div class="symptom-title">Weak stream</div><div class="symptom-desc">Reduced urinary flow, post-void dribbling, difficulty starting to urinate.</div></div>
+        <div class="symptom-card"><div class="symptom-icon">⚡</div><div class="symptom-title">Urinary urgency</div><div class="symptom-desc">Sudden, hard-to-control urge to urinate, even when the bladder is barely full.</div></div>
+        <div class="symptom-card"><div class="symptom-icon">💔</div><div class="symptom-title">Sexual health affected</div><div class="symptom-desc">Erectile dysfunction is frequently associated with BPH — treatable with a natural approach.</div></div>
+        <div class="symptom-card"><div class="symptom-icon">😓</div><div class="symptom-title">Chronic fatigue</div><div class="symptom-desc">Fragmented sleep and constant discomfort drain your energy and wellbeing.</div></div>
+        <div class="symptom-card"><div class="symptom-icon">🔄</div><div class="symptom-title">Bladder never empty</div><div class="symptom-desc">Persistent feeling of incomplete emptying after urinating.</div></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- INGREDIENTS -->
+<section class="ingredients-section" id="ingredientes">
+  <div class="section-inner" id="ingredients">
+    <div class="ingredients-layout">
+      <div>
+
+        <div data-lang="pt">
+          <p class="section-label">Fórmula sinérgica</p>
+          <h2>Ingredientes com eficácia comprovada</h2>
+          <p class="section-lead">O SSP3-Forte combina os melhores extractos vegetais conhecidos para a saúde prostática, numa formulação optimizada.</p>
+          <div class="ingredient-list">
+            <div class="ingredient-item"><div class="ingredient-num">01</div><div><div class="ingredient-name">Saw Palmetto</div><div class="ingredient-desc">Extracto de bagas reconhecido por reduzir a inflamação prostática e melhorar o fluxo urinário em estudos clínicos.</div></div></div>
+            <div class="ingredient-item"><div class="ingredient-num">02</div><div><div class="ingredient-name">Pygeum Africanum</div><div class="ingredient-desc">Casca de amendoeira africana com propriedades anti-inflamatórias e estudos que demonstram redução dos sintomas nocturnos.</div></div></div>
+            <div class="ingredient-item"><div class="ingredient-num">03</div><div><div class="ingredient-name">Beta-Sitosterol</div><div class="ingredient-desc">Fitosterol que melhora o fluxo urinário e reduz o volume residual de urina após a micção.</div></div></div>
+            <div class="ingredient-item"><div class="ingredient-num">04</div><div><div class="ingredient-name">Zinco</div><div class="ingredient-desc">Mineral essencial para a saúde da próstata — os níveis de zinco são frequentemente baixos em homens com HBP.</div></div></div>
+            <div class="ingredient-item"><div class="ingredient-num">05</div><div><div class="ingredient-name">Urtica Dioica (Urtiga)</div><div class="ingredient-desc">Extracto de raiz de urtiga com acção sinérgica com o Saw Palmetto na redução dos sintomas de HPB.</div></div></div>
+          </div>
+        </div>
+
+        <div data-lang="en">
+          <p class="section-label">Synergistic formula</p>
+          <h2>Ingredients with proven efficacy</h2>
+          <p class="section-lead">SSP3-Forte combines the best known plant extracts for prostate health in an optimised formulation.</p>
+          <div class="ingredient-list">
+            <div class="ingredient-item"><div class="ingredient-num">01</div><div><div class="ingredient-name">Saw Palmetto</div><div class="ingredient-desc">Berry extract recognised for reducing prostatic inflammation and improving urinary flow in clinical studies.</div></div></div>
+            <div class="ingredient-item"><div class="ingredient-num">02</div><div><div class="ingredient-name">Pygeum Africanum</div><div class="ingredient-desc">African plum bark with anti-inflammatory properties and studies demonstrating reduction of nocturnal symptoms.</div></div></div>
+            <div class="ingredient-item"><div class="ingredient-num">03</div><div><div class="ingredient-name">Beta-Sitosterol</div><div class="ingredient-desc">Phytosterol that improves urinary flow and reduces residual urine volume after voiding.</div></div></div>
+            <div class="ingredient-item"><div class="ingredient-num">04</div><div><div class="ingredient-name">Zinc</div><div class="ingredient-desc">An essential mineral for prostate health — zinc levels are often low in men with BPH.</div></div></div>
+            <div class="ingredient-item"><div class="ingredient-num">05</div><div><div class="ingredient-name">Urtica Dioica (Nettle)</div><div class="ingredient-desc">Nettle root extract with synergistic action with Saw Palmetto in reducing BPH symptoms.</div></div></div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="ingredients-callout">
+        <p class="callout-label">
+          <span data-lang-inline="pt">Resultados reportados</span>
+          <span data-lang-inline="en">Reported results</span>
+        </p>
+        <p class="callout-quote" data-lang-inline="pt">"A partir da 6ª semana, a maioria dos utilizadores reporta melhorias significativas no conforto urinário."</p>
+        <p class="callout-quote" data-lang-inline="en">"From week 6 onwards, most users report significant improvements in urinary comfort."</p>
+        <p class="callout-author">— Naturalfarma</p>
+        <div class="callout-divider"></div>
+        <div class="callout-stat">
+          <div class="callout-stat-num">6ª</div>
+          <div class="callout-stat-label">
+            <span data-lang-inline="pt">semana — primeiros resultados</span>
+            <span data-lang-inline="en">week — first results</span>
+          </div>
+        </div>
+        <div class="callout-stat">
+          <div class="callout-stat-num">70%</div>
+          <div class="callout-stat-label">
+            <span data-lang-inline="pt">dos homens com HPB têm disfunção eréctil associada</span>
+            <span data-lang-inline="en">of men with BPH have associated erectile dysfunction</span>
+          </div>
+        </div>
+        <div class="callout-stat">
+          <div class="callout-stat-num">ISO</div>
+          <div class="callout-stat-label">
+            <span data-lang-inline="pt">22000 — produção certificada na Europa</span>
+            <span data-lang-inline="en">22000 — certified European production</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials-section">
+  <div class="section-inner">
+
+    <div data-lang="pt">
+      <p class="section-label">Depoimentos</p>
+      <h2>O que dizem os nossos clientes</h2>
+      <p class="section-lead">Milhares de homens em Portugal, Brasil e em todo o mundo já recuperaram o bem-estar com SSP3-Forte.</p>
+      <div class="testimonials-grid">
+        <div class="testimonial-card">
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">"Tinha de me levantar 4 vezes por noite. Ao fim de 2 meses com o SSP3-Forte, já só me levanto uma vez. O meu médico ficou surpreendido com os resultados."</p>
+          <div class="testimonial-author">António M.</div>
+          <div class="testimonial-loc">Lisboa, Portugal · 67 anos</div>
+        </div>
+        <div class="testimonial-card">
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">"Estava a considerar a cirurgia. Um amigo recomendou o SSP3-Forte. Seis semanas depois, os sintomas melhoraram tanto que o urologista disse que a cirurgia já não era necessária."</p>
+          <div class="testimonial-author">Carlos F.</div>
+          <div class="testimonial-loc">Porto, Portugal · 59 anos</div>
+        </div>
+        <div class="testimonial-card">
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">"Compro há 3 anos. O jato voltou ao normal, durmo a noite toda. Recomendo a qualquer homem acima dos 50."</p>
+          <div class="testimonial-author">João B.</div>
+          <div class="testimonial-loc">São Paulo, Brasil · 63 anos</div>
+        </div>
+      </div>
+    </div>
+
+    <div data-lang="en">
+      <p class="section-label">Testimonials</p>
+      <h2>What our customers say</h2>
+      <p class="section-lead">Thousands of men in Portugal, Brazil and across the world have already regained their wellbeing with SSP3-Forte.</p>
+      <div class="testimonials-grid">
+        <div class="testimonial-card">
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">"I was getting up 4 times a night. After 2 months with SSP3-Forte, I'm only getting up once. My doctor was surprised by the results."</p>
+          <div class="testimonial-author">António M.</div>
+          <div class="testimonial-loc">Lisbon, Portugal · age 67</div>
+        </div>
+        <div class="testimonial-card">
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">"I was considering surgery. A friend recommended SSP3-Forte. Six weeks later, my symptoms had improved so much that my urologist said surgery was no longer needed."</p>
+          <div class="testimonial-author">Carlos F.</div>
+          <div class="testimonial-loc">Porto, Portugal · age 59</div>
+        </div>
+        <div class="testimonial-card">
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">"I've been buying for 3 years. My stream is back to normal, I sleep through the night. I recommend it to any man over 50."</p>
+          <div class="testimonial-author">João B.</div>
+          <div class="testimonial-loc">São Paulo, Brazil · age 63</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- VIDEO -->
+<section style="background: var(--green-deep); padding: 5rem 5vw;">
+  <div class="section-inner" style="max-width: 800px;">
+    <div data-lang="pt">
+      <p class="section-label" style="color: var(--gold);">
+        <span style="display:block;width:20px;height:1px;background:var(--gold);"></span>
+        Ver em acção
+      </p>
+      <h2 style="color: white; margin-bottom: 0.75rem;">O que é o SSP3-Forte?</h2>
+      <p style="color: rgba(255,255,255,0.55); font-size: 1rem; margin-bottom: 2rem; line-height: 1.8;">Veja como o SSP3-Forte actua na próstata e porque é diferente de outros suplementos no mercado.</p>
+    </div>
+    <div data-lang="en">
+      <p class="section-label" style="color: var(--gold);">
+        <span style="display:block;width:20px;height:1px;background:var(--gold);"></span>
+        See it in action
+      </p>
+      <h2 style="color: white; margin-bottom: 0.75rem;">What is SSP3-Forte?</h2>
+      <p style="color: rgba(255,255,255,0.55); font-size: 1rem; margin-bottom: 2rem; line-height: 1.8;">See how SSP3-Forte acts on the prostate and why it is different from other supplements on the market.</p>
+    </div>
+    <div style="position: relative; width: 100%; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+      <iframe
+        src="https://www.youtube.com/embed/34RHbUfvfII?rel=0"
+        title="SSP3-Forte — Suplemento Natural para a Próstata"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+      </iframe>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing-section">
+  <div class="section-inner">
+
+    <div data-lang="pt">
+      <p class="section-label">Preços</p>
+      <h2>Escolha a sua opção</h2>
+      <p class="section-lead">Envio para Portugal, Brasil, Reino Unido e Irlanda. Preços em euros; para pagamento em reais ou libras, contacte-nos no formulário abaixo.</p>
+      <div class="pricing-grid">
+        <div class="pricing-card">
+          <p class="pricing-title">SSP3-Forte · 1 frasco</p>
+          <p class="pricing-price"><sup>€</sup>29<small>,95</small></p>
+          <p class="pricing-desc">60 cápsulas · 1 mês de tratamento. Ideal para experimentar.</p>
+          <a href="#encomenda" class="btn-order">Encomendar</a>
+        </div>
+        <div class="pricing-card featured">
+          <div class="pricing-badge">Melhor valor</div>
+          <p class="pricing-title">SSP3-Forte · Kit 3 frascos</p>
+          <p class="pricing-price"><sup>€</sup>80<small>,86</small></p>
+          <p class="pricing-old">€89,85 · poupa 10%</p>
+          <p class="pricing-desc">180 cápsulas · 3 meses. Recomendado para resultados completos.</p>
+          <a href="#encomenda" class="btn-order">Encomendar</a>
+        </div>
+      </div>
+    </div>
+
+    <div data-lang="en">
+      <p class="section-label">Pricing</p>
+      <h2>Choose your option</h2>
+      <p class="section-lead">Delivery to Portugal, Brazil, UK and Ireland. Prices in euros; for payment in GBP or BRL, contact us via the form below.</p>
+      <div class="pricing-grid">
+        <div class="pricing-card">
+          <p class="pricing-title">SSP3-Forte · 1 bottle</p>
+          <p class="pricing-price"><sup>€</sup>29<small>.95</small></p>
+          <p class="pricing-desc">60 capsules · 1 month's treatment. Ideal for trying.</p>
+          <a href="#order" class="btn-order">Order now</a>
+        </div>
+        <div class="pricing-card featured">
+          <div class="pricing-badge">Best value</div>
+          <p class="pricing-title">SSP3-Forte · 3-bottle kit</p>
+          <p class="pricing-price"><sup>€</sup>80<small>.86</small></p>
+          <p class="pricing-old">€89.85 · save 10%</p>
+          <p class="pricing-desc">180 capsules · 3 months. Recommended for full results.</p>
+          <a href="#order" class="btn-order">Order now</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ORDER FORM -->
+<section class="order-section" id="encomenda">
+  <div class="order-inner" id="order">
+
+    <div data-lang="pt">
+      <p class="section-label">Encomendar</p>
+      <h2>Faça a sua encomenda</h2>
+      <p class="section-lead">Preencha o formulário e entraremos em contacto dentro de 24 horas para confirmar e enviar os detalhes de pagamento.</p>
+    </div>
+    <div data-lang="en">
+      <p class="section-label">Order</p>
+      <h2>Place your order</h2>
+      <p class="section-lead">Fill in the form and we will contact you within 24 hours to confirm and send payment details.</p>
+    </div>
+
+    <form class="order-form" id="orderForm" onsubmit="submitOrder(event)">
+      <div class="form-row">
+        <div class="form-group">
+          <label>
+            <span data-lang-inline="pt">Nome completo</span>
+            <span data-lang-inline="en">Full name</span>
+          </label>
+          <input type="text" name="name" required placeholder="João Silva">
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" name="email" required placeholder="joao@email.com">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>
+            <span data-lang-inline="pt">Telefone</span>
+            <span data-lang-inline="en">Phone</span>
+          </label>
+          <input type="tel" name="phone" placeholder="+351 912 000 000">
+        </div>
+        <div class="form-group">
+          <label>
+            <span data-lang-inline="pt">País</span>
+            <span data-lang-inline="en">Country</span>
+          </label>
+          <select name="country" required>
+            <option value="">—</option>
+            <option value="PT">Portugal</option>
+            <option value="BR">Brasil</option>
+            <option value="UK">United Kingdom</option>
+            <option value="IE">Ireland</option>
+            <option value="other">
+              <span data-lang-inline="pt">Outro</span>
+              <span data-lang-inline="en">Other</span>
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>
+          <span data-lang-inline="pt">Produto</span>
+          <span data-lang-inline="en">Product</span>
+        </label>
+        <select name="product" required>
+          <option value="">—</option>
+          <option value="1x">SSP3-Forte · 1 frasco / 1 bottle — €29,95</option>
+          <option value="3x">SSP3-Forte · Kit 3 frascos / 3-bottle kit — €80,86</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>
+          <span data-lang-inline="pt">Morada de entrega</span>
+          <span data-lang-inline="en">Delivery address</span>
+        </label>
+        <textarea name="address" placeholder="Rua, número, código postal, cidade…"></textarea>
+      </div>
+      <div class="form-group">
+        <label>
+          <span data-lang-inline="pt">Notas / questões</span>
+          <span data-lang-inline="en">Notes / questions</span>
+        </label>
+        <textarea name="notes" rows="2" placeholder=""></textarea>
+      </div>
+      <p class="form-note">
+        <span data-lang-inline="pt">Ao submeter este formulário aceita ser contactado pela Naturalfarma para processar a sua encomenda. Os seus dados não são partilhados com terceiros.</span>
+        <span data-lang-inline="en">By submitting this form you agree to be contacted by Naturalfarma to process your order. Your data is not shared with third parties.</span>
+      </p>
+      <button type="submit" class="btn-submit">
+        <span data-lang-inline="pt">Enviar encomenda →</span>
+        <span data-lang-inline="en">Send order →</span>
+      </button>
+    </form>
+
+    <div class="success-msg" id="successMsg">
+      <span data-lang-inline="pt">✓ Encomenda recebida! Entraremos em contacto em breve para confirmar os detalhes e o pagamento. Obrigado!</span>
+      <span data-lang-inline="en">✓ Order received! We will be in touch shortly to confirm the details and payment. Thank you!</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section">
+  <div class="section-inner">
+
+    <div data-lang="pt">
+      <p class="section-label">Perguntas frequentes</p>
+      <h2>Tem dúvidas?</h2>
+      <div class="faq-grid">
+        <div>
+          <div class="faq-item"><p class="faq-q">Em quanto tempo verei resultados?</p><p class="faq-a">A maioria dos utilizadores reporta melhorias a partir da 6ª semana de uso continuado. Para resultados completos, recomendamos 3 meses de tratamento.</p></div>
+          <div class="faq-item"><p class="faq-q">O SSP3-Forte substitui a medicação prescrita?</p><p class="faq-a">Não. O SSP3-Forte é um suplemento alimentar. Consulte sempre o seu médico antes de alterar qualquer medicação prescrita.</p></div>
+          <div class="faq-item"><p class="faq-q">Tem efeitos secundários?</p><p class="faq-a">O SSP3-Forte é formulado com ingredientes naturais e geralmente bem tolerado. Não foram reportados efeitos secundários significativos.</p></div>
+        </div>
+        <div>
+          <div class="faq-item"><p class="faq-q">Fazem envios para o Reino Unido e Irlanda?</p><p class="faq-a">Sim. Enviamos para Portugal, Brasil, Reino Unido e Irlanda. O prazo e custo de envio são confirmados na resposta à encomenda.</p></div>
+          <div class="faq-item"><p class="faq-q">Como é feito o pagamento?</p><p class="faq-a">Após receber a encomenda, a Naturalfarma entra em contacto com os detalhes de pagamento disponíveis para o seu país.</p></div>
+          <div class="faq-item"><p class="faq-q">Posso encomendar em reais ou libras?</p><p class="faq-a">Sim. Mencione a sua moeda preferida no campo de notas do formulário e indicaremos o equivalente actualizado.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div data-lang="en">
+      <p class="section-label">Frequently asked questions</p>
+      <h2>Any questions?</h2>
+      <div class="faq-grid">
+        <div>
+          <div class="faq-item"><p class="faq-q">How soon will I see results?</p><p class="faq-a">Most users report improvements from the 6th week of continuous use. For full results, we recommend 3 months of treatment.</p></div>
+          <div class="faq-item"><p class="faq-q">Does SSP3-Forte replace prescribed medication?</p><p class="faq-a">No. SSP3-Forte is a dietary supplement. Always consult your doctor before changing any prescribed medication.</p></div>
+          <div class="faq-item"><p class="faq-q">Are there any side effects?</p><p class="faq-a">SSP3-Forte is formulated with natural ingredients and is generally well tolerated. No significant side effects have been reported.</p></div>
+        </div>
+        <div>
+          <div class="faq-item"><p class="faq-q">Do you ship to the UK and Ireland?</p><p class="faq-a">Yes. We ship to Portugal, Brazil, the UK and Ireland. Shipping time and cost are confirmed in the order reply.</p></div>
+          <div class="faq-item"><p class="faq-q">How do I pay?</p><p class="faq-a">After receiving your order, Naturalfarma will get in touch with the payment options available for your country.</p></div>
+          <div class="faq-item"><p class="faq-q">Can I pay in GBP or BRL?</p><p class="faq-a">Yes. Mention your preferred currency in the notes field of the form and we will provide the current equivalent.</p></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">Naturalfarma · <span>SSP3-Forte</span></div>
+  <div class="footer-links">
+    <a href="https://problemasnaprostata.blogspot.com/" target="_blank">Blog</a>
+    <a href="mailto:encomendas@ssp3forte.com">Contacto</a>
+    <a href="#encomenda">
+      <span data-lang-inline="pt">Encomendar</span>
+      <span data-lang-inline="en">Order</span>
+    </a>
+  </div>
+  <p class="footer-copy">
+    <span data-lang-inline="pt">© 2024 Naturalfarma. Distribuidor exclusivo para países de língua portuguesa, Reino Unido e Irlanda. O SSP3-Forte é um suplemento alimentar; não substitui aconselhamento médico.</span>
+    <span data-lang-inline="en">© 2024 Naturalfarma. Exclusive distributor for Portuguese-speaking countries, United Kingdom and Ireland. SSP3-Forte is a dietary supplement; it does not replace medical advice.</span>
+  </p>
+</footer>
+
+<script>
+function setLang(lang) {
+  document.body.className = 'lang-' + lang;
+  document.getElementById('btn-pt').classList.toggle('active', lang === 'pt');
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+  document.documentElement.lang = lang === 'pt' ? 'pt' : 'en';
+  document.getElementById('encomenda').id = lang === 'pt' ? 'encomenda' : 'order';
+}
+
+function submitOrder(e) {
+  e.preventDefault();
+  const form = document.getElementById('orderForm');
+  const data = new FormData(form);
+  const name = data.get('name');
+  const email = data.get('email');
+  const phone = data.get('phone');
+  const country = data.get('country');
+  const product = data.get('product');
+  const address = data.get('address');
+  const notes = data.get('notes');
+  const body = `Nova encomenda SSP3-Forte%0A%0ANome: ${encodeURIComponent(name)}%0AEmail: ${encodeURIComponent(email)}%0ATelefone: ${encodeURIComponent(phone)}%0APaís: ${encodeURIComponent(country)}%0AProduto: ${encodeURIComponent(product)}%0AMorada: ${encodeURIComponent(address)}%0ANotas: ${encodeURIComponent(notes)}`;
+  const toEmail = document.body.classList.contains('lang-en') ? 'orders@ssp3forte.com' : 'encomendas@ssp3forte.com';
+  window.location.href = `mailto:${toEmail}?subject=Encomenda SSP3-Forte - ${encodeURIComponent(name)}&body=${body}`;
+  document.getElementById('successMsg').style.display = 'block';
+  form.style.opacity = '0.4';
+  form.style.pointerEvents = 'none';
+}
+</script>
+</body>
+</html>
+
+
