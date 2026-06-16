@@ -502,18 +502,17 @@
 
   /* ORDER FORM */
   .order-section {
-    background: white;
+    background: var(--green-deep);
     padding: 6rem 5vw;
-    border-top: 1px solid var(--border);
   }
   .order-inner {
     max-width: 660px;
     margin: 0 auto;
   }
-  .order-section h2 { color: var(--green-deep); }
-  .order-section .section-label { color: var(--green-mid); }
-  .order-section .section-label::before { background: var(--green-mid); }
-  .order-section .section-lead { color: var(--text-muted); }
+  .order-section h2 { color: white; }
+  .order-section .section-label { color: var(--gold); }
+  .order-section .section-label::before { background: var(--gold); }
+  .order-section .section-lead { color: rgba(255,255,255,0.6); }
 
   .order-form { margin-top: 2.5rem; }
   .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
@@ -523,47 +522,35 @@
     font-weight: 500;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--text-mid);
+    color: rgba(255,255,255,0.5);
   }
   .form-group input,
   .form-group select,
   .form-group textarea {
-    background: white;
-    border: 1px solid var(--border);
-    color: var(--text-dark);
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: white;
     padding: 12px 14px;
     font-family: 'Source Sans 3', sans-serif;
-    font-size: 16px;
+    font-size: 14px;
     outline: none;
     transition: border-color 0.2s;
     -webkit-appearance: none;
     appearance: none;
   }
   .form-group input::placeholder,
-  .form-group textarea::placeholder { color: var(--text-muted); }
+  .form-group textarea::placeholder { color: rgba(255,255,255,0.25); }
   .form-group input:focus,
   .form-group select:focus,
-  .form-group textarea:focus { border-color: var(--green-mid); outline: 2px solid rgba(26,102,69,0.15); }
-  .form-group select option { background: white; color: var(--text-dark); }
+  .form-group textarea:focus { border-color: var(--gold); }
+  .form-group select option { background: var(--green-deep); color: white; }
   .form-group textarea { resize: vertical; min-height: 80px; }
   .form-note {
     font-size: 12px;
-    color: var(--text-muted);
+    color: rgba(255,255,255,0.35);
     margin-top: 0.5rem;
     line-height: 1.5;
   }
-  .shipping-calc {
-    background: var(--green-pale);
-    border: 1px solid var(--border);
-    padding: 1rem 1.25rem;
-    margin: 1rem 0;
-    font-size: 14px;
-    color: var(--text-dark);
-    display: none;
-  }
-  .shipping-calc.visible { display: block; }
-  .shipping-line { display: flex; justify-content: space-between; padding: 3px 0; }
-  .shipping-line.total { font-weight: 600; border-top: 1px solid var(--border); margin-top: 6px; padding-top: 8px; color: var(--green-deep); font-size: 15px; }
   .btn-submit {
     display: block;
     width: 100%;
@@ -584,10 +571,10 @@
 
   .success-msg {
     display: none;
-    background: var(--green-pale);
-    border: 1px solid var(--border);
+    background: rgba(42,148,96,0.15);
+    border: 1px solid rgba(42,148,96,0.4);
     padding: 1.5rem;
-    color: var(--green-deep);
+    color: white;
     margin-top: 1.5rem;
     text-align: center;
     font-size: 0.95rem;
@@ -704,7 +691,7 @@
 
     <div data-lang="pt">
       <p class="hero-eyebrow">Naturalfarma · Distribuidor Exclusivo</p>
-      <h1>Trate a Próstata,<br><em>Evite a Cirurgia.</em></h1>
+      <h1>Trate a próstata<br><em>sem cirurgia.</em></h1>
       <div class="hero-inline-img">
         <div class="product-frame">
           <img src="frasco.jpg" alt="SSP3-Forte" class="product-img">
@@ -716,14 +703,14 @@
       </div>
       <p class="hero-sub">SSP3-Forte é o suplemento natural com décadas de resultados comprovados. Ingredientes sinérgicos que aliviam os sintomas de HPB e devolvem a qualidade de vida masculina.</p>
       <div class="hero-cta">
-        <a href="#encomenda" class="btn-primary">Faça o Pedido</a>
+        <a href="#encomenda" class="btn-primary">Encomendar agora</a>
         <a href="#ingredientes" class="btn-ghost">Ver ingredientes</a>
       </div>
     </div>
 
     <div data-lang="en">
       <p class="hero-eyebrow">Naturalfarma · Exclusive Distributor</p>
-      <h1>Treat your prostate,<br><em>avoid surgery.</em></h1>
+      <h1>Treat your prostate<br><em>without surgery.</em></h1>
       <div class="hero-inline-img">
         <div class="product-frame">
           <img src="frasco.jpg" alt="SSP3-Forte" class="product-img">
@@ -758,20 +745,20 @@
   <div class="proof-item">
     <div class="proof-icon"><svg viewBox="0 0 20 20"><path d="M10 1l2.4 7.4H20l-6.2 4.5 2.4 7.4L10 16l-6.2 4.3 2.4-7.4L0 8.4h7.6z"/></svg></div>
     <div class="proof-text">
-      <span class="proof-num">
-        <span data-lang-inline="pt">Milhares</span>
-        <span data-lang-inline="en">Thousands</span>
-      </span>
-      <span data-lang-inline="pt">de homens satisfeitos</span>
-      <span data-lang-inline="en">of satisfied men</span>
+      <span class="proof-num">+10 000</span>
+      <span data-lang-inline="pt">homens satisfeitos</span>
+      <span data-lang-inline="en">satisfied men</span>
     </div>
   </div>
   <div class="proof-item">
     <div class="proof-icon"><svg viewBox="0 0 20 20"><path d="M10 0C4.5 0 0 4.5 0 10s4.5 10 10 10 10-4.5 10-10S15.5 0 10 0zm4.7 7.7l-5.4 5.4c-.4.4-1 .4-1.4 0L5.3 10.5c-.4-.4-.4-1 0-1.4s1-.4 1.4 0l2 2 4.7-4.7c.4-.4 1-.4 1.4 0s.4 1-.1 1.3z"/></svg></div>
     <div class="proof-text">
-      <span class="proof-num">Desde 1995</span>
-      <span data-lang-inline="pt">no mercado Europeu</span>
-      <span data-lang-inline="en">on the European market</span>
+      <span class="proof-num">
+        <span data-lang-inline="pt">+15 anos</span>
+        <span data-lang-inline="en">+15 years</span>
+      </span>
+      <span data-lang-inline="pt">no mercado</span>
+      <span data-lang-inline="en">on the market</span>
     </div>
   </div>
   <div class="proof-item">
@@ -779,18 +766,18 @@
     <div class="proof-text">
       <span class="proof-num">
         <span data-lang-inline="pt">Sem efeitos</span>
-        <span data-lang-inline="en">No adverse</span>
+        <span data-lang-inline="en">No side</span>
       </span>
-      <span data-lang-inline="pt">adversos</span>
+      <span data-lang-inline="pt">secundários</span>
       <span data-lang-inline="en">effects</span>
     </div>
   </div>
   <div class="proof-item">
     <div class="proof-icon"><svg viewBox="0 0 20 20"><path d="M15 1H5C2.8 1 1 2.8 1 5v10c0 2.2 1.8 4 4 4h10c2.2 0 4-1.8 4-4V5c0-2.2-1.8-4-4-4zm-1 11H6c-.6 0-1-.4-1-1s.4-1 1-1h8c.6 0 1 .4 1 1s-.4 1-1 1zm0-4H6c-.6 0-1-.4-1-1s.4-1 1-1h8c.6 0 1 .4 1 1s-.4 1-1 1z"/></svg></div>
     <div class="proof-text">
-      <span class="proof-num">GMP &amp; ISO 22000</span>
-      <span data-lang-inline="pt">laboratório certificado</span>
-      <span data-lang-inline="en">certified laboratory</span>
+      <span class="proof-num">ISO 22000</span>
+      <span data-lang-inline="pt">certificado</span>
+      <span data-lang-inline="en">certified</span>
     </div>
   </div>
 </div>
@@ -807,8 +794,8 @@
         <div class="symptom-card"><div class="symptom-icon">🌙</div><div class="symptom-title">Noites interrompidas</div><div class="symptom-desc">Acordar 2, 3 ou mais vezes para urinar, sem conseguir voltar a dormir facilmente.</div></div>
         <div class="symptom-card"><div class="symptom-icon">💧</div><div class="symptom-title">Jato fraco</div><div class="symptom-desc">Fluxo urinário reduzido, gotejamento após urinar, dificuldade em iniciar.</div></div>
         <div class="symptom-card"><div class="symptom-icon">⚡</div><div class="symptom-title">Urgência urinária</div><div class="symptom-desc">Necessidade súbita e difícil de controlar de urinar, mesmo com bexiga pouco cheia.</div></div>
-        <div class="symptom-card"><div class="symptom-icon">💔</div><div class="symptom-title">Vida sexual afectada</div><div class="symptom-desc">Ejaculação fraca e/ou dolorosa; desempenho sexual fraco. Disfunção eréctil frequentemente associada à HPB — tratável com abordagem natural.</div></div>
-        <div class="symptom-card"><div class="symptom-icon">😓</div><div class="symptom-title">Fadiga crónica</div><div class="symptom-desc">Noites mal dormidas, sono fragmentado e o desconforto constante drenam a energia e o bem-estar.</div></div>
+        <div class="symptom-card"><div class="symptom-icon">💔</div><div class="symptom-title">Vida sexual afectada</div><div class="symptom-desc">Disfunção eréctil frequentemente associada à HBP — tratável com abordagem natural.</div></div>
+        <div class="symptom-card"><div class="symptom-icon">😓</div><div class="symptom-title">Fadiga crónica</div><div class="symptom-desc">O sono fragmentado e o desconforto constante drenam a energia e o bem-estar.</div></div>
         <div class="symptom-card"><div class="symptom-icon">🔄</div><div class="symptom-title">Bexiga nunca vazia</div><div class="symptom-desc">Sensação persistente de esvaziamento incompleto após urinar.</div></div>
       </div>
     </div>
@@ -821,8 +808,8 @@
         <div class="symptom-card"><div class="symptom-icon">🌙</div><div class="symptom-title">Disrupted nights</div><div class="symptom-desc">Waking 2, 3 or more times to urinate, unable to get back to sleep easily.</div></div>
         <div class="symptom-card"><div class="symptom-icon">💧</div><div class="symptom-title">Weak stream</div><div class="symptom-desc">Reduced urinary flow, post-void dribbling, difficulty starting to urinate.</div></div>
         <div class="symptom-card"><div class="symptom-icon">⚡</div><div class="symptom-title">Urinary urgency</div><div class="symptom-desc">Sudden, hard-to-control urge to urinate, even when the bladder is barely full.</div></div>
-        <div class="symptom-card"><div class="symptom-icon">💔</div><div class="symptom-title">Sexual health affected</div><div class="symptom-desc">Weak and/or painful ejaculation; poor sexual performance. Erectile dysfunction frequently associated with BPH — treatable with a natural approach.</div></div>
-        <div class="symptom-card"><div class="symptom-icon">😓</div><div class="symptom-title">Chronic fatigue</div><div class="symptom-desc">Poor sleep, fragmented nights and constant discomfort drain your energy and wellbeing.</div></div>
+        <div class="symptom-card"><div class="symptom-icon">💔</div><div class="symptom-title">Sexual health affected</div><div class="symptom-desc">Erectile dysfunction is frequently associated with BPH — treatable with a natural approach.</div></div>
+        <div class="symptom-card"><div class="symptom-icon">😓</div><div class="symptom-title">Chronic fatigue</div><div class="symptom-desc">Fragmented sleep and constant discomfort drain your energy and wellbeing.</div></div>
         <div class="symptom-card"><div class="symptom-icon">🔄</div><div class="symptom-title">Bladder never empty</div><div class="symptom-desc">Persistent feeling of incomplete emptying after urinating.</div></div>
       </div>
     </div>
@@ -846,9 +833,6 @@
             <div class="ingredient-item"><div class="ingredient-num">03</div><div><div class="ingredient-name">Beta-Sitosterol</div><div class="ingredient-desc">Fitosterol associado à melhoria do fluxo urinário e à redução do volume residual pós-miccional em homens com HPB.<sup class="ref">[4,5,6]</sup></div></div></div>
             <div class="ingredient-item"><div class="ingredient-num">04</div><div><div class="ingredient-name">Zinco</div><div class="ingredient-desc">Mineral essencial para a fisiologia prostática. Alterações da homeostase do zinco têm sido associadas a doenças da próstata.<sup class="ref">[10]</sup></div></div></div>
             <div class="ingredient-item"><div class="ingredient-num">05</div><div><div class="ingredient-name">Urtica Dioica (Urtiga)</div><div class="ingredient-desc">Extracto de raiz de urtiga amplamente estudado em HPB, incluindo formulações combinadas com Saw Palmetto para suporte dos sintomas urinários.<sup class="ref">[7,8,9]</sup></div></div></div>
-            <div class="ingredient-item"><div class="ingredient-num">06</div><div><div class="ingredient-name">Semente de Abóbora</div><div class="ingredient-desc">Rica em zinco, fitosteróis e ácidos gordos essenciais. Apoia a saúde prostática e a função urinária, reforçando a acção dos restantes ingredientes.</div></div></div>
-            <div class="ingredient-item"><div class="ingredient-num">07</div><div><div class="ingredient-name">Licopeno</div><div class="ingredient-desc">Antioxidante potente que protege as células prostáticas do dano oxidativo. Actua em sinergia com a Vitamina E e o Selénio para uma defesa antioxidante robusta.</div></div></div>
-            <div class="ingredient-item"><div class="ingredient-num">08</div><div><div class="ingredient-name">Vitamina E</div><div class="ingredient-desc">Antioxidante lipossolúvel que protege as células do stress oxidativo, complementando a acção do licopeno e do selénio.</div></div></div>
           </div>
         </div>
 
@@ -862,9 +846,6 @@
             <div class="ingredient-item"><div class="ingredient-num">03</div><div><div class="ingredient-name">Beta-Sitosterol</div><div class="ingredient-desc">Phytosterol associated with improvement of urinary flow and reduction of post-void residual volume in men with BPH.<sup class="ref">[4,5,6]</sup></div></div></div>
             <div class="ingredient-item"><div class="ingredient-num">04</div><div><div class="ingredient-name">Zinc</div><div class="ingredient-desc">Essential mineral for prostatic physiology. Changes in zinc homeostasis have been associated with prostate disease.<sup class="ref">[10]</sup></div></div></div>
             <div class="ingredient-item"><div class="ingredient-num">05</div><div><div class="ingredient-name">Urtica Dioica (Nettle)</div><div class="ingredient-desc">Nettle root extract extensively studied in BPH, including combined formulations with Saw Palmetto for urinary symptom support.<sup class="ref">[7,8,9]</sup></div></div></div>
-            <div class="ingredient-item"><div class="ingredient-num">06</div><div><div class="ingredient-name">Pumpkin Seed Extract</div><div class="ingredient-desc">Rich in zinc, phytosterols and essential fatty acids. Supports prostate health and urinary function, reinforcing the action of the other ingredients.</div></div></div>
-            <div class="ingredient-item"><div class="ingredient-num">07</div><div><div class="ingredient-name">Lycopene</div><div class="ingredient-desc">Potent antioxidant protecting prostate cells from oxidative damage. Works synergistically with Vitamin E and Selenium for robust antioxidant defence.</div></div></div>
-            <div class="ingredient-item"><div class="ingredient-num">08</div><div><div class="ingredient-name">Vitamin E</div><div class="ingredient-desc">Fat-soluble antioxidant protecting cells from oxidative stress, complementing the action of lycopene and selenium.</div></div></div>
           </div>
         </div>
 
@@ -889,8 +870,8 @@
         <div class="callout-stat">
           <div class="callout-stat-num">70%</div>
           <div class="callout-stat-label">
-            <span data-lang-inline="pt">dos homens com HPB têm disfunção eréctil associada. SSP3-Forte ajudará.</span>
-            <span data-lang-inline="en">of men with BPH have associated erectile dysfunction. SSP3-Forte will help.</span>
+            <span data-lang-inline="pt">dos homens com HPB têm disfunção eréctil associada</span>
+            <span data-lang-inline="en">of men with BPH have associated erectile dysfunction</span>
           </div>
         </div>
         <div class="callout-stat">
@@ -911,7 +892,7 @@
 
     <div data-lang="pt">
       <p class="section-label">Depoimentos</p>
-      <h2>O que dizem os homens que tomam o SSP3-Forte</h2>
+      <h2>O que dizem os nossos clientes</h2>
       <p class="section-lead">Milhares de homens em Portugal, Brasil e em todo o mundo já recuperaram o bem-estar com SSP3-Forte.</p>
       <div class="testimonials-grid">
         <div class="testimonial-card">
@@ -937,7 +918,7 @@
 
     <div data-lang="en">
       <p class="section-label">Testimonials</p>
-      <h2>What men taking SSP3-Forte say</h2>
+      <h2>What our customers say</h2>
       <p class="section-lead">Thousands of men in Portugal, Brazil and across the world have already regained their wellbeing with SSP3-Forte.</p>
       <div class="testimonials-grid">
         <div class="testimonial-card">
@@ -1009,16 +990,16 @@
         <div class="pricing-card">
           <p class="pricing-title">SSP3-Forte · 1 frasco</p>
           <p class="pricing-price"><sup>€</sup>29<small>,95</small></p>
-          <p class="pricing-desc">60 cápsulas · dose para 1 mês.</p>
-          <a href="#encomenda" class="btn-order" onclick="selectProduct('1x')">Faça o Pedido</a>
+          <p class="pricing-desc">60 cápsulas · 1 mês de tratamento. Ideal para experimentar.</p>
+          <a href="#encomenda" class="btn-order">Encomendar</a>
         </div>
         <div class="pricing-card featured">
           <div class="pricing-badge">Melhor valor</div>
-          <p class="pricing-title">SSP3-Forte · Kit 3 frascos · 10% de desconto</p>
+          <p class="pricing-title">SSP3-Forte · Kit 3 frascos</p>
           <p class="pricing-price"><sup>€</sup>80<small>,86</small></p>
           <p class="pricing-old">€89,85 · poupa 10%</p>
-          <p class="pricing-desc">180 cápsulas · 3 meses. Recomendado para bons resultados.</p>
-          <a href="#encomenda" class="btn-order" onclick="selectProduct('3x')">Faça o Pedido</a>
+          <p class="pricing-desc">180 cápsulas · 3 meses. Recomendado para resultados completos.</p>
+          <a href="#encomenda" class="btn-order">Encomendar</a>
         </div>
       </div>
     </div>
@@ -1031,16 +1012,16 @@
         <div class="pricing-card">
           <p class="pricing-title">SSP3-Forte · 1 bottle</p>
           <p class="pricing-price"><sup>€</sup>29<small>.95</small></p>
-          <p class="pricing-desc">60 capsules · 1-month dose.</p>
-          <a href="#order" class="btn-order" onclick="selectProduct('1x')">Order now</a>
+          <p class="pricing-desc">60 capsules · 1 month's treatment. Ideal for trying.</p>
+          <a href="#order" class="btn-order">Order now</a>
         </div>
         <div class="pricing-card featured">
           <div class="pricing-badge">Best value</div>
-          <p class="pricing-title">SSP3-Forte · 3-bottle kit · 10% off</p>
+          <p class="pricing-title">SSP3-Forte · 3-bottle kit</p>
           <p class="pricing-price"><sup>€</sup>80<small>.86</small></p>
           <p class="pricing-old">€89.85 · save 10%</p>
-          <p class="pricing-desc">180 capsules · 3 months. Recommended for good results.</p>
-          <a href="#order" class="btn-order" onclick="selectProduct('3x')">Order now</a>
+          <p class="pricing-desc">180 capsules · 3 months. Recommended for full results.</p>
+          <a href="#order" class="btn-order">Order now</a>
         </div>
       </div>
     </div>
@@ -1053,8 +1034,8 @@
   <div class="order-inner" id="order">
 
     <div data-lang="pt">
-      <p class="section-label">Pedido</p>
-      <h2>Faça o pedido</h2>
+      <p class="section-label">Encomendar</p>
+      <h2>Faça a sua encomenda</h2>
       <p class="section-lead">Preencha o formulário e entraremos em contacto dentro de 24 horas para confirmar e enviar os detalhes de pagamento.</p>
     </div>
     <div data-lang="en">
@@ -1080,24 +1061,27 @@
       <div class="form-row">
         <div class="form-group">
           <label>
+            <span data-lang-inline="pt">Telefone</span>
+            <span data-lang-inline="en">Phone</span>
+          </label>
+          <input type="tel" name="phone" placeholder="+351 912 000 000">
+        </div>
+        <div class="form-group">
+          <label>
             <span data-lang-inline="pt">País</span>
             <span data-lang-inline="en">Country</span>
           </label>
-          <select name="country" required onchange="updateTotal()">
+          <select name="country" required>
             <option value="">—</option>
             <option value="PT">Portugal</option>
             <option value="BR">Brasil</option>
             <option value="UK">United Kingdom</option>
             <option value="IE">Ireland</option>
-            <option value="other">Outro / Other</option>
+            <option value="other">
+              <span data-lang-inline="pt">Outro</span>
+              <span data-lang-inline="en">Other</span>
+            </option>
           </select>
-        </div>
-        <div class="form-group">
-          <label>
-            <span data-lang-inline="pt">Data de Nascimento</span>
-            <span data-lang-inline="en">Date of Birth</span>
-          </label>
-          <input type="date" name="dob">
         </div>
       </div>
       <div class="form-group">
@@ -1105,7 +1089,7 @@
           <span data-lang-inline="pt">Produto</span>
           <span data-lang-inline="en">Product</span>
         </label>
-        <select name="product" id="productSelect" required onchange="updateTotal()">
+        <select name="product" required>
           <option value="">—</option>
           <option value="1x">SSP3-Forte · 1 frasco / 1 bottle — €29,95</option>
           <option value="3x">SSP3-Forte · Kit 3 frascos / 3-bottle kit — €80,86</option>
@@ -1113,56 +1097,10 @@
       </div>
       <div class="form-group">
         <label>
-          <span data-lang-inline="pt">Endereço de entrega</span>
+          <span data-lang-inline="pt">Morada de entrega</span>
           <span data-lang-inline="en">Delivery address</span>
         </label>
-        <input type="text" name="address" required placeholder="Rua / Street, nº">
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>
-            <span data-lang-inline="pt">Código Postal (CEP)</span>
-            <span data-lang-inline="en">Postal Code (ZIP)</span>
-          </label>
-          <input type="text" name="postal" placeholder="0000-000">
-        </div>
-        <div class="form-group">
-          <label>
-            <span data-lang-inline="pt">Cidade</span>
-            <span data-lang-inline="en">City</span>
-          </label>
-          <input type="text" name="city" required placeholder="Lisboa">
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>
-            <span data-lang-inline="pt">Localidade / Estado</span>
-            <span data-lang-inline="en">State / Region</span>
-          </label>
-          <input type="text" name="state" placeholder="">
-        </div>
-        <div class="form-group">
-          <label>
-            <span data-lang-inline="pt">Telemóvel / Celular</span>
-            <span data-lang-inline="en">Mobile / Cell</span>
-          </label>
-          <input type="tel" name="phone" placeholder="+351 912 000 000">
-        </div>
-      </div>
-      <div class="shipping-calc" id="shippingCalc">
-        <div class="shipping-line">
-          <span data-lang-inline="pt">Produto</span><span data-lang-inline="en">Product</span>
-          <span id="calcProduct">—</span>
-        </div>
-        <div class="shipping-line">
-          <span data-lang-inline="pt">Envio</span><span data-lang-inline="en">Shipping</span>
-          <span id="calcShipping">—</span>
-        </div>
-        <div class="shipping-line total">
-          <span>Total</span>
-          <span id="calcTotal">—</span>
-        </div>
+        <textarea name="address" placeholder="Rua, número, código postal, cidade…"></textarea>
       </div>
       <div class="form-group">
         <label>
@@ -1172,17 +1110,17 @@
         <textarea name="notes" rows="2" placeholder=""></textarea>
       </div>
       <p class="form-note">
-        <span data-lang-inline="pt">Ao submeter este formulário aceita ser contactado pela Naturalfarma para processar o seu pedido. Os seus dados não são partilhados com terceiros.</span>
+        <span data-lang-inline="pt">Ao submeter este formulário aceita ser contactado pela Naturalfarma para processar a sua encomenda. Os seus dados não são partilhados com terceiros.</span>
         <span data-lang-inline="en">By submitting this form you agree to be contacted by Naturalfarma to process your order. Your data is not shared with third parties.</span>
       </p>
       <button type="submit" class="btn-submit">
-        <span data-lang-inline="pt">Enviar pedido →</span>
+        <span data-lang-inline="pt">Enviar encomenda →</span>
         <span data-lang-inline="en">Send order →</span>
       </button>
     </form>
 
     <div class="success-msg" id="successMsg">
-      <span data-lang-inline="pt">✓ Pedido recebido! Entraremos em contacto em breve para confirmar os detalhes e o pagamento. Obrigado!</span>
+      <span data-lang-inline="pt">✓ Encomenda recebida! Entraremos em contacto em breve para confirmar os detalhes e o pagamento. Obrigado!</span>
       <span data-lang-inline="en">✓ Order received! We will be in touch shortly to confirm the details and payment. Thank you!</span>
     </div>
 
@@ -1203,9 +1141,9 @@
           <div class="faq-item"><p class="faq-q">Tem efeitos secundários?</p><p class="faq-a">O SSP3-Forte é formulado com ingredientes naturais e geralmente bem tolerado. Não foram reportados efeitos secundários significativos.</p></div>
         </div>
         <div>
-          <div class="faq-item"><p class="faq-q">Fazem envios para o Reino Unido e Irlanda?</p><p class="faq-a">Sim. Enviamos para Portugal, Brasil, Reino Unido e Irlanda. O prazo e custo de envio são confirmados na resposta ao pedido.</p></div>
-          <div class="faq-item"><p class="faq-q">Como é feito o pagamento?</p><p class="faq-a">Após receber o pedido, a Naturalfarma entra em contacto com os detalhes de pagamento disponíveis para o seu país.</p></div>
-          <div class="faq-item"><p class="faq-q">Posso fazer o pedido em reais ou libras?</p><p class="faq-a">Sim. Mencione a sua moeda preferida no campo de notas do formulário e indicaremos o equivalente actualizado.</p></div>
+          <div class="faq-item"><p class="faq-q">Fazem envios para o Reino Unido e Irlanda?</p><p class="faq-a">Sim. Enviamos para Portugal, Brasil, Reino Unido e Irlanda. O prazo e custo de envio são confirmados na resposta à encomenda.</p></div>
+          <div class="faq-item"><p class="faq-q">Como é feito o pagamento?</p><p class="faq-a">Após receber a encomenda, a Naturalfarma entra em contacto com os detalhes de pagamento disponíveis para o seu país.</p></div>
+          <div class="faq-item"><p class="faq-q">Posso encomendar em reais ou libras?</p><p class="faq-a">Sim. Mencione a sua moeda preferida no campo de notas do formulário e indicaremos o equivalente actualizado.</p></div>
         </div>
       </div>
     </div>
@@ -1272,7 +1210,7 @@
     <a href="https://problemasnaprostata.blogspot.com/" target="_blank">Blog</a>
     <a href="mailto:encomendas@ssp3forte.com">Contacto</a>
     <a href="#encomenda">
-      <span data-lang-inline="pt">Faça o Pedido</span>
+      <span data-lang-inline="pt">Encomendar</span>
       <span data-lang-inline="en">Order</span>
     </a>
   </div>
@@ -1283,79 +1221,28 @@
 </footer>
 
 <script>
-const PRICES = { '1x': 29.95, '3x': 80.86 };
-const SHIPPING = { PT: 4.99, default: 9.00 };
-
 function setLang(lang) {
   document.body.className = 'lang-' + lang;
   document.getElementById('btn-pt').classList.toggle('active', lang === 'pt');
   document.getElementById('btn-en').classList.toggle('active', lang === 'en');
   document.documentElement.lang = lang === 'pt' ? 'pt' : 'en';
   document.getElementById('encomenda').id = lang === 'pt' ? 'encomenda' : 'order';
-  updateTotal();
-}
-
-function selectProduct(val) {
-  const sel = document.getElementById('productSelect');
-  if (sel) { sel.value = val; updateTotal(); }
-}
-
-function updateTotal() {
-  const product = document.getElementById('productSelect').value;
-  const country = document.querySelector('[name="country"]').value;
-  const calc = document.getElementById('shippingCalc');
-  if (!product || !country) { calc.classList.remove('visible'); return; }
-  const productPrice = PRICES[product] || 0;
-  const shippingPrice = country === 'PT' ? SHIPPING.PT : SHIPPING.default;
-  const total = productPrice + shippingPrice;
-  const fmt = v => '€' + v.toFixed(2).replace('.', ',');
-  document.getElementById('calcProduct').textContent = fmt(productPrice);
-  document.getElementById('calcShipping').textContent = fmt(shippingPrice);
-  document.getElementById('calcTotal').textContent = fmt(total);
-  calc.classList.add('visible');
 }
 
 function submitOrder(e) {
   e.preventDefault();
   const form = document.getElementById('orderForm');
   const data = new FormData(form);
-  const name    = data.get('name');
-  const email   = data.get('email');
-  const phone   = data.get('phone');
+  const name = data.get('name');
+  const email = data.get('email');
+  const phone = data.get('phone');
   const country = data.get('country');
-  const dob     = data.get('dob');
   const product = data.get('product');
   const address = data.get('address');
-  const postal  = data.get('postal');
-  const city    = data.get('city');
-  const state   = data.get('state');
-  const notes   = data.get('notes');
-
-  const productPrice  = PRICES[product] || 0;
-  const shippingPrice = country === 'PT' ? SHIPPING.PT : SHIPPING.default;
-  const total         = (productPrice + shippingPrice).toFixed(2);
-
-  const body = [
-    'Novo pedido SSP3-Forte',
-    '',
-    `Nome: ${name}`,
-    `Email: ${email}`,
-    `Telemóvel/Celular: ${phone}`,
-    `Data de Nascimento: ${dob}`,
-    `País: ${country}`,
-    `Produto: ${product}`,
-    `Envio: €${shippingPrice.toFixed(2)}`,
-    `Total: €${total}`,
-    '',
-    `Endereço: ${address}`,
-    `CEP/Postal: ${postal}`,
-    `Cidade: ${city}`,
-    `Localidade/Estado: ${state}`,
-    '',
-    `Notas: ${notes}`,
-  ].map(encodeURIComponent).join('%0A');
-
-  window.location.href = `mailto:prostatasaudavel@gmail.com?subject=Pedido SSP3-Forte - ${encodeURIComponent(name)}&body=${body}`;
+  const notes = data.get('notes');
+  const body = `Nova encomenda SSP3-Forte%0A%0ANome: ${encodeURIComponent(name)}%0AEmail: ${encodeURIComponent(email)}%0ATelefone: ${encodeURIComponent(phone)}%0APaís: ${encodeURIComponent(country)}%0AProduto: ${encodeURIComponent(product)}%0AMorada: ${encodeURIComponent(address)}%0ANotas: ${encodeURIComponent(notes)}`;
+  const toEmail = document.body.classList.contains('lang-en') ? 'orders@ssp3forte.com' : 'encomendas@ssp3forte.com';
+  window.location.href = `mailto:${toEmail}?subject=Encomenda SSP3-Forte - ${encodeURIComponent(name)}&body=${body}`;
   document.getElementById('successMsg').style.display = 'block';
   form.style.opacity = '0.4';
   form.style.pointerEvents = 'none';
