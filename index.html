@@ -396,6 +396,29 @@
     object-fit: cover;
     border-radius: 8px;
     border: 1px solid var(--border);
+    cursor: zoom-in;
+    transition: transform 0.15s;
+  }
+  .ingredient-img:hover { transform: scale(1.06); }
+
+  /* LIGHTBOX */
+  #lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.82);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    cursor: zoom-out;
+  }
+  #lightbox.open { display: flex; }
+  #lightbox img {
+    max-width: 90vw;
+    max-height: 90vh;
+    object-fit: contain;
+    border-radius: 10px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.6);
   }
   .ingredient-name { font-weight: 500; font-size: 0.95rem; margin-bottom: 3px; }
   .ingredient-desc { font-size: 0.95rem; color: var(--text-muted); line-height: 1.5; }
@@ -716,6 +739,8 @@
 <body class="lang-pt">
 
 <!-- LANGUAGE BAR -->
+<div id="lightbox"><img id="lightbox-img" src="" alt=""></div>
+
 <div class="lang-bar">
   <button class="lang-btn active" onclick="setLang('pt')" id="btn-pt"><img class="flag-img" src="imgs/flags/pt.svg" alt="PT"><span class="flag-label">PT</span></button>
   <span class="lang-divider">|</span>
@@ -1547,6 +1572,18 @@ function submitOrder(e) {
   form.style.opacity = '0.4';
   form.style.pointerEvents = 'none';
 }
+
+// LIGHTBOX
+const lb = document.getElementById('lightbox');
+const lbImg = document.getElementById('lightbox-img');
+document.querySelectorAll('.ingredient-img').forEach(img => {
+  img.addEventListener('click', () => {
+    lbImg.src = img.src;
+    lb.classList.add('open');
+  });
+});
+lb.addEventListener('click', () => lb.classList.remove('open'));
+document.addEventListener('keydown', e => { if (e.key === 'Escape') lb.classList.remove('open'); });
 </script>
 </body>
 </html>
