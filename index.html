@@ -1251,14 +1251,7 @@
             <span data-lang-inline="pt">País</span>
             <span data-lang-inline="en">Country</span>
           </label>
-          <select name="country" required onchange="updateTotal()">
-            <option value="">—</option>
-            <option value="PT">Portugal</option>
-            <option value="BR">Brasil</option>
-            <option value="UK">United Kingdom</option>
-            <option value="IE">Ireland</option>
-            <option value="other">Outro / Other</option>
-          </select>
+          <input type="text" name="country" required oninput="updateTotal()" placeholder="ex: Portugal, Brasil, França…">
         </div>
         <div class="form-group">
           <label>
@@ -1532,7 +1525,8 @@ function updateTotal() {
   if (!product || !country) { calc.classList.remove('visible'); return; }
   const isBR = product.endsWith('-br');
   const productPrice = PRICES[product] || 0;
-  const shippingPrice = isBR ? 0 : (country === 'PT' ? SHIPPING.PT : SHIPPING.default);
+  const isPortugal = country.toLowerCase().includes('port');
+  const shippingPrice = isBR ? 0 : (isPortugal ? SHIPPING.PT : SHIPPING.default);
   const total = productPrice + shippingPrice;
   const curr = CURRENCY[product] || '€';
   const fmt = (v, c) => c === '€' ? '€' + v.toFixed(2).replace('.', ',') : 'R$' + Math.round(v);
