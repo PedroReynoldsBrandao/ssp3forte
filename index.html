@@ -715,7 +715,7 @@
 
   /* BRL PRICING TOGGLE */
   .pricing-brl-block { display: none; }
-  body.brl-pricing .pricing-eur { display: none !important; }
+  body.brl-pricing .pricing-eur-cards { display: none; }
   body.brl-pricing .pricing-brl-block { display: block; }
   .brl-toggle {
     display: inline-flex;
@@ -1085,82 +1085,84 @@
 <section class="pricing-section">
   <div class="section-inner">
 
-    <div data-lang="pt" class="pricing-eur">
+    <div data-lang="pt">
       <p class="section-label">Preços</p>
       <h2>Escolha a sua opção</h2>
       <p class="section-lead">Envio para Portugal, Angola, Brasil, Europa. Preços em euros; para pagamento em reais, contacte-nos no formulário abaixo.</p>
-      
-      <div class="pricing-grid">
-        <div class="pricing-card">
-          <p class="pricing-title">SSP3-Forte · 1 frasco</p>
-          <p class="pricing-price"><sup>€</sup>29<small>,95</small></p>
-          <p class="pricing-desc">60 cápsulas · dose para 1 mês.</p>
-          <a href="#encomenda" class="btn-order" onclick="selectProduct('1x')">Faça o Pedido</a>
-        </div>
-        <div class="pricing-card featured">
-          <div class="pricing-badge">Melhor valor</div>
-          <p class="pricing-title">SSP3-Forte · Kit 3 frascos · 10% de desconto</p>
-          <p class="pricing-price"><sup>€</sup>80<small>,86</small></p>
-          <p class="pricing-old">€89,85 · poupa 10%</p>
-          <p class="pricing-desc">180 cápsulas · 3 meses. Recomendado para bons resultados.</p>
-          <a href="#encomenda" class="btn-order" onclick="selectProduct('3x')">Faça o Pedido</a>
-        </div>
-      </div>
     </div>
-
     <div data-lang="en">
       <p class="section-label">Pricing</p>
       <h2>Choose your option</h2>
       <p class="section-lead">Delivery to Portugal, Angola, Brazil, Europe. Prices in euros; for payment in BRL contact us via the form below.</p>
-      <label class="brl-toggle">
-        <input type="checkbox" id="brlToggleEN" onchange="toggleBRL(this.checked)">
-        <img class="flag-img" src="imgs/flags/br.svg" alt="BR">
-        <span>Show prices in BRL (R$)</span>
-      </label>
-      <div class="pricing-grid">
-        <div class="pricing-card">
-          <p class="pricing-title">SSP3-Forte · 1 bottle</p>
-          <p class="pricing-price"><sup>€</sup>29<small>.95</small></p>
-          <p class="pricing-desc">60 capsules · 1-month dose.</p>
-          <a href="#order" class="btn-order" onclick="selectProduct('1x')">Order now</a>
+    </div>
+
+    <label class="brl-toggle">
+      <input type="checkbox" id="brlToggle" onchange="toggleBRL(this.checked)">
+      <img class="flag-img" src="imgs/flags/br.svg" alt="BR">
+      <span data-lang-inline="pt">Ver preços em Reais (R$)</span>
+      <span data-lang-inline="en">Show prices in BRL (R$)</span>
+    </label>
+
+    <div class="pricing-eur-cards">
+      <div data-lang="pt">
+        <div class="pricing-grid">
+          <div class="pricing-card">
+            <p class="pricing-title">SSP3-Forte · 1 frasco</p>
+            <p class="pricing-price"><sup>€</sup>29<small>,95</small></p>
+            <p class="pricing-desc">60 cápsulas · dose para 1 mês.</p>
+            <a href="#encomenda" class="btn-order" onclick="selectProduct('1x')">Faça o Pedido</a>
+          </div>
+          <div class="pricing-card featured">
+            <div class="pricing-badge">Melhor valor</div>
+            <p class="pricing-title">SSP3-Forte · Kit 3 frascos · 10% de desconto</p>
+            <p class="pricing-price"><sup>€</sup>80<small>,86</small></p>
+            <p class="pricing-old">€89,85 · poupa 10%</p>
+            <p class="pricing-desc">180 cápsulas · 3 meses. Recomendado para bons resultados.</p>
+            <a href="#encomenda" class="btn-order" onclick="selectProduct('3x')">Faça o Pedido</a>
+          </div>
         </div>
-        <div class="pricing-card featured">
-          <div class="pricing-badge">Best value</div>
-          <p class="pricing-title">SSP3-Forte · 3-bottle kit · 10% off</p>
-          <p class="pricing-price"><sup>€</sup>80<small>.86</small></p>
-          <p class="pricing-old">€89.85 · save 10%</p>
-          <p class="pricing-desc">180 capsules · 3 months. Recommended for good results.</p>
-          <a href="#order" class="btn-order" onclick="selectProduct('3x')">Order now</a>
+      </div>
+      <div data-lang="en">
+        <div class="pricing-grid">
+          <div class="pricing-card">
+            <p class="pricing-title">SSP3-Forte · 1 bottle</p>
+            <p class="pricing-price"><sup>€</sup>29<small>.95</small></p>
+            <p class="pricing-desc">60 capsules · 1-month dose.</p>
+            <a href="#order" class="btn-order" onclick="selectProduct('1x')">Order now</a>
+          </div>
+          <div class="pricing-card featured">
+            <div class="pricing-badge">Best value</div>
+            <p class="pricing-title">SSP3-Forte · 3-bottle kit · 10% off</p>
+            <p class="pricing-price"><sup>€</sup>80<small>.86</small></p>
+            <p class="pricing-old">€89.85 · save 10%</p>
+            <p class="pricing-desc">180 capsules · 3 months. Recommended for good results.</p>
+            <a href="#order" class="btn-order" onclick="selectProduct('3x')">Order now</a>
+          </div>
         </div>
       </div>
     </div>
 
     <div class="pricing-brl-block">
-  <p class="section-label">Preços</p>
-  <h2>Escolha a sua opção</h2>
-  <p class="section-lead">Entrega no Brasil. Pagamento exclusivamente por transferência bancária TED. Preço em reais sujeito a variação cambial — confirmamos o valor actualizado no contacto.</p>
-      
-  <div class="pricing-grid">
-    <div class="pricing-card">
-      <p class="pricing-title">SSP3-Forte · 1 frasco</p>
-      <p class="pricing-price"><sup>R$</sup>165<small></small></p>
-      <p class="pricing-desc">60 cápsulas · dose para 1 mês.</p>
-      <a href="#encomenda" class="btn-order" onclick="selectProduct('1x-br')">Faça o Pedido</a>
+      <div class="pricing-grid">
+        <div class="pricing-card">
+          <p class="pricing-title">SSP3-Forte · 1 frasco</p>
+          <p class="pricing-price"><sup>R$</sup>165</p>
+          <p class="pricing-desc">60 cápsulas · dose para 1 mês.</p>
+          <a href="#encomenda" class="btn-order" onclick="selectProduct('1x-br')">Faça o Pedido</a>
+        </div>
+        <div class="pricing-card featured">
+          <div class="pricing-badge">Melhor valor</div>
+          <p class="pricing-title">SSP3-Forte · Kit 3 frascos · 10% de desconto</p>
+          <p class="pricing-price"><sup>R$</sup>445</p>
+          <p class="pricing-old">R$495 · economize 10%</p>
+          <p class="pricing-desc">180 cápsulas · 3 meses. Recomendado para bons resultados.</p>
+          <a href="#encomenda" class="btn-order" onclick="selectProduct('3x-br')">Faça o Pedido</a>
+        </div>
+      </div>
     </div>
-    <div class="pricing-card featured">
-      <div class="pricing-badge">Melhor valor</div>
-      <p class="pricing-title">SSP3-Forte · Kit 3 frascos · 10% de desconto</p>
-      <p class="pricing-price"><sup>R$</sup>445<small></small></p>
-      <p class="pricing-old">R$495 · economize 10%</p>
-      <p class="pricing-desc">180 cápsulas · 3 meses. Recomendado para bons resultados.</p>
-      <a href="#encomenda" class="btn-order" onclick="selectProduct('3x-br')">Faça o Pedido</a>
-    </div>
-  </div>
-</div>
 
   </div>
 </section>
-
 <!-- ORDER FORM -->
 <section class="order-section" id="encomenda">
   <div class="order-inner" id="order">
@@ -1423,12 +1425,7 @@ function setLang(region) {
     const btn = document.getElementById('btn-' + r);
     if (btn) btn.classList.toggle('active', r === region);
   });
-  // keep BRL toggle state in sync across lang switch
-  const brlOn = document.getElementById('brlTogglePT') || document.getElementById('brlToggleEN');
-  if (brlOn) {
-    const checked = brlOn.checked;
-    ['brlTogglePT','brlToggleEN'].forEach(id => { const el = document.getElementById(id); if(el) el.checked = checked; });
-  }
+
   document.documentElement.lang = lang === 'en' ? 'en' : 'pt';
   const anchorId = lang === 'en' ? 'order' : 'encomenda';
   const section = document.getElementById('encomenda') || document.getElementById('order');
@@ -1438,8 +1435,6 @@ function setLang(region) {
 
 function toggleBRL(checked) {
   document.body.classList.toggle('brl-pricing', checked);
-  // sync both toggles
-  ['brlTogglePT','brlToggleEN'].forEach(id => { const el = document.getElementById(id); if(el) el.checked = checked; });
 }
 
 function selectProduct(val) {
