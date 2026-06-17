@@ -83,11 +83,12 @@
   body.lang-en [data-lang="en"] { display: block; }
   body.lang-pt [data-lang-inline="en"] { display: none; }
   body.lang-en [data-lang-inline="pt"] { display: none; }
+  body.lang-br [data-lang="pt"] { display: block; }
   body.lang-br [data-lang="br"] { display: block; }
-  body.lang-br [data-lang="pt"] { display: none; }
   body.lang-br [data-lang="en"] { display: none; }
   body.lang-br [data-lang-inline="en"] { display: none; }
   body.lang-br [data-lang-inline="pt"] { display: inline; }
+  body.lang-br .pricing-eur { display: none; }
   [data-lang-inline] { display: inline; }
 
   /* HERO */
@@ -717,6 +718,17 @@
   /* INLINE PRODUCT IMAGE (mobile only) */
   .hero-inline-img { display: none; }
 
+  /* DEST FLAGS IN PRICING */
+  .dest-flags {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin-bottom: 1.75rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .dest-flags .lang-btn { padding: 2px 8px; }
+
   /* RESPONSIVE */
   @media (max-width: 768px) {
     .hero { grid-template-columns: 1fr; min-height: auto; }
@@ -742,17 +754,19 @@
   }
 </style>
 </head>
-<body class="lang-br">
+<body class="lang-pt">
 
 <!-- LANGUAGE BAR -->
 <div id="lightbox"><img id="lightbox-img" src="" alt=""></div>
 
 <div class="lang-bar">
-  <button class="lang-btn" onclick="setLang('pt')" id="btn-pt"><img class="flag-img" src="imgs/flags/pt.svg" alt="PT"><span class="flag-label">PT</span></button>
+  <button class="lang-btn active" onclick="setLang('pt')" id="btn-pt"><img class="flag-img" src="imgs/flags/pt.svg" alt="PT"><span class="flag-label">PT</span></button>
   <span class="lang-divider">|</span>
-  <button class="lang-btn active" id="btn-br" onclick="setLang('br')"><img class="flag-img" src="imgs/flags/br.svg" alt="BR"><span class="flag-label">BR</span></button>
+  <button class="lang-btn" id="btn-ao" onclick="setLang('ao')"><img class="flag-img" src="imgs/flags/ao.svg" alt="AO"><span class="flag-label">AO</span></button>
   <span class="lang-divider">|</span>
-  <button class="lang-btn" onclick="setLang('en')" id="btn-en"><img class="flag-img" src="imgs/flags/gb.svg" alt="EN"><span class="flag-label">EN</span></button>
+  <button class="lang-btn" id="btn-br" onclick="setLang('br')"><img class="flag-img" src="imgs/flags/br.svg" alt="BR"><span class="flag-label">BR</span></button>
+  <span class="lang-divider">|</span>
+  <button class="lang-btn" onclick="setLang('eu')" id="btn-eu"><img class="flag-img" src="imgs/flags/eu.svg" alt="EU"><span class="flag-label">EU</span></button>
 </div>
 
 <!-- HERO -->
@@ -798,24 +812,6 @@
       </div>
     </div>
 
-    <div data-lang="br">
-      <p class="hero-eyebrow">Naturalfarma · Distribuidor Exclusivo</p>
-      <h1>Trate a Próstata,<br><em>Evite a Cirurgia.</em></h1>
-      <div class="hero-inline-img">
-        <div class="product-frame">
-          <img src="frasco.jpg" alt="SSP3-Forte" class="product-img">
-          <div class="badge-float">
-            <span data-lang-inline="pt">Fabricado<br>na Europa</span>
-            <span data-lang-inline="en">Made in<br>Europe</span>
-          </div>
-        </div>
-      </div>
-      <p class="hero-sub">SSP3-Forte é o suplemento natural com décadas de resultados comprovados. Ingredientes sinérgicos que aliviam os sintomas de HPB e devolvem a qualidade de vida masculina.</p>
-      <div class="hero-cta">
-        <a href="#encomenda" class="btn-primary">Faça o Pedido</a>
-        <a href="#ingredientes" class="btn-ghost">Ver ingredientes</a>
-      </div>
-    </div>
 
   </div>
   <div class="hero-visual">
@@ -890,19 +886,7 @@
       </div>
     </div>
 
-    <div data-lang="br">
-      <p class="section-label">Reconhece estes sinais?</p>
-      <h2>Os sintomas da próstata aumentada não devem ser ignorados</h2>
-      <p class="section-lead">A Hiperplasia Benigna da Próstata (HBP) afecta a maioria dos homens acima dos 50 anos. Quanto mais cedo agir, melhores os resultados.</p>
-      <div class="symptoms-grid">
-        <div class="symptom-card"><div class="symptom-icon">🌙</div><div class="symptom-title">Noites interrompidas</div><div class="symptom-desc">Acordar 2, 3 ou mais vezes para urinar, sem conseguir voltar a dormir facilmente.</div></div>
-        <div class="symptom-card"><div class="symptom-icon">💧</div><div class="symptom-title">Jato fraco</div><div class="symptom-desc">Fluxo urinário reduzido, gotejamento após urinar, dificuldade em iniciar.</div></div>
-        <div class="symptom-card"><div class="symptom-icon">⚡</div><div class="symptom-title">Urgência urinária</div><div class="symptom-desc">Necessidade súbita e difícil de controlar de urinar, mesmo com bexiga pouco cheia.</div></div>
-        <div class="symptom-card"><div class="symptom-icon">💔</div><div class="symptom-title">Vida sexual afectada</div><div class="symptom-desc">Ejaculação fraca e/ou dolorosa; desempenho sexual fraco. Disfunção eréctil frequentemente associada à HPB — tratável com abordagem natural.</div></div>
-        <div class="symptom-card"><div class="symptom-icon">😓</div><div class="symptom-title">Fadiga crónica</div><div class="symptom-desc">Noites mal dormidas, sono fragmentado e o desconforto constante drenam a energia e o bem-estar.</div></div>
-        <div class="symptom-card"><div class="symptom-icon">🔄</div><div class="symptom-title">Bexiga nunca vazia</div><div class="symptom-desc">Sensação persistente de esvaziamento incompleto após urinar.</div></div>
-      </div>
-    </div>
+    
 
     <div data-lang="en">
       <p class="section-label">Do you recognise these signs?</p>
@@ -943,21 +927,7 @@
           </div>
         </div>
 
-        <div data-lang="br">
-          <p class="section-label">Fórmula sinérgica</p>
-          <h2>Ingredientes com eficácia comprovada</h2>
-          <p class="section-lead">O SSP3-Forte combina os melhores extractos vegetais conhecidos para a saúde prostática, numa formulação optimizada.</p>
-          <div class="ingredient-list">
-            <div class="ingredient-item"><div class="ingredient-num">01</div><img class="ingredient-img" src="imgs/01_sawpalmetto.jpg" alt="Saw Palmetto"><div><div class="ingredient-name">Saw Palmetto</div><div class="ingredient-desc">Extracto de bagas tradicionalmente utilizado para apoiar a saúde prostática e os sintomas urinários associados à HPB.<sup class="ref">[1,7]</sup></div></div></div>
-            <div class="ingredient-item"><div class="ingredient-num">02</div><img class="ingredient-img" src="imgs/02_pygeum_africanum.jfif" alt="Pygeum Africanum"><div><div class="ingredient-name">Pygeum Africanum</div><div class="ingredient-desc">Extracto da casca de Pygeum africanum associado à melhoria dos sintomas urinários da HPB, incluindo a redução da frequência urinária nocturna.<sup class="ref">[2,3]</sup></div></div></div>
-            <div class="ingredient-item"><div class="ingredient-num">03</div><img class="ingredient-img" src="imgs/03_beta_sitosterol.png" alt="Beta-Sitosterol"><div><div class="ingredient-name">Beta-Sitosterol</div><div class="ingredient-desc">Fitosterol associado à melhoria do fluxo urinário e à redução do volume residual pós-miccional em homens com HPB.<sup class="ref">[4,5,6]</sup></div></div></div>
-            <div class="ingredient-item"><div class="ingredient-num">04</div><img class="ingredient-img" src="imgs/04_zinc.png" alt="Zinco"><div><div class="ingredient-name">Zinco</div><div class="ingredient-desc">Mineral essencial para a fisiologia prostática. Alterações da homeostase do zinco têm sido associadas a doenças da próstata.<sup class="ref">[10]</sup></div></div></div>
-            <div class="ingredient-item"><div class="ingredient-num">05</div><img class="ingredient-img" src="imgs/05_urtica_dioica.png" alt="Urtica Dioica"><div><div class="ingredient-name">Urtica Dioica (Urtiga)</div><div class="ingredient-desc">Extracto de raiz de urtiga amplamente estudado em HPB, incluindo formulações combinadas com Saw Palmetto para suporte dos sintomas urinários.<sup class="ref">[7,8,9]</sup></div></div></div>
-            <div class="ingredient-item"><div class="ingredient-num">06</div><img class="ingredient-img" src="imgs/06_semente_abobora.png" alt="Semente de Abóbora"><div><div class="ingredient-name">Semente de Abóbora</div><div class="ingredient-desc">Rica em zinco, fitosteróis e ácidos gordos essenciais. Apoia a saúde prostática e a função urinária, reforçando a acção dos restantes ingredientes.</div></div></div>
-            <div class="ingredient-item"><div class="ingredient-num">07</div><img class="ingredient-img" src="imgs/07_licopeno.png" alt="Licopeno"><div><div class="ingredient-name">Licopeno</div><div class="ingredient-desc">Antioxidante potente que protege as células prostáticas do dano oxidativo. Actua em sinergia com a Vitamina E e o Selénio para uma defesa antioxidante robusta.</div></div></div>
-            <div class="ingredient-item"><div class="ingredient-num">08</div><img class="ingredient-img" src="imgs/08_vitamina_e.png" alt="Vitamina E"><div><div class="ingredient-name">Vitamina E</div><div class="ingredient-desc">Antioxidante lipossolúvel que protege as células do stress oxidativo, complementando a acção do licopeno e do selénio.</div></div></div>
-          </div>
-        </div>
+        
 
         <div data-lang="en">
           <p class="section-label">Synergistic formula</p>
@@ -1068,31 +1038,7 @@
       </div>
     </div>
 
-    <div data-lang="br">
-  <p class="section-label">Depoimentos</p>
-  <h2>O que dizem os homens que tomam o SSP3-Forte</h2>
-  <p class="section-lead">Milhares de homens no Brasil e em todo o mundo já recuperaram o bem-estar com o SSP3-Forte.</p>
-  <div class="testimonials-grid">
-    <div class="testimonial-card">
-      <div class="testimonial-stars">★★★★★</div>
-      <p class="testimonial-text">"Intervalos entre micções de 7 a 8 horas, dormindo a noite toda sem acordar, função sexual excelente."</p>
-      <div class="testimonial-author">A. Arruda</div>
-      <div class="testimonial-loc">SC, Brasil</div>
-    </div>
-    <div class="testimonial-card">
-      <div class="testimonial-stars">★★★★★</div>
-      <p class="testimonial-text">"Meu PSA caiu de 3.080 para 1,61 em dois meses de tratamento."</p>
-      <div class="testimonial-author">Roberto A.</div>
-      <div class="testimonial-loc">SP, Brasil</div>
-    </div>
-    <div class="testimonial-card">
-      <div class="testimonial-stars">★★★★★</div>
-      <p class="testimonial-text">"Próstata reduzida para 30 gramas, idas ao banheiro reduzidas a uma vez por noite."</p>
-      <div class="testimonial-author">L. Santos</div>
-      <div class="testimonial-loc">SP, Brasil · Médico dentista</div>
-    </div>
-  </div>
-</div>
+    
 
   </div>
 </section>
@@ -1117,14 +1063,7 @@
       <h2 style="color: white; margin-bottom: 0.75rem;">What is SSP3-Forte?</h2>
       <p style="color: rgba(255,255,255,0.55); font-size: 1rem; margin-bottom: 2rem; line-height: 1.8;">See how SSP3-Forte acts on the prostate and why it is different from other supplements on the market.</p>
     </div>
-    <div data-lang="br">
-      <p class="section-label" style="color: var(--gold);">
-        <span style="display:block;width:20px;height:1px;background:var(--gold);"></span>
-        Ver em acção
-      </p>
-      <h2 style="color: white; margin-bottom: 0.75rem;">O que é o SSP3-Forte?</h2>
-      <p style="color: rgba(255,255,255,0.55); font-size: 1rem; margin-bottom: 2rem; line-height: 1.8;">Veja como o SSP3-Forte actua na próstata e porque é diferente de outros suplementos no mercado.</p>
-    </div>
+    
     <div style="position: relative; width: 100%; padding-bottom: 56.25%; height: 0; overflow: hidden;">
       <iframe
         src="https://www.youtube.com/embed/34RHbUfvfII?rel=0"
@@ -1142,10 +1081,19 @@
 <section class="pricing-section">
   <div class="section-inner">
 
-    <div data-lang="pt">
+    <div data-lang="pt" class="pricing-eur">
       <p class="section-label">Preços</p>
       <h2>Escolha a sua opção</h2>
-      <p class="section-lead">Envio para Portugal, Brasil, Europa. Preços em euros; para pagamento em reais ou libras, contacte-nos no formulário abaixo.</p>
+      <p class="section-lead">Envio para Portugal, Angola, Brasil, Europa. Preços em euros; para pagamento em reais, contacte-nos no formulário abaixo.</p>
+      <div class="dest-flags">
+        <button class="lang-btn" onclick="setLang('pt')" id="dest-pt"><img class="flag-img" src="imgs/flags/pt.svg" alt="PT"><span class="flag-label">PT</span></button>
+        <span class="lang-divider">|</span>
+        <button class="lang-btn" onclick="setLang('ao')" id="dest-ao"><img class="flag-img" src="imgs/flags/ao.svg" alt="AO"><span class="flag-label">AO</span></button>
+        <span class="lang-divider">|</span>
+        <button class="lang-btn" onclick="setLang('br')" id="dest-br"><img class="flag-img" src="imgs/flags/br.svg" alt="BR"><span class="flag-label">BR</span></button>
+        <span class="lang-divider">|</span>
+        <button class="lang-btn" onclick="setLang('eu')" id="dest-eu"><img class="flag-img" src="imgs/flags/eu.svg" alt="EU"><span class="flag-label">EU</span></button>
+      </div>
       <div class="pricing-grid">
         <div class="pricing-card">
           <p class="pricing-title">SSP3-Forte · 1 frasco</p>
@@ -1167,7 +1115,16 @@
     <div data-lang="en">
       <p class="section-label">Pricing</p>
       <h2>Choose your option</h2>
-      <p class="section-lead">Delivery to Portugal, Brazil, Europe. Prices in euros; for payment in GBP or BRL, contact us via the form below.</p>
+      <p class="section-lead">Delivery to Portugal, Angola, Brazil, Europe. Prices in euros; for payment in BRL contact us via the form below.</p>
+      <div class="dest-flags">
+        <button class="lang-btn" onclick="setLang('pt')" id="dest-pt"><img class="flag-img" src="imgs/flags/pt.svg" alt="PT"><span class="flag-label">PT</span></button>
+        <span class="lang-divider">|</span>
+        <button class="lang-btn" onclick="setLang('ao')" id="dest-ao"><img class="flag-img" src="imgs/flags/ao.svg" alt="AO"><span class="flag-label">AO</span></button>
+        <span class="lang-divider">|</span>
+        <button class="lang-btn" onclick="setLang('br')" id="dest-br"><img class="flag-img" src="imgs/flags/br.svg" alt="BR"><span class="flag-label">BR</span></button>
+        <span class="lang-divider">|</span>
+        <button class="lang-btn" onclick="setLang('eu')" id="dest-eu"><img class="flag-img" src="imgs/flags/eu.svg" alt="EU"><span class="flag-label">EU</span></button>
+      </div>
       <div class="pricing-grid">
         <div class="pricing-card">
           <p class="pricing-title">SSP3-Forte · 1 bottle</p>
@@ -1189,7 +1146,16 @@
     <div data-lang="br">
   <p class="section-label">Preços</p>
   <h2>Escolha a sua opção</h2>
-  <p class="section-lead">Entrega no Brasil. Pagamento por depósito bancário (PIX ou TED). Preço em reais sujeito a variação cambial — confirmamos o valor actualizado no contacto.</p>
+  <p class="section-lead">Entrega no Brasil. Pagamento exclusivamente por transferência bancária TED. Preço em reais sujeito a variação cambial — confirmamos o valor actualizado no contacto.</p>
+      <div class="dest-flags">
+        <button class="lang-btn" onclick="setLang('pt')" id="dest-pt"><img class="flag-img" src="imgs/flags/pt.svg" alt="PT"><span class="flag-label">PT</span></button>
+        <span class="lang-divider">|</span>
+        <button class="lang-btn" onclick="setLang('ao')" id="dest-ao"><img class="flag-img" src="imgs/flags/ao.svg" alt="AO"><span class="flag-label">AO</span></button>
+        <span class="lang-divider">|</span>
+        <button class="lang-btn" onclick="setLang('br')" id="dest-br"><img class="flag-img" src="imgs/flags/br.svg" alt="BR"><span class="flag-label">BR</span></button>
+        <span class="lang-divider">|</span>
+        <button class="lang-btn" onclick="setLang('eu')" id="dest-eu"><img class="flag-img" src="imgs/flags/eu.svg" alt="EU"><span class="flag-label">EU</span></button>
+      </div>
   <div class="pricing-grid">
     <div class="pricing-card">
       <p class="pricing-title">SSP3-Forte · 1 frasco</p>
@@ -1228,7 +1194,7 @@
     <div data-lang="br">
       <p class="section-label">Pedido</p>
       <h2>Faça o pedido</h2>
-      <p class="section-lead">Preencha o formulário e entraremos em contacto em até 24 horas para confirmar e enviar os dados bancários para pagamento via PIX ou TED.</p>
+      <p class="section-lead">Preencha o formulário e entraremos em contacto em até 24 horas para confirmar e enviar os dados bancários para pagamento via transferência TED.</p>
     </div>
 
     <form class="order-form" id="orderForm" onsubmit="submitOrder(event)">
@@ -1347,7 +1313,6 @@
     <div class="success-msg" id="successMsg">
       <span data-lang-inline="pt">✓ Pedido recebido! Entraremos em contacto em breve para confirmar os detalhes e o pagamento. Obrigado!</span>
       <span data-lang-inline="en">✓ Order received! We will be in touch shortly to confirm the details and payment. Thank you!</span>
-      <span data-lang-inline="br">✓ Pedido recebido! Entraremos em contato em breve para confirmar os detalhes e os dados bancários para pagamento. Obrigado!</span>
     </div>
 
   </div>
@@ -1367,9 +1332,9 @@
           <div class="faq-item"><p class="faq-q">Tem efeitos secundários?</p><p class="faq-a">O SSP3-Forte é formulado com ingredientes naturais e geralmente bem tolerado. Não foram reportados efeitos secundários significativos.</p></div>
         </div>
         <div>
-          <div class="faq-item"><p class="faq-q">Fazem envios para o Europa?</p><p class="faq-a">Sim. Enviamos para Portugal, Brasil, Europa. O prazo e custo de envio são confirmados na resposta ao pedido.</p></div>
+          <div class="faq-item"><p class="faq-q">Fazem envios para Angola, Brasil, Europa?</p><p class="faq-a">Sim. Enviamos para Portugal, Angola, Brasil e Europa. O prazo e custo de envio são confirmados na resposta ao pedido.</p></div>
           <div class="faq-item"><p class="faq-q">Como é feito o pagamento?</p><p class="faq-a">Após receber o pedido, a Naturalfarma entra em contacto com os detalhes de pagamento disponíveis para o seu país.</p></div>
-          <div class="faq-item"><p class="faq-q">Posso fazer o pedido em reais ou libras?</p><p class="faq-a">Sim. Mencione a sua moeda preferida no campo de notas do formulário e indicaremos o equivalente actualizado.</p></div>
+          <div class="faq-item"><p class="faq-q">Posso fazer o pedido em reais?</p><p class="faq-a">Sim. Mencione reais no campo de notas do formulário e indicaremos o equivalente actualizado.</p></div>
         </div>
       </div>
       <div class="blog-cta">
@@ -1388,9 +1353,9 @@
           <div class="faq-item"><p class="faq-q">Are there any side effects?</p><p class="faq-a">SSP3-Forte is formulated with natural ingredients and is generally well tolerated. No significant side effects have been reported.</p></div>
         </div>
         <div>
-          <div class="faq-item"><p class="faq-q">Do you ship to the Europe?</p><p class="faq-a">Yes. We ship to Portugal, Brazil, the Europe. Shipping time and cost are confirmed in the order reply.</p></div>
+          <div class="faq-item"><p class="faq-q">Do you ship to Europe?</p><p class="faq-a">Yes. We ship to Portugal, Angola, Brazil, Europe. Shipping time and cost are confirmed in the order reply.</p></div>
           <div class="faq-item"><p class="faq-q">How do I pay?</p><p class="faq-a">After receiving your order, Naturalfarma will get in touch with the payment options available for your country.</p></div>
-          <div class="faq-item"><p class="faq-q">Can I pay in GBP or BRL?</p><p class="faq-a">Yes. Mention your preferred currency in the notes field of the form and we will provide the current equivalent.</p></div>
+          <div class="faq-item"><p class="faq-q">Can I pay in BRL?</p><p class="faq-a">Yes. Mention BRL in the notes field of the form and we will provide the current equivalent.</p></div>
         </div>
       </div>
       <div class="blog-cta">
@@ -1399,25 +1364,7 @@
       </div>
     </div>
 
-    <div data-lang="br">
-  <p class="section-label">Perguntas frequentes</p>
-  <h2>Tem dúvidas?</h2>
-  <div class="faq-grid">
-    <div>
-      <div class="faq-item"><p class="faq-q">Em quanto tempo verei resultados?</p><p class="faq-a">A maioria dos usuários relata melhorias a partir da 6ª semana de uso contínuo. Para resultados completos, recomendamos 3 meses de tratamento.</p></div>
-      <div class="faq-item"><p class="faq-q">Tem efeitos colaterais?</p><p class="faq-a">O SSP3-Forte é formulado com ingredientes naturais e geralmente bem tolerado. Não foram relatados efeitos colaterais significativos.</p></div>
-    </div>
-    <div>
-      <div class="faq-item"><p class="faq-q">Como é feito o pagamento?</p><p class="faq-a">Para o Brasil, o pagamento é feito por depósito bancário (PIX ou TED). Após receber o pedido, enviamos os dados bancários.</p></div>
-      <div class="faq-item"><p class="faq-q">Qual o prazo de entrega para o Brasil?</p><p class="faq-a">O envio é feito da Europa. O prazo estimado é de 10 a 20 dias úteis, confirmado no momento da encomenda.</p></div>
-      <div class="faq-item"><p class="faq-q">Posso pagar em reais?</p><p class="faq-a">Sim. Para o Brasil, o pagamento é sempre em reais (R$). O valor exacto é confirmado no contacto após o pedido.</p></div>
-    </div>
-  </div>
-  <div class="blog-cta">
-    <p>Quer saber mais sobre saúde prostática? Visite o nosso <a href="https://problemasnaprostata.blogspot.com/" target="_blank" style="font-weight:700;color:var(--green-deep);text-decoration:underline;">blog</a> com artigos, depoimentos e respostas às perguntas mais frequentes.</p>
-    <a href="https://problemasnaprostata.blogspot.com/" target="_blank" class="btn-ghost">Visitar o Blog →</a>
-  </div>
-</div>
+    
 
   </div>
 </section>
@@ -1440,21 +1387,7 @@
         <li>Costello LC, Franklin RB. Zinc in Prostate Health and Disease: A Mini Review. <em>Front Biosci.</em> 2011.</li>
       </ol>
     </div>
-    <div data-lang="br">
-      <p class="section-label">Referências</p>
-      <ol class="references-list">
-        <li>Bent S, Kane C, Shinohara K, et al. Saw Palmetto for Benign Prostatic Hyperplasia. <em>N Engl J Med.</em> 2006;354(6):557-566. DOI: 10.1056/NEJMoa053085</li>
-        <li>Wilt TJ, Ishani A, Stark G, MacDonald R, Mulrow C, Lau J. Pygeum africanum for benign prostatic hyperplasia: a systematic review and quantitative meta-analysis. <em>Am J Med.</em> 2000;109(8):654-664. DOI: 10.1016/S0002-9343(00)00604-5</li>
-        <li>Breza J, Dzurný O, Borowka A, et al. Comparison of once-daily and twice-daily dosage forms of Pygeum africanum extract in patients with benign prostatic hyperplasia. <em>Urology.</em> 1998. DOI: 10.1016/S0090-4295(99)00147-8</li>
-        <li>Berges RR, Windeler J, Trampisch HJ, Senge T. β-Sitosterol for the treatment of benign prostatic hyperplasia: a systematic review. <em>Br J Urol.</em> 1999. DOI: 10.1046/j.1464-410X.1999.00026.x</li>
-        <li>Berges RR, Kassen A, Senge T. Randomized, placebo-controlled, double-blind clinical trial of β-sitosterol in patients with benign prostatic hyperplasia. <em>Lancet.</em> 1995. DOI: 10.1016/S0140-6736(95)91085-9</li>
-        <li>Berges RR, Gerber E, Pientka L, Senge T. Treatment of symptomatic benign prostatic hyperplasia with β-sitosterol: an 18-month follow-up. <em>BJU Int.</em> 2000. DOI: 10.1046/j.1464-410X.2000.00672.x</li>
-        <li>Debruyne F, Koch G, Boyle P, et al. Comparison of a combined Sabal-Urtica extract with finasteride in men with benign prostatic hyperplasia. <em>BJU Int.</em> 2000. DOI: 10.1046/j.1464-410X.2000.00776.x</li>
-        <li>Safarinejad MR. Urtica dioica for treatment of benign prostatic hyperplasia: a prospective, randomized, double-blind, placebo-controlled, crossover study. <em>J Herb Pharmacother.</em> 2005. DOI: 10.1080/J157v05n04_01</li>
-        <li>Lichius JJ, Muth C. Inhibiting effects of Urtica dioica root extracts on experimentally induced prostatic hyperplasia in mice. <em>Planta Med.</em> 1997. DOI: 10.1055/s-2000-11117</li>
-        <li>Costello LC, Franklin RB. Zinc in Prostate Health and Disease: A Mini Review. <em>Front Biosci.</em> 2011.</li>
-      </ol>
-    </div>
+    
     <div data-lang="en">
       <p class="section-label">References</p>
       <ol class="references-list">
@@ -1491,8 +1424,8 @@
     </a>
   </div>
   <p class="footer-copy">
-    <span data-lang-inline="pt">© 2024 Naturalfarma. Distribuidor exclusivo para países de língua portuguesa, Europa. O SSP3-Forte é um suplemento alimentar; não substitui aconselhamento médico.</span>
-    <span data-lang-inline="en">© 2024 Naturalfarma. Exclusive distributor for Portuguese-speaking countries, Europe. SSP3-Forte is a dietary supplement; it does not replace medical advice.</span>
+    <span data-lang-inline="pt">© 2024 Naturalfarma. Distribuidor exclusivo para Portugal, Angola, Brasil e Europa. O SSP3-Forte é um suplemento alimentar; não substitui aconselhamento médico.</span>
+    <span data-lang-inline="en">© 2024 Naturalfarma. Exclusive distributor for Portugal, Angola, Brazil and Europe. SSP3-Forte is a dietary supplement; it does not replace medical advice.</span>
   </p>
 </footer>
 
@@ -1501,11 +1434,17 @@ const PRICES = { '1x': 29.95, '3x': 80.86, '1x-br': 165, '3x-br': 445 };
 const SHIPPING = { PT: 4.99, default: 9.00 };
 const CURRENCY = { '1x': '€', '3x': '€', '1x-br': 'R$', '3x-br': 'R$' };
 
-function setLang(lang) {
+let currentRegion = 'pt';
+function setLang(region) {
+  currentRegion = region;
+  const lang = region === 'eu' ? 'en' : region === 'br' ? 'br' : 'pt';
   document.body.className = 'lang-' + lang;
-  document.getElementById('btn-pt').classList.toggle('active', lang === 'pt');
-  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
-  document.getElementById('btn-br').classList.toggle('active', lang === 'br');
+  ['pt','ao','br','eu'].forEach(r => {
+    const btn = document.getElementById('btn-' + r);
+    if (btn) btn.classList.toggle('active', r === region);
+    const dest = document.getElementById('dest-' + r);
+    if (dest) dest.classList.toggle('active', r === region);
+  });
   document.documentElement.lang = lang === 'en' ? 'en' : 'pt';
   const anchorId = lang === 'en' ? 'order' : 'encomenda';
   const section = document.getElementById('encomenda') || document.getElementById('order');
@@ -1555,7 +1494,7 @@ function submitOrder(e) {
   const city    = data.get('city');
   const state   = data.get('state');
   const notes   = data.get('notes');
-  const isBR = document.body.classList.contains('lang-br');
+  const isBR = currentRegion === 'br';
 
   const productPrice  = PRICES[product] || 0;
   const shippingPrice = product.endsWith('-br') ? 0 : (country === 'PT' ? SHIPPING.PT : SHIPPING.default);
@@ -1585,8 +1524,10 @@ function submitOrder(e) {
   ];
 
   const body = lines.map(encodeURIComponent).join('%0A');
-  const subject = encodeURIComponent(`Pedido SSP3-Forte - ${name}`);
-  window.location.href = `mailto:prostatasaudavel@gmail.com?subject=${subject}&body=${body}`;
+  const regionLabel = {'pt':'PT','ao':'AO','br':'BR','eu':'EU'}[currentRegion] || currentRegion.toUpperCase();
+  const subject = encodeURIComponent(`Pedido SSP3-Forte [${regionLabel}] - ${name}`);
+  const toEmail = (currentRegion === 'eu') ? 'orders@ssp3forte.com' : 'encomendas@ssp3forte.com';
+  window.location.href = `mailto:${toEmail}?subject=${subject}&body=${body}`;
   document.getElementById('successMsg').style.display = 'block';
   form.style.opacity = '0.4';
   form.style.pointerEvents = 'none';
