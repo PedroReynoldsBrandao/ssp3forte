@@ -1464,58 +1464,62 @@ function updateTotal() {
   calc.classList.add('visible');
 }
 
-function submitOrder(e) {
+// ── REPLACE THIS URL after deploying the Cloudflare Worker ──────────────────
+const WORKER_URL = 'https://ssp3forte-orders.REPLACE_WITH_YOUR_SUBDOMAIN.workers.dev';
+
+async function submitOrder(e) {
   e.preventDefault();
   const form = document.getElementById('orderForm');
-  const data = new FormData(form);
-  const name    = data.get('name');
-  const email   = data.get('email');
-  const phone   = data.get('phone');
-  const country = data.get('country');
-  const dob     = data.get('dob');
-  const product = data.get('product');
-  const address = data.get('address');
-  const postal  = data.get('postal');
-  const city    = data.get('city');
-  const state   = data.get('state');
-  const notes   = data.get('notes');
-  const isBR = document.body.classList.contains('brl-pricing');
+  const fd   = new FormData(form);
+  const btn  = form.querySelector('.btn-submit');
 
-  const productPrice  = PRICES[product] || 0;
-  const shippingPrice = product.endsWith('-br') ? 0 : (country === 'PT' ? SHIPPING.PT : SHIPPING.default);
-  const curr = CURRENCY[product] || '€';
-  const fmt = (v, c) => c === '€' ? '€' + v.toFixed(2) : 'R$' + Math.round(v);
-  const totalStr = product.endsWith('-br') ? 'a confirmar' : fmt(productPrice + shippingPrice, curr);
-  const shippingStr = product.endsWith('-br') ? 'a confirmar' : fmt(shippingPrice, curr);
+  const payload = {
+    name:    fd.get('name'),
+    email:   fd.get('email'),
+    phone:   fd.get('phone'),
+    country: fd.get('country'),
+    dob:     fd.get('dob'),
+    product: fd.get('product'),
+    address: fd.get('address'),
+    postal:  fd.get('postal'),
+    city:    fd.get('city'),
+    state:   fd.get('state'),
+    notes:   fd.get('notes'),
+    lang:    currentRegion === 'eu' ? 'en' : 'pt',
+  };
 
-  const lines = [
-    isBR ? 'Novo pedido SSP3-Forte (Brasil)' : 'Novo pedido SSP3-Forte',
-    '',
-    `Nome: ${name}`,
-    `Email: ${email}`,
-    `Telemóvel/Celular: ${phone}`,
-    `Data de Nascimento: ${dob}`,
-    `País: ${country}`,
-    `Produto: ${product}`,
-    `Frete/Envio: ${shippingStr}`,
-    `Total: ${totalStr}`,
-    '',
-    `Endereço: ${address}`,
-    `CEP/Postal: ${postal}`,
-    `Cidade: ${city}`,
-    `Localidade/Estado: ${state}`,
-    '',
-    `Notas: ${notes}`,
-  ];
+  // loading state
+  btn.disabled = true;
+  btn.style.opacity = '0.6';
 
-  const body = lines.map(encodeURIComponent).join('%0A');
-  const regionLabel = {'pt':'PT','ao':'AO','br':'BR','eu':'EU'}[currentRegion] || currentRegion.toUpperCase();
-  const subject = encodeURIComponent(`Pedido SSP3-Forte [${regionLabel}] - ${name}`);
-  const toEmail = (currentRegion === 'eu') ? 'orders@ssp3forte.com' : 'encomendas@ssp3forte.com';
-  window.location.href = `mailto:${toEmail}?subject=${subject}&body=${body}`;
-  document.getElementById('successMsg').style.display = 'block';
-  form.style.opacity = '0.4';
-  form.style.pointerEvents = 'none';
+  try {
+    const res  = await fetch(WORKER_URL, {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify(payload),
+    });
+    const json = await res.json();
+    if (!res.ok || !json.success) throw new Error(json.error || 'server error');
+
+    // success
+    const msg = document.getElementById('successMsg');
+    const ptSpan = msg.querySelector('[data-lang-inline="pt"]');
+    const enSpan = msg.querySelector('[data-lang-inline="en"]');
+    if (ptSpan) ptSpan.textContent =
+      `✓ Pedido n.º ${json.orderNum} recebido! Enviámos uma confirmação para ${payload.email}. Obrigado!`;
+    if (enSpan) enSpan.textContent =
+      `✓ Order no. ${json.orderNum} received! We sent a confirmation to ${payload.email}. Thank you!`;
+    msg.style.display = 'block';
+    form.style.opacity = '0.4';
+    form.style.pointerEvents = 'none';
+  } catch (err) {
+    btn.disabled = false;
+    btn.style.opacity = '1';
+    const isEN = currentRegion === 'eu';
+    alert(isEN
+      ? 'Error sending order. Please try again or email orders@ssp3forte.com'
+      : 'Erro ao enviar pedido. Tente novamente ou contacte encomendas@ssp3forte.com');
+  }
 }
 
 // LIGHTBOX

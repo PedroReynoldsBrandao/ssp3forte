@@ -1,0 +1,19 @@
+name = "ssp3forte-orders"
+main = "worker.js"
+compatibility_date = "2024-09-23"
+
+# KV namespace for daily order counter
+# After running `wrangler kv namespace create ORDER_COUNTER`,
+# paste the returned id below.
+kv_namespaces = [
+  { binding = "ORDER_COUNTER", id = "REPLACE_WITH_KV_NAMESPACE_ID" }
+]
+
+# RESEND_API_KEY is a secret — do NOT put it here.
+# Add it with: wrangler secret put RESEND_API_KEY
+
+# Optional: expose the worker at ssp3forte.com/api/order
+# (requires the zone to be on the same Cloudflare account)
+# [[routes]]
+# pattern = "ssp3forte.com/api/order"
+# zone_name = "ssp3forte.com"
