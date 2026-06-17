@@ -83,12 +83,7 @@
   body.lang-en [data-lang="en"] { display: block; }
   body.lang-pt [data-lang-inline="en"] { display: none; }
   body.lang-en [data-lang-inline="pt"] { display: none; }
-  body.lang-br [data-lang="pt"] { display: block; }
-  body.lang-br [data-lang="br"] { display: block; }
-  body.lang-br [data-lang="en"] { display: none; }
-  body.lang-br [data-lang-inline="en"] { display: none; }
-  body.lang-br [data-lang-inline="pt"] { display: inline; }
-  body.lang-br .pricing-eur { display: none; }
+
   [data-lang-inline] { display: inline; }
 
   /* HERO */
@@ -718,16 +713,27 @@
   /* INLINE PRODUCT IMAGE (mobile only) */
   .hero-inline-img { display: none; }
 
-  /* DEST FLAGS IN PRICING */
-  .dest-flags {
-    display: flex;
+  /* BRL PRICING TOGGLE */
+  .pricing-brl-block { display: none; }
+  body.brl-pricing .pricing-eur { display: none !important; }
+  body.brl-pricing .pricing-brl-block { display: block; }
+  .brl-toggle {
+    display: inline-flex;
     align-items: center;
-    gap: 0;
+    gap: 8px;
+    cursor: pointer;
     margin-bottom: 1.75rem;
-    padding: 0.75rem 0;
-    border-bottom: 1px solid var(--border);
+    padding: 8px 14px;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    font-size: 0.88rem;
+    color: var(--text-mid);
+    user-select: none;
+    transition: border-color 0.15s;
   }
-  .dest-flags .lang-btn { padding: 2px 8px; }
+  .brl-toggle:hover { border-color: var(--green-light); }
+  .brl-toggle input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; accent-color: var(--green-mid); }
+  .brl-toggle .flag-img { width: 24px; height: 17px; border-radius: 2px; border: 1px solid rgba(0,0,0,0.1); }
 
   /* RESPONSIVE */
   @media (max-width: 768px) {
@@ -761,10 +767,6 @@
 
 <div class="lang-bar">
   <button class="lang-btn active" onclick="setLang('pt')" id="btn-pt"><img class="flag-img" src="imgs/flags/pt.svg" alt="PT"><span class="flag-label">PT</span></button>
-  <span class="lang-divider">|</span>
-  <button class="lang-btn" id="btn-ao" onclick="setLang('ao')"><img class="flag-img" src="imgs/flags/ao.svg" alt="AO"><span class="flag-label">AO</span></button>
-  <span class="lang-divider">|</span>
-  <button class="lang-btn" id="btn-br" onclick="setLang('br')"><img class="flag-img" src="imgs/flags/br.svg" alt="BR"><span class="flag-label">BR</span></button>
   <span class="lang-divider">|</span>
   <button class="lang-btn" onclick="setLang('eu')" id="btn-eu"><img class="flag-img" src="imgs/flags/eu.svg" alt="EU"><span class="flag-label">EU</span></button>
 </div>
@@ -1087,15 +1089,7 @@
       <p class="section-label">Preços</p>
       <h2>Escolha a sua opção</h2>
       <p class="section-lead">Envio para Portugal, Angola, Brasil, Europa. Preços em euros; para pagamento em reais, contacte-nos no formulário abaixo.</p>
-      <div class="dest-flags">
-        <button class="lang-btn" onclick="setLang('pt')" id="dest-pt"><img class="flag-img" src="imgs/flags/pt.svg" alt="PT"><span class="flag-label">PT</span></button>
-        <span class="lang-divider">|</span>
-        <button class="lang-btn" onclick="setLang('ao')" id="dest-ao"><img class="flag-img" src="imgs/flags/ao.svg" alt="AO"><span class="flag-label">AO</span></button>
-        <span class="lang-divider">|</span>
-        <button class="lang-btn" onclick="setLang('br')" id="dest-br"><img class="flag-img" src="imgs/flags/br.svg" alt="BR"><span class="flag-label">BR</span></button>
-        <span class="lang-divider">|</span>
-        <button class="lang-btn" onclick="setLang('eu')" id="dest-eu"><img class="flag-img" src="imgs/flags/eu.svg" alt="EU"><span class="flag-label">EU</span></button>
-      </div>
+      
       <div class="pricing-grid">
         <div class="pricing-card">
           <p class="pricing-title">SSP3-Forte · 1 frasco</p>
@@ -1118,15 +1112,11 @@
       <p class="section-label">Pricing</p>
       <h2>Choose your option</h2>
       <p class="section-lead">Delivery to Portugal, Angola, Brazil, Europe. Prices in euros; for payment in BRL contact us via the form below.</p>
-      <div class="dest-flags">
-        <button class="lang-btn" onclick="setLang('pt')" id="dest-pt"><img class="flag-img" src="imgs/flags/pt.svg" alt="PT"><span class="flag-label">PT</span></button>
-        <span class="lang-divider">|</span>
-        <button class="lang-btn" onclick="setLang('ao')" id="dest-ao"><img class="flag-img" src="imgs/flags/ao.svg" alt="AO"><span class="flag-label">AO</span></button>
-        <span class="lang-divider">|</span>
-        <button class="lang-btn" onclick="setLang('br')" id="dest-br"><img class="flag-img" src="imgs/flags/br.svg" alt="BR"><span class="flag-label">BR</span></button>
-        <span class="lang-divider">|</span>
-        <button class="lang-btn" onclick="setLang('eu')" id="dest-eu"><img class="flag-img" src="imgs/flags/eu.svg" alt="EU"><span class="flag-label">EU</span></button>
-      </div>
+      <label class="brl-toggle">
+        <input type="checkbox" id="brlToggleEN" onchange="toggleBRL(this.checked)">
+        <img class="flag-img" src="imgs/flags/br.svg" alt="BR">
+        <span>Show prices in BRL (R$)</span>
+      </label>
       <div class="pricing-grid">
         <div class="pricing-card">
           <p class="pricing-title">SSP3-Forte · 1 bottle</p>
@@ -1145,19 +1135,11 @@
       </div>
     </div>
 
-    <div data-lang="br">
+    <div class="pricing-brl-block">
   <p class="section-label">Preços</p>
   <h2>Escolha a sua opção</h2>
   <p class="section-lead">Entrega no Brasil. Pagamento exclusivamente por transferência bancária TED. Preço em reais sujeito a variação cambial — confirmamos o valor actualizado no contacto.</p>
-      <div class="dest-flags">
-        <button class="lang-btn" onclick="setLang('pt')" id="dest-pt"><img class="flag-img" src="imgs/flags/pt.svg" alt="PT"><span class="flag-label">PT</span></button>
-        <span class="lang-divider">|</span>
-        <button class="lang-btn" onclick="setLang('ao')" id="dest-ao"><img class="flag-img" src="imgs/flags/ao.svg" alt="AO"><span class="flag-label">AO</span></button>
-        <span class="lang-divider">|</span>
-        <button class="lang-btn" onclick="setLang('br')" id="dest-br"><img class="flag-img" src="imgs/flags/br.svg" alt="BR"><span class="flag-label">BR</span></button>
-        <span class="lang-divider">|</span>
-        <button class="lang-btn" onclick="setLang('eu')" id="dest-eu"><img class="flag-img" src="imgs/flags/eu.svg" alt="EU"><span class="flag-label">EU</span></button>
-      </div>
+      
   <div class="pricing-grid">
     <div class="pricing-card">
       <p class="pricing-title">SSP3-Forte · 1 frasco</p>
@@ -1193,11 +1175,7 @@
       <h2>Place your order</h2>
       <p class="section-lead">Fill in the form and we will contact you within 24 hours to confirm and send payment details.</p>
     </div>
-    <div data-lang="br">
-      <p class="section-label">Pedido</p>
-      <h2>Faça o pedido</h2>
-      <p class="section-lead">Preencha o formulário e entraremos em contacto em até 24 horas para confirmar e enviar os dados bancários para pagamento via transferência TED.</p>
-    </div>
+    
 
     <form class="order-form" id="orderForm" onsubmit="submitOrder(event)">
       <div class="form-row">
@@ -1439,19 +1417,29 @@ const CURRENCY = { '1x': '€', '3x': '€', '1x-br': 'R$', '3x-br': 'R$' };
 let currentRegion = 'pt';
 function setLang(region) {
   currentRegion = region;
-  const lang = region === 'eu' ? 'en' : region === 'br' ? 'br' : 'pt';
+  const lang = region === 'eu' ? 'en' : 'pt';
   document.body.className = 'lang-' + lang;
-  ['pt','ao','br','eu'].forEach(r => {
+  ['pt','eu'].forEach(r => {
     const btn = document.getElementById('btn-' + r);
     if (btn) btn.classList.toggle('active', r === region);
-    const dest = document.getElementById('dest-' + r);
-    if (dest) dest.classList.toggle('active', r === region);
   });
+  // keep BRL toggle state in sync across lang switch
+  const brlOn = document.getElementById('brlTogglePT') || document.getElementById('brlToggleEN');
+  if (brlOn) {
+    const checked = brlOn.checked;
+    ['brlTogglePT','brlToggleEN'].forEach(id => { const el = document.getElementById(id); if(el) el.checked = checked; });
+  }
   document.documentElement.lang = lang === 'en' ? 'en' : 'pt';
   const anchorId = lang === 'en' ? 'order' : 'encomenda';
   const section = document.getElementById('encomenda') || document.getElementById('order');
   if (section) section.id = anchorId;
   updateTotal();
+}
+
+function toggleBRL(checked) {
+  document.body.classList.toggle('brl-pricing', checked);
+  // sync both toggles
+  ['brlTogglePT','brlToggleEN'].forEach(id => { const el = document.getElementById(id); if(el) el.checked = checked; });
 }
 
 function selectProduct(val) {
@@ -1496,7 +1484,7 @@ function submitOrder(e) {
   const city    = data.get('city');
   const state   = data.get('state');
   const notes   = data.get('notes');
-  const isBR = currentRegion === 'br';
+  const isBR = document.body.classList.contains('brl-pricing');
 
   const productPrice  = PRICES[product] || 0;
   const shippingPrice = product.endsWith('-br') ? 0 : (country === 'PT' ? SHIPPING.PT : SHIPPING.default);
