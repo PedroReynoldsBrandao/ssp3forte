@@ -732,6 +732,7 @@
     transition: border-color 0.15s;
   }
   .brl-toggle:hover { border-color: var(--green-light); }
+  .lang-en .brl-toggle { display: none; }
   .brl-toggle input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; accent-color: var(--green-mid); }
   .brl-toggle .flag-img { width: 24px; height: 17px; border-radius: 2px; border: 1px solid rgba(0,0,0,0.1); }
 
@@ -1088,12 +1089,12 @@
     <div data-lang="pt">
       <p class="section-label">Preços</p>
       <h2>Escolha a sua opção</h2>
-      <p class="section-lead">Envio para Portugal, Angola, Brasil, Europa. Preços em euros; para pagamento em reais, contacte-nos no formulário abaixo.</p>
+      <p class="section-lead">Envio para Portugal, Brasil, Europa, Angola e Reino Unido. Preços em euros; para pagamento em reais, contacte-nos no formulário abaixo.</p>
     </div>
     <div data-lang="en">
       <p class="section-label">Pricing</p>
       <h2>Choose your option</h2>
-      <p class="section-lead">Delivery to Portugal, Angola, Brazil, Europe. Prices in euros; for payment in BRL contact us via the form below.</p>
+      <p class="section-lead">Delivery to Portugal, Brazil, Europe, Angola and UK. Prices in euros; for payment in BRL contact us via the form below.</p>
     </div>
 
     <label class="brl-toggle">
@@ -1441,6 +1442,13 @@ function setLang(region) {
   const anchorId = lang === 'en' ? 'order' : 'encomenda';
   const section = document.getElementById('encomenda') || document.getElementById('order');
   if (section) section.id = anchorId;
+  if (region === 'eu') {
+    const toggle = document.getElementById('brlToggle');
+    if (toggle && toggle.checked) {
+      toggle.checked = false;
+      document.body.classList.remove('brl-pricing');
+    }
+  }
   const countryInput = document.querySelector('[name="country"]');
   if (countryInput && !document.body.classList.contains('brl-pricing')) {
     countryInput.value = region === 'eu' ? '' : 'Portugal';
