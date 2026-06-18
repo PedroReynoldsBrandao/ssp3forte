@@ -1464,55 +1464,53 @@ function updateTotal() {
   calc.classList.add('visible');
 }
 
-function submitOrder(e) {
+async function submitOrder(e) {
   e.preventDefault();
   const form = document.getElementById('orderForm');
   const fd   = new FormData(form);
 
-  const name    = fd.get('name')    || '';
-  const email   = fd.get('email')   || '';
-  const phone   = fd.get('phone')   || '';
-  const dob     = fd.get('dob')     || '';
-  const country = fd.get('country') || '';
-  const product = fd.get('product') || '';
-  const address = fd.get('address') || '';
-  const postal  = fd.get('postal')  || '';
-  const city    = fd.get('city')    || '';
-  const state   = fd.get('state')   || '';
-  const notes   = fd.get('notes')   || '';
+  const lang = document.body.classList.contains('lang-en') ? 'en' : 'pt';
 
-  const isBR = product.endsWith('-br');
-  const toEmail = isBR || document.body.classList.contains('lang-br')
-    ? 'encomendas@ssp3forte.com'
-    : document.body.classList.contains('lang-en')
-      ? 'orders@ssp3forte.com'
-      : 'encomendas@ssp3forte.com';
+  const payload = {
+    lang,
+    name:    fd.get('name')    || '',
+    email:   fd.get('email')   || '',
+    phone:   fd.get('phone')   || '',
+    dob:     fd.get('dob')     || '',
+    country: fd.get('country') || '',
+    product: fd.get('product') || '',
+    address: fd.get('address') || '',
+    postal:  fd.get('postal')  || '',
+    city:    fd.get('city')    || '',
+    state:   fd.get('state')   || '',
+    notes:   fd.get('notes')   || '',
+  };
 
-  const lines = [
-    isBR ? 'Novo pedido SSP3-Forte (Brasil)' : 'Novo pedido SSP3-Forte',
-    '',
-    `Nome: ${name}`,
-    `Email: ${email}`,
-    `Telemóvel/Celular: ${phone}`,
-    `Data de Nascimento: ${dob}`,
-    `País: ${country}`,
-    `Produto: ${product}`,
-    '',
-    `Endereço: ${address}`,
-    `CEP/Postal: ${postal}`,
-    `Cidade: ${city}`,
-    `Estado/Localidade: ${state}`,
-    '',
-    `Notas: ${notes}`,
-  ];
+  const btn = form.querySelector('button[type=submit]');
+  btn.disabled = true;
+  btn.textContent = lang === 'en' ? 'Sending…' : 'A enviar…';
 
-  const subject = encodeURIComponent(`Pedido SSP3-Forte - ${name}`);
-  const body    = encodeURIComponent(lines.join('\n'));
-  window.location.href = `mailto:${toEmail}?subject=${subject}&body=${body}`;
+  try {
+    const res = await fetch('https://ssp3forte-orders.leptix.workers.dev', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || res.status);
 
-  document.getElementById('successMsg').style.display = 'block';
-  form.style.opacity = '0.4';
-  form.style.pointerEvents = 'none';
+    document.getElementById('successMsg').style.display = 'block';
+    form.style.opacity = '0.4';
+    form.style.pointerEvents = 'none';
+  } catch (err) {
+    console.error(err);
+    const msg = lang === 'en'
+      ? 'Error sending order. Please try again or contact orders@ssp3forte.com'
+      : 'Erro ao enviar o pedido. Tente novamente ou contacte encomendas@ssp3forte.com';
+    alert(msg);
+    btn.disabled = false;
+    btn.textContent = lang === 'en' ? 'Send order' : 'Enviar pedido';
+  }
 }
 
 // LIGHTBOX
