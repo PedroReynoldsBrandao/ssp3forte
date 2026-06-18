@@ -32,12 +32,18 @@ function countryCode(country, lang) {
 }
 
 // ── Order number generator ───────────────────────────────────────────────────
-// Format: YYYYMMDD-HHMM SSP3-Forte(CC)  e.g. 20260618-1530 SSP3-Forte(PT)
-function generateOrderNumber(cc) {
-  const now  = new Date();
-  const date = now.toISOString().slice(0, 10).replace(/-/g, '');
-  const hhmm = now.toISOString().slice(11, 16).replace(':', '');
-  return `${date}-${hhmm} SSP3-Forte(${cc})`;
+// Format: YYYYMMDDnn SSP3-Forte(CC)  e.g. 2026061801 SSP3-Forte(PT)
+async function generateOrderNumber(cc) {
+  const date = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+  try {
+    const res  = await fetch(`https://api.counterapi.dev/v1/ssp3forte-orders/${date}/up`);
+    const data = await res.json();
+    const seq  = String(data.count).padStart(2, '0');
+    return `${date}${seq} SSP3-Forte(${cc})`;
+  } catch {
+    const seq = String(Math.floor(Math.random() * 90) + 10);
+    return `${date}${seq} SSP3-Forte(${cc})`;
+  }
 }
 
 // ── Shared email chrome ──────────────────────────────────────────────────────
@@ -257,7 +263,7 @@ export default {
 
     const isEN    = d.lang === 'en';
     const cc      = countryCode(d.country, d.lang);
-    const orderNum = generateOrderNumber(cc);
+    const orderNum = await generateOrderNumber(cc);
     const from    = isEN ? 'orders@ssp3forte.com' : 'encomendas@ssp3forte.com';
     const subject = isEN
       ? `Your order no. ${orderNum}`
