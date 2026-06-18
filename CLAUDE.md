@@ -15,6 +15,8 @@ Single-page marketing website for **SSP3-Forte**, a natural prostate-health supp
 | `frasco.jpg` | Product photo used as favicon and hero image |
 | `imgs/` | Ingredient photos (numbered `01`–`08`), flags (`pt`, `gb`, `br`) |
 | `CNAME` | GitHub Pages custom domain (`ssp3forte.com`) |
+| `worker/worker.js` | Cloudflare Worker — handles order form submissions, sends emails via Resend |
+| `worker/wrangler.toml` | Wrangler config for deploying the Worker |
 
 ## Multilingual system
 
@@ -26,6 +28,8 @@ The site supports three language variants switched at runtime via CSS class on `
 | `lang-br` | Brazilian Portuguese | 🇧🇷 |
 | `lang-en` | English (Europe/international) | 🇬🇧 |
 
+Default language on page load is **Brazilian Portuguese** (`lang-br`).
+
 **Block-level content** uses `data-lang="pt"` / `"br"` / `"en"` on wrapper `<div>`s — only the active language's blocks are `display: block`.
 
 **Inline content** uses `data-lang-inline="pt"` / `"en"` — toggled with `display: inline` / `display: none`. BR shares inline text with PT (both show `data-lang-inline="pt"`).
@@ -36,9 +40,39 @@ When editing copy: every user-facing string must exist in all three variants. Ne
 
 | Context | Email |
 |---|---|
-| PT orders/contact | `encomendas@ssp3forte.com` |
-| EN/BR orders/contact | `orders@ssp3forte.com` |
-| Order form `mailto:` action | `prostatasaudavel@gmail.com` |
+| PT/BR orders/contact | `encomendas@ssp3forte.com` |
+| EN orders/contact | `orders@ssp3forte.com` |
+
+Both addresses route to `leptix@gmail.com` via email forwarding.
+
+## Order system (Cloudflare Worker)
+
+The order form POSTs JSON to the Cloudflare Worker at `https://ssp3forte-orders.leptix.workers.dev`.
+
+The Worker:
+1. Validates the payload and identifies the product
+2. Generates a sequential order number via [counterapi.dev](https://counterapi.dev) — format `YYYYMMDD01`, `02`… resets daily
+3. Sends a **confirmation email to the client** (branded, in their language)
+4. Sends an **internal notification** to `encomendas@ssp3forte.com` or `orders@ssp3forte.com` with a plain data table
+
+**Required Worker secret** (set via `wrangler secret put RESEND_API_KEY`):
+- `RESEND_API_KEY` — from [resend.com](https://resend.com) dashboard
+
+**To redeploy the Worker:**
+```
+cd worker
+npx wrangler deploy
+```
+
+**Country code logic** in order numbers:
+- `Brasil` / `Brazil` → `BR`
+- `Portugal` → `PT`
+- `Angola` → `AO`
+- EN lang, other → `EU`
+
+**Email routing:**
+- PT/BR orders → from/to `encomendas@ssp3forte.com`
+- EN orders → from/to `orders@ssp3forte.com`
 
 ## Design tokens (CSS variables)
 
@@ -62,19 +96,29 @@ Fonts loaded from Google Fonts: **Lora** (headings, serif) + **Source Sans 3** (
 4. Symptoms grid
 5. Ingredients list (with lightbox) + sticky callout
 6. Testimonials
-7. Pricing cards
-8. Order form (sends via `mailto:`)
-9. FAQ accordion
-10. Footer
+7. Pricing cards (EUR and BRL toggle)
+8. Order form (submits via Cloudflare Worker → Resend email)
+9. Blog redirect CTA
+10. FAQ accordion
+11. Footer
+
+## Order form behaviour
+
+- **Default country:** "Portugal" for PT/BR, empty for EN/EU
+- **BRL checkbox:** checking it sets country to "Brasil" and switches pricing to BRL; unchecking restores "Portugal"
+- **Shipping calc:** Portugal €4.99, other PT/BR countries €9.00, EN/EU and BR → "to confirm"
+- **Submit:** async fetch to Worker; shows success message on screen on success, alert with support email on failure
 
 ## Deployment
 
 Push to `main` on GitHub → GitHub Pages rebuilds automatically in ~30 s. No CI, no build step. The `CNAME` file must remain at repo root.
+
+Worker changes require a separate `npx wrangler deploy` from the `worker/` directory.
 
 ## Key conventions
 
 - All CSS lives inside a single `<style>` block in `<head>`.
 - JS lives in a `<script>` block at the bottom of `<body>`.
 - `font-size: 110%` on `html` and `font-size: 18px` on `body` set the baseline; don't shrink these.
-- Order buttons open a pre-filled `mailto:` — there is no backend.
 - Ingredient images use a click-to-zoom lightbox (`#lightbox`).
+- The `currentRegion` JS variable tracks `'pt'`, `'br'`, or `'eu'` — distinct from the `lang-*` body class.

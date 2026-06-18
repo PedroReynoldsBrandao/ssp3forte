@@ -3,12 +3,5 @@ main = "worker.js"
 compatibility_date = "2024-09-23"
 account_id = "a9669b5e19259718c3cad806c06c16a4"
 
-# KV namespace for daily order counter
-# After running `wrangler kv namespace create ORDER_COUNTER`,
-# paste the returned id below.
-[[kv_namespaces]]
-binding = "ORDER_COUNTER"
-id = "efcf50c6a59d45ad943b490fbef6a6fd"
-
 # RESEND_API_KEY is a secret — do NOT put it here.
 # Add it with: wrangler secret put RESEND_API_KEY
