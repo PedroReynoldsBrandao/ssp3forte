@@ -86,14 +86,14 @@ function addressBlock(d) {
 
 // ── PT / BR confirmation email ───────────────────────────────────────────────
 function buildEmailPT(d, orderNum, p) {
+  const isBR = d.product.endsWith('-br') || (d.country || '').toLowerCase().includes('brasil');
+  const addrLabel = isBR ? 'Endereço de entrega' : 'Morada para entrega';
   return `<!DOCTYPE html><html><body style="margin:0;padding:0;background:#f5f5f0;font-family:Georgia,serif;">
 <div style="max-width:600px;margin:32px auto;background:#fff;">
   ${headerHTML}
   <div style="padding:32px;">
     <p style="margin-top:0;">Caro ${d.name},</p>
-    <p>Obrigado pelo seu pedido no site <a href="https://www.ssp3forte.com" style="color:#1a6645;">www.ssp3forte.com</a>.
-    Iremos contactá-lo no dia do envio da sua encomenda. Se pediu para pagar por depósito ou transferência bancária,
-    enviaremos para o seu email os nossos dados bancários. Por favor, aguarde.</p>
+    <p>Recebemos o seu pedido e entraremos em contacto brevemente para confirmar os detalhes de pagamento e envio.</p>
 
     <div style="background:#e8f4ee;border-left:3px solid #1a6645;padding:14px 18px;margin:24px 0;">
       <strong>Pedido n.º ${orderNum}</strong>
@@ -127,18 +127,10 @@ function buildEmailPT(d, orderNum, p) {
       <tr><td style="padding:3px 0;color:#7a7d72;">Método de envio:</td><td>A confirmar</td></tr>
     </table>
 
-    <table width="100%" cellpadding="0" cellspacing="0" style="font-size:14px;margin-bottom:24px;">
-      <tr valign="top">
-        <td style="padding-right:24px;width:50%;">
-          <div style="font-weight:bold;color:#0d3d2b;border-bottom:1px solid #e8f4ee;padding-bottom:6px;margin-bottom:10px;">Morada de facturação</div>
-          ${addressBlock(d)}
-        </td>
-        <td style="width:50%;">
-          <div style="font-weight:bold;color:#0d3d2b;border-bottom:1px solid #e8f4ee;padding-bottom:6px;margin-bottom:10px;">Morada para entrega</div>
-          ${addressBlock(d)}
-        </td>
-      </tr>
-    </table>
+    <div style="font-size:14px;margin-bottom:24px;">
+      <div style="font-weight:bold;color:#0d3d2b;border-bottom:1px solid #e8f4ee;padding-bottom:6px;margin-bottom:10px;">${addrLabel}</div>
+      ${addressBlock(d)}
+    </div>
 
     ${d.notes ? `<div style="font-size:14px;margin-bottom:16px;"><strong>Comentários adicionais:</strong><br>${d.notes}</div>` : ''}
     ${footerPT}
@@ -153,9 +145,7 @@ function buildEmailEN(d, orderNum, p) {
   ${headerHTML}
   <div style="padding:32px;">
     <p style="margin-top:0;">Dear ${d.name},</p>
-    <p>Thank you for your order at <a href="https://www.ssp3forte.com" style="color:#1a6645;">www.ssp3forte.com</a>.
-    We will contact you on the day your order is dispatched. If you requested payment by bank deposit or transfer,
-    we will send our bank details to your email. Please wait.</p>
+    <p>We have received your order and will be in touch shortly to confirm payment and shipping details.</p>
 
     <div style="background:#e8f4ee;border-left:3px solid #1a6645;padding:14px 18px;margin:24px 0;">
       <strong>Order no. ${orderNum}</strong>
@@ -189,18 +179,10 @@ function buildEmailEN(d, orderNum, p) {
       <tr><td style="padding:3px 0;color:#7a7d72;">Shipping method:</td><td>To be confirmed</td></tr>
     </table>
 
-    <table width="100%" cellpadding="0" cellspacing="0" style="font-size:14px;margin-bottom:24px;">
-      <tr valign="top">
-        <td style="padding-right:24px;width:50%;">
-          <div style="font-weight:bold;color:#0d3d2b;border-bottom:1px solid #e8f4ee;padding-bottom:6px;margin-bottom:10px;">Billing address</div>
-          ${addressBlock(d)}
-        </td>
-        <td style="width:50%;">
-          <div style="font-weight:bold;color:#0d3d2b;border-bottom:1px solid #e8f4ee;padding-bottom:6px;margin-bottom:10px;">Delivery address</div>
-          ${addressBlock(d)}
-        </td>
-      </tr>
-    </table>
+    <div style="font-size:14px;margin-bottom:24px;">
+      <div style="font-weight:bold;color:#0d3d2b;border-bottom:1px solid #e8f4ee;padding-bottom:6px;margin-bottom:10px;">Delivery address</div>
+      ${addressBlock(d)}
+    </div>
 
     ${d.notes ? `<div style="font-size:14px;margin-bottom:16px;"><strong>Additional comments:</strong><br>${d.notes}</div>` : ''}
     ${footerEN}
