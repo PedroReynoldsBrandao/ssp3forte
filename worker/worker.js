@@ -264,7 +264,7 @@ export default {
     const isEN    = d.lang === 'en';
     const cc      = countryCode(d.country, d.lang);
     const orderNum = await generateOrderNumber(cc);
-    const from    = isEN ? 'orders@ssp3forte.com' : 'encomendas@ssp3forte.com';
+    const from    = isEN ? 'Naturalfarma <orders@ssp3forte.com>' : 'Naturalfarma <encomendas@ssp3forte.com>';
     const subject = isEN
       ? `Your order no. ${orderNum}`
       : `O seu pedido n.º ${orderNum}`;

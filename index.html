@@ -1199,7 +1199,7 @@
             <span data-lang-inline="pt">País</span>
             <span data-lang-inline="en">Country</span>
           </label>
-          <input type="text" name="country" required oninput="updateTotal()" placeholder="ex: Portugal, Brasil, França…">
+          <input type="text" name="country" required oninput="updateTotal()" placeholder="ex: Portugal, Brasil, França…" value="Portugal">
         </div>
         <div class="form-group">
           <label>
@@ -1430,11 +1430,20 @@ function setLang(region) {
   const anchorId = lang === 'en' ? 'order' : 'encomenda';
   const section = document.getElementById('encomenda') || document.getElementById('order');
   if (section) section.id = anchorId;
+  const countryInput = document.querySelector('[name="country"]');
+  if (countryInput && !document.body.classList.contains('brl-pricing')) {
+    countryInput.value = region === 'eu' ? '' : 'Portugal';
+  }
   updateTotal();
 }
 
 function toggleBRL(checked) {
   document.body.classList.toggle('brl-pricing', checked);
+  const countryInput = document.querySelector('[name="country"]');
+  if (countryInput) {
+    countryInput.value = checked ? 'Brasil' : (currentRegion === 'eu' ? '' : 'Portugal');
+  }
+  updateTotal();
 }
 
 function selectProduct(val) {
@@ -1446,21 +1455,25 @@ function updateTotal() {
   const product = document.getElementById('productSelect').value;
   const country = document.querySelector('[name="country"]').value;
   const calc = document.getElementById('shippingCalc');
-  if (!product || !country) { calc.classList.remove('visible'); return; }
+  const isEU = currentRegion === 'eu';
+  if (!product || (!country && !isEU)) { calc.classList.remove('visible'); return; }
   const isBR = product.endsWith('-br');
   const productPrice = PRICES[product] || 0;
-  const isPortugal = country.toLowerCase().includes('port');
-  const shippingPrice = isBR ? 0 : (isPortugal ? SHIPPING.PT : SHIPPING.default);
-  const total = productPrice + shippingPrice;
   const curr = CURRENCY[product] || '€';
   const fmt = (v, c) => c === '€' ? '€' + v.toFixed(2).replace('.', ',') : 'R$' + Math.round(v);
   document.getElementById('calcProduct').textContent = fmt(productPrice, curr);
-  document.getElementById('calcShipping').textContent = isBR
-    ? 'a confirmar'
-    : fmt(shippingPrice, '€');
-  document.getElementById('calcTotal').textContent = isBR
-    ? 'a confirmar'
-    : fmt(total, '€');
+  if (isBR) {
+    document.getElementById('calcShipping').textContent = 'a confirmar';
+    document.getElementById('calcTotal').textContent = 'a confirmar';
+  } else if (isEU) {
+    document.getElementById('calcShipping').textContent = 'to confirm';
+    document.getElementById('calcTotal').textContent = 'to confirm';
+  } else {
+    const isPortugal = country.toLowerCase().includes('port');
+    const shippingPrice = isPortugal ? SHIPPING.PT : SHIPPING.default;
+    document.getElementById('calcShipping').textContent = fmt(shippingPrice, '€');
+    document.getElementById('calcTotal').textContent = fmt(productPrice + shippingPrice, '€');
+  }
   calc.classList.add('visible');
 }
 
