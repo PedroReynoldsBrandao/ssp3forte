@@ -115,6 +115,23 @@ Push to `main` on GitHub → GitHub Pages rebuilds automatically in ~30 s. No CI
 
 Worker changes require a separate `npx wrangler deploy` from the `worker/` directory.
 
+## Ingredients
+
+8 ingredients, each with a photo (`imgs/0N_*.jpg/png`), botanical name in italics, description, and superscript citation(s). Both PT/BR and EN versions must be kept in sync. Citation numbering follows the bibliography order below.
+
+| # | Name (PT) | Name (EN) | Image | Citations |
+|---|---|---|---|---|
+| 01 | Saw Palmetto *(Serenoa repens)* | Saw Palmetto *(Serenoa repens)* | `01_sawpalmetto.jpg` | [1,2] |
+| 02 | Pygeum africanum | Pygeum africanum | `02_pygeum_africanum.jfif` | [3,4] |
+| 03 | Beta-Sitosterol | Beta-Sitosterol | `03_beta_sitosterol.png` | [5-7] |
+| 04 | Zinco | Zinc | `04_zinc.png` | [8] |
+| 05 | Urtica dioica *(Urtiga)* | Urtica dioica *(Nettle)* | `05_urtica_dioica.png` | [9-11] |
+| 06 | Semente de Abóbora *(Cucurbita pepo)* | Pumpkin Seed *(Cucurbita pepo)* | `06_semente_abobora.png` | [12,13] |
+| 07 | Licopeno | Lycopene | `07_licopeno.png` | [14] |
+| 08 | Vitamina E | Vitamin E | `08_vitamina_e.png` | [15] |
+
+Bibliography has 15 references in both PT and EN. Reference [8] DOI: `10.3390/biomedicines10123206`.
+
 ## Key conventions
 
 - All CSS lives inside a single `<style>` block in `<head>`.
