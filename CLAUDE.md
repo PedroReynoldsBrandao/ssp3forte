@@ -124,13 +124,13 @@ Worker changes require a separate `npx wrangler deploy` from the `worker/` direc
 | 01 | Saw Palmetto *(Serenoa repens)* | Saw Palmetto *(Serenoa repens)* | `01_sawpalmetto.jpg` | [1,2] |
 | 02 | Pygeum africanum | Pygeum africanum | `02_pygeum_africanum.jfif` | [3,4] |
 | 03 | Beta-Sitosterol | Beta-Sitosterol | `03_beta_sitosterol.png` | [5-7] |
-| 04 | Zinco | Zinc | `04_zinc.png` | [8] |
-| 05 | Urtica dioica *(Urtiga)* | Urtica dioica *(Nettle)* | `05_urtica_dioica.png` | [9-11] |
-| 06 | Semente de Abóbora *(Cucurbita pepo)* | Pumpkin Seed *(Cucurbita pepo)* | `06_semente_abobora.png` | [12,13] |
-| 07 | Licopeno | Lycopene | `07_licopeno.png` | [14] |
-| 08 | Vitamina E | Vitamin E | `08_vitamina_e.png` | [15] |
+| 04 | Zinco | Zinc | `04_zinc.png` | [8,9] |
+| 05 | Urtica dioica *(Urtiga)* | Urtica dioica *(Nettle)* | `05_urtica_dioica.png` | [10-12] |
+| 06 | Semente de Abóbora *(Cucurbita pepo)* | Pumpkin Seed *(Cucurbita pepo)* | `06_semente_abobora.png` | [13,14] |
+| 07 | Licopeno | Lycopene | `07_licopeno.png` | [15] |
+| 08 | Vitamina E | Vitamin E | `08_vitamina_e.png` | [16] |
 
-Bibliography has 15 references in both PT and EN. Reference [8] DOI: `10.3390/biomedicines10123206`.
+Bibliography has 16 references in both PT and EN. Zinc refs: [8] Costello & Franklin DOI `10.3390/biomedicines10123206`; [9] Chen et al. 2025 DOI `10.1016/j.jtemb.2025.127605`.
 
 ## Key conventions
 
