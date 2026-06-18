@@ -626,6 +626,32 @@
   }
   .btn-submit:hover { background: var(--gold-light); }
 
+  .pt-payment-options { margin: 1.25rem 0; }
+  .pt-payment-options .form-group + .form-group { margin-top: 1.25rem; }
+  .lang-en .pt-payment-options { display: none; }
+  .payment-opts { display: flex; flex-direction: column; gap: 8px; margin-top: 6px; }
+  .payment-opt {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 11px 14px;
+    border: 1px solid #d8d3c9;
+    background: #fff;
+    cursor: pointer;
+    font-size: 15px;
+    line-height: 1.4;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .payment-opt:has(input:checked) {
+    border-color: var(--green-mid);
+    background: var(--green-pale);
+  }
+  .payment-opt input[type="radio"] {
+    margin-top: 3px;
+    flex-shrink: 0;
+    accent-color: var(--green-mid);
+  }
+
   .success-msg {
     display: none;
     background: var(--green-pale);
@@ -976,10 +1002,10 @@
           </div>
         </div>
         <div class="callout-stat">
-          <div class="callout-stat-num">ISO</div>
+          <div class="callout-stat-num">GMP &amp; ISO</div>
           <div class="callout-stat-label">
-            <span data-lang-inline="pt">22000 — produção certificada na Europa</span>
-            <span data-lang-inline="en">22000 — certified European production</span>
+            <span data-lang-inline="pt">Ser fabricado sob as normas GMP e ISO 22000 significa que um produto (geralmente alimentar, farmacêutico ou cosmético) foi produzido seguindo os mais altos padrões internacionais de higiene, qualidade e segurança para proteger a saúde pública.</span>
+            <span data-lang-inline="en">Manufactured under GMP and ISO 22000 standards means the product was produced following the highest international standards of hygiene, quality and safety to protect public health.</span>
           </div>
         </div>
       </div>
@@ -1043,7 +1069,12 @@
       </div>
     </div>
 
-    
+    <div style="text-align:center;margin-top:2.5rem;">
+      <a href="https://problemasnaprostata.blogspot.com/2012/06/ssp3-forte-testemunho.html" target="_blank" rel="noopener" class="btn-primary">
+        <span data-lang-inline="pt">Para ler mais testemunhos →</span>
+        <span data-lang-inline="en">Read more testimonials →</span>
+      </a>
+    </div>
 
   </div>
 </section>
@@ -1276,6 +1307,35 @@
           <span id="calcTotal">—</span>
         </div>
       </div>
+      <div class="pt-payment-options">
+        <div class="form-group">
+          <label>Selecione a forma de pagamento</label>
+          <div class="payment-opts">
+            <label class="payment-opt">
+              <input type="radio" name="paymentMethod" value="deposito" onchange="updateTotal()">
+              Depósito, Transf. bancária ou CTT à cobrança
+            </label>
+            <label class="payment-opt">
+              <input type="radio" name="paymentMethod" value="mbway" onchange="updateTotal()">
+              Pague por MBway e envie o valor <strong>SEM portes</strong>
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Escolha uma forma de envio</label>
+          <div class="payment-opts">
+            <label class="payment-opt">
+              <input type="radio" name="shippingMethod" value="portugal" onchange="updateTotal()">
+              Para Portugal, por correios registado à cobrança (+ €4,99)
+            </label>
+            <label class="payment-opt">
+              <input type="radio" name="shippingMethod" value="europa" onchange="updateTotal()">
+              Resto da Europa, correio registado (+ €9,00)
+            </label>
+          </div>
+        </div>
+      </div>
+
       <div class="form-group">
         <label>
           <span data-lang-inline="pt">Notas / questões</span>
@@ -1488,8 +1548,16 @@ function updateTotal() {
     document.getElementById('calcShipping').textContent = 'to confirm';
     document.getElementById('calcTotal').textContent = 'to confirm';
   } else {
-    const isPortugal = country.toLowerCase().includes('port');
-    const shippingPrice = isPortugal ? SHIPPING.PT : SHIPPING.default;
+    const mbway = document.querySelector('[name="paymentMethod"]:checked')?.value === 'mbway';
+    let shippingPrice;
+    if (mbway) {
+      shippingPrice = 0;
+    } else {
+      const shippingRadio = document.querySelector('[name="shippingMethod"]:checked')?.value;
+      if (shippingRadio === 'portugal') shippingPrice = SHIPPING.PT;
+      else if (shippingRadio === 'europa') shippingPrice = SHIPPING.default;
+      else shippingPrice = country.toLowerCase().includes('port') ? SHIPPING.PT : SHIPPING.default;
+    }
     document.getElementById('calcShipping').textContent = fmt(shippingPrice, '€');
     document.getElementById('calcTotal').textContent = fmt(productPrice + shippingPrice, '€');
   }
@@ -1515,7 +1583,9 @@ async function submitOrder(e) {
     postal:  fd.get('postal')  || '',
     city:    fd.get('city')    || '',
     state:   fd.get('state')   || '',
-    notes:   fd.get('notes')   || '',
+    notes:          fd.get('notes')          || '',
+    paymentMethod:  fd.get('paymentMethod')  || '',
+    shippingMethod: fd.get('shippingMethod') || '',
   };
 
   const btn = form.querySelector('button[type=submit]');
