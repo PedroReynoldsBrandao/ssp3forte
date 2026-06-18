@@ -629,6 +629,9 @@
   .pt-payment-options { margin: 1.25rem 0; }
   .pt-payment-options .form-group + .form-group { margin-top: 1.25rem; }
   .lang-en .pt-payment-options { display: none; }
+  .br-only-payment { display: none; }
+  body.brl-pricing .br-only-payment { display: block; }
+  body.brl-pricing .pt-only-payment { display: none; }
   .payment-opts { display: flex; flex-direction: column; gap: 8px; margin-top: 6px; }
   .payment-opt {
     display: flex;
@@ -1308,30 +1311,52 @@
         </div>
       </div>
       <div class="pt-payment-options">
-        <div class="form-group">
-          <label>Selecione a forma de pagamento</label>
-          <div class="payment-opts">
-            <label class="payment-opt">
-              <input type="radio" name="paymentMethod" value="deposito" onchange="updateTotal()">
-              Depósito, Transf. bancária ou CTT à cobrança
-            </label>
-            <label class="payment-opt">
-              <input type="radio" name="paymentMethod" value="mbway" onchange="updateTotal()">
-              Pague por MBway e envie o valor <strong>SEM portes</strong>
-            </label>
+        <div class="pt-only-payment">
+          <div class="form-group">
+            <label>Selecione a forma de pagamento</label>
+            <div class="payment-opts">
+              <label class="payment-opt">
+                <input type="radio" name="paymentMethod" value="deposito" onchange="updateTotal()">
+                Depósito, Transf. bancária ou CTT à cobrança
+              </label>
+              <label class="payment-opt">
+                <input type="radio" name="paymentMethod" value="mbway" onchange="updateTotal()">
+                Pague por MBway e envie o valor <strong>SEM portes</strong>
+              </label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Escolha uma forma de envio</label>
+            <div class="payment-opts">
+              <label class="payment-opt">
+                <input type="radio" name="shippingMethod" value="portugal" onchange="updateTotal()">
+                Para Portugal, por correios registado à cobrança (+ €4,99)
+              </label>
+              <label class="payment-opt">
+                <input type="radio" name="shippingMethod" value="europa" onchange="updateTotal()">
+                Resto da Europa, correio registado (+ €9,00)
+              </label>
+            </div>
           </div>
         </div>
-        <div class="form-group">
-          <label>Escolha uma forma de envio</label>
-          <div class="payment-opts">
-            <label class="payment-opt">
-              <input type="radio" name="shippingMethod" value="portugal" onchange="updateTotal()">
-              Para Portugal, por correios registado à cobrança (+ €4,99)
-            </label>
-            <label class="payment-opt">
-              <input type="radio" name="shippingMethod" value="europa" onchange="updateTotal()">
-              Resto da Europa, correio registado (+ €9,00)
-            </label>
+        <div class="br-only-payment">
+          <div class="form-group">
+            <label>Escolha a forma de pagamento</label>
+            <div class="payment-opts">
+              <label class="payment-opt">
+                <input type="radio" name="paymentMethod" value="deposito-br" checked>
+                Desejo pagar por depósito ou transferência bancária, enviar os dados para o meu email.
+              </label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Escolha um método de envio</label>
+            <div class="payment-opts">
+              <label class="payment-opt">
+                <input type="radio" name="shippingMethod" value="correio-aereo" checked>
+                Envio por correio aéreo - Entrega em mão
+              </label>
+            </div>
           </div>
         </div>
       </div>
@@ -1354,8 +1379,8 @@
     </form>
 
     <div class="success-msg" id="successMsg">
-      <span data-lang-inline="pt">✓ Pedido recebido! Entraremos em contacto em breve para confirmar os detalhes e o pagamento. Obrigado!</span>
-      <span data-lang-inline="en">✓ Order received! We will be in touch shortly to confirm the details and payment. Thank you!</span>
+      <span data-lang-inline="pt">O seu pedido no site ssp3forte foi efetuado com sucesso. Será enviado um email de confirmação. Por favor, aguarde.</span>
+      <span data-lang-inline="en">Your order on ssp3forte.com was successfully placed. A confirmation email will be sent to you shortly. Please wait.</span>
     </div>
 
   </div>
