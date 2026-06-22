@@ -687,9 +687,31 @@
     background: var(--green-pale);
   }
   .payment-opt input[type="radio"] {
-    margin-top: 3px;
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #aaa;
+    border-radius: 3px;
+    margin-top: 2px;
     flex-shrink: 0;
-    accent-color: var(--green-mid);
+    position: relative;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .payment-opt input[type="radio"]:checked {
+    border-color: var(--green-mid);
+    background: var(--green-mid);
+  }
+  .payment-opt input[type="radio"]:checked::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    font-size: 13px;
+    line-height: 1;
   }
 
   .success-msg {
