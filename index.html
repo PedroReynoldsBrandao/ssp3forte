@@ -1843,7 +1843,7 @@ function updateTotal() {
   const product = document.getElementById('productSelect').value;
   const country = document.querySelector('[name="country"]').value;
   const calc = document.getElementById('shippingCalc');
-  const isEU = currentRegion === 'eu';
+  const isEU = currentRegion === 'eu' || currentRegion === 'world';
   if (!product || (!country && !isEU)) { calc.classList.remove('visible'); return; }
   const isBR = product.endsWith('-br');
   const productPrice = PRICES[product] || 0;
@@ -1878,7 +1878,7 @@ async function submitOrder(e) {
   const form = document.getElementById('orderForm');
   const fd   = new FormData(form);
 
-  const lang = document.body.classList.contains('lang-en') ? 'en' : 'pt';
+  const lang = (document.body.classList.contains('lang-en') || document.body.classList.contains('lang-world')) ? 'en' : 'pt';
 
   const payload = {
     lang,
