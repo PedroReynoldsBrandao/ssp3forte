@@ -95,12 +95,26 @@ Fonts loaded from Google Fonts: **Lora** (headings, serif) + **Source Sans 3** (
 3. Social-proof bar
 4. Symptoms grid
 5. Ingredients list (with lightbox) + sticky callout
-6. Testimonials
-7. Pricing cards (EUR and BRL toggle)
-8. Order form (submits via Cloudflare Worker → Resend email)
-9. Blog redirect CTA
-10. FAQ accordion
-11. Footer
+6. Testimonials (`#testemunhos`)
+7. Video (`#video`) — "Ver em acção / Watch in action"
+8. Pricing cards (`#precos`, EUR and BRL toggle)
+9. Order form (`#encomenda`, submits via Cloudflare Worker → Resend email)
+10. Blog redirect CTA
+11. FAQ accordion (`#faq`)
+12. Footer
+
+## Testimonials
+
+4 real testimonials sourced verbatim from the Naturalfarma blog: http://problemasnaprostata.blogspot.com/2013/10/faq-perguntas-e-comentarios-frequentes.html
+
+| Author | Location | Key result |
+|---|---|---|
+| A. Arruda | SC, Brasil | 7–8h sleep, no nocturia, sexual function restored |
+| Roberto A. | SP, Brasil | PSA dropped from 3,080 to 1.61 in 2 months |
+| L. Santos | SP, Brasil | Prostate reduced to 30g, 1 bathroom visit/night |
+| Herculano | Lisboa, Portugal | PSA stable at 1.4 at age 68 |
+
+**Rules:** quotes must remain verbatim (original Brazilian Portuguese) in both PT and BR blocks. EN block is a faithful translation. Never paraphrase or adapt these quotes — they are real customer statements.
 
 ## Order form behaviour
 
