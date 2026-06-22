@@ -432,6 +432,20 @@
   }
   .ingredient-name { font-weight: 500; font-size: 0.95rem; margin-bottom: 3px; }
   .ingredient-desc { font-size: 0.95rem; color: var(--text-muted); line-height: 1.5; }
+  /* INFO MODAL */
+  #info-modal { display: none; position: fixed; inset: 0; z-index: 999; align-items: center; justify-content: center; }
+  #info-modal.open { display: flex; }
+  #info-modal-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.6); }
+  #info-modal-box { position: relative; background: #fff; max-width: 700px; width: 92vw; max-height: 88vh; overflow-y: auto; border-radius: 6px; padding: 2.5rem 2.25rem 2rem; z-index: 1; }
+  #info-modal-close { position: absolute; top: 0.9rem; right: 1rem; background: none; border: none; font-size: 2rem; line-height: 1; cursor: pointer; color: var(--green-deep); padding: 0; }
+  #info-modal-close:hover { color: var(--gold); }
+  #info-modal-box h2 { font-family: 'Lora', serif; color: var(--green-deep); margin: 0 0 1.25rem; font-size: 1.25rem; padding-right: 2rem; line-height: 1.4; }
+  #info-modal-box h3 { color: var(--green-deep); font-size: 1rem; margin: 1.5rem 0 0.5rem; text-transform: uppercase; letter-spacing: .06em; font-family: 'Source Sans 3', sans-serif; }
+  #info-modal-box p { font-size: 0.95rem; line-height: 1.7; margin: 0 0 0.85rem; }
+  #info-modal-box ul { padding-left: 1.25rem; margin: 0 0 0.85rem; }
+  #info-modal-box li { font-size: 0.95rem; line-height: 1.65; margin-bottom: 0.35rem; }
+  #info-modal-box .modal-note { background: var(--green-pale); border-left: 3px solid var(--gold); padding: 0.85rem 1rem; border-radius: 3px; margin-top: 1.25rem; }
+  button.btn-ghost { background: none; font-family: inherit; cursor: pointer; }
 
   .ingredients-callout {
     background: var(--green-deep);
@@ -913,6 +927,7 @@
         <a href="#ingredientes" class="btn-ghost">Ver ingredientes</a>
         <a href="https://problemasnaprostata.blogspot.com/" target="_blank" class="btn-ghost btn-blog">Blog →</a>
         <a href="http://ebookdoshomensdepoisdos40.blogspot.pt/" target="_blank" rel="noopener" class="btn-ghost btn-blog">Ebook gratuito →</a>
+        <button type="button" class="btn-ghost" onclick="openInfoModal()">O que pode fazer por si →</button>
       </div>
     </div>
 
@@ -934,6 +949,7 @@
         <a href="#ingredientes" class="btn-ghost">Ver ingredientes</a>
         <a href="https://problemasnaprostata.blogspot.com/" target="_blank" class="btn-ghost btn-blog">Blog →</a>
         <a href="http://ebookdoshomensdepoisdos40.blogspot.pt/" target="_blank" rel="noopener" class="btn-ghost btn-blog">Ebook gratuito →</a>
+        <button type="button" class="btn-ghost" onclick="openInfoModal()">O que pode fazer por você →</button>
       </div>
     </div>
 
@@ -1317,11 +1333,13 @@
       <p class="section-label">Preços</p>
       <h2>Escolha a sua opção</h2>
       <p class="section-lead">Enviamos para todo o mundo. Contacte-nos através do formulário abaixo para confirmar portes e método de pagamento.</p>
+      <button type="button" class="btn-ghost" onclick="openInfoModal()" style="margin-top:0.75rem;">O que pode fazer por si →</button>
     </div>
     <div data-lang="br">
       <p class="section-label">Preços</p>
       <h2>Escolha sua opção</h2>
       <p class="section-lead">Enviamos para o mundo todo. Entre em contato pelo formulário abaixo para confirmar o frete e o método de pagamento.</p>
+      <button type="button" class="btn-ghost" onclick="openInfoModal()" style="margin-top:0.75rem;">O que pode fazer por você →</button>
     </div>
     <div data-lang="en">
       <p class="section-label">Pricing</p>
@@ -1953,8 +1971,79 @@ document.querySelectorAll('.ingredient-img').forEach(img => {
   });
 });
 lb.addEventListener('click', () => lb.classList.remove('open'));
-document.addEventListener('keydown', e => { if (e.key === 'Escape') lb.classList.remove('open'); });
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { lb.classList.remove('open'); closeInfoModal(); }
+});
+function openInfoModal() {
+  document.getElementById('info-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeInfoModal() {
+  document.getElementById('info-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
 </script>
+
+<!-- INFO MODAL -->
+<div id="info-modal">
+  <div id="info-modal-overlay" onclick="closeInfoModal()"></div>
+  <div id="info-modal-box">
+    <button id="info-modal-close" onclick="closeInfoModal()" aria-label="Fechar">×</button>
+
+    <div data-lang="pt">
+      <h2>O que o SSP3-Forte pode fazer por si?</h2>
+      <p>O SSP3-FORTE, remédio natural para a próstata aumentada, é fabricado na Europa, em laboratório que segue o GMP (<em>Good Manufacturing Practices</em>) e certificado com ISO 22000. Além dos outros nutrientes protectores, também contém os Antivirais: Zinco, Selénio e Vitamina E.</p>
+      <p>SSP3-Forte foi formulado para tratar a próstata inflamada, aumentada ou inchada e outros problemas de origem benigna. Comprovado pelos próprios utilizadores, é o melhor tratamento natural sem efeitos secundários adversos, porque não contém ingredientes químicos sintéticos como os fármacos normalmente receitados.</p>
+      <p>SSP3-Forte, quando tomado regularmente, irá regularizar os PSA, o tamanho da próstata e, ainda, prevenir a biópsia e a cirurgia. É um produto seguro, não sintético, sem contra-indicação, produzido em laboratório sob certificação ISO 22000.</p>
+      <h3>Benefícios a partir da 6.ª semana</h3>
+      <ul>
+        <li>Redução do tamanho da próstata e desobstrução da uretra, melhorando a micção</li>
+        <li>Redução do PSA para níveis normais</li>
+        <li>Redução da frequência urinária (noites mais bem dormidas)</li>
+        <li>Melhoria do jato urinário</li>
+        <li>Melhoria da erecção e da ejaculação</li>
+        <li>Melhoria na espermatogénese (aumento da quantidade de espermatozóides)</li>
+        <li>Melhoria no desempenho sexual</li>
+      </ul>
+      <h3>Modo de toma</h3>
+      <p>A dose diária vai de 2 a 3 cápsulas ao longo do dia, com as refeições, durante pelo menos 90 dias seguidos.</p>
+      <p><strong>a) Próstata entre 25 e 40g</strong> (ou levanta-se 1 vez à noite para urinar): 2 cápsulas por dia — uma ao almoço e outra ao jantar — durante 90 dias ou até os sintomas desaparecerem. Depois, passa a 2 cápsulas dia sim dia não (dose de manutenção).</p>
+      <p><strong>b) Próstata com mais de 40g</strong> (ou levanta-se 2 ou mais vezes à noite): 3 cápsulas por dia — uma com cada refeição — durante 90 dias. Depois, 2 cápsulas por dia durante mais 90 dias. Após isso, passa a 2 cápsulas dia sim dia não (dose de manutenção).</p>
+      <h3>Conselhos importantes</h3>
+      <p>Em conjunto com o SSP3-Forte, evite café, álcool (sobretudo cerveja), leite e refrigerantes — prejudicam a saúde da próstata e da bexiga. Não fumar e fazer exercício físico também ajudará muito.</p>
+      <div class="modal-note">
+        <p style="margin:0;"><strong>O SSP3-Forte NÃO DIMINUI a libido.</strong> Pelo contrário, ajuda a restabelecer a perda de libido causada pela próstata aumentada. São os fármacos sintéticos receitados para a HBP que causam perda da libido, impotência sexual, ejaculação retrógrada e ginecomastia. Leia sempre os folhetos informativos dos medicamentos que lhe receitam.</p>
+      </div>
+    </div>
+
+    <div data-lang="br">
+      <h2>O que o SSP3-Forte pode fazer por você?</h2>
+      <p>O SSP3-FORTE, remédio natural para a próstata aumentada, é fabricado na Europa, em laboratório que segue o GMP (<em>Good Manufacturing Practices</em>) e certificado com ISO 22000. Além dos outros nutrientes protetores, também contém os Antivirais: Zinco, Selênio e Vitamina E.</p>
+      <p>SSP3-Forte foi formulado para tratar a próstata inflamada, aumentada ou inchada e outros problemas de origem benigna. Comprovado pelos próprios utilizadores, é o melhor tratamento natural sem efeitos colaterais adversos, porque não contém ingredientes químicos sintéticos como os fármacos normalmente receitados.</p>
+      <p>SSP3-Forte, quando tomado regularmente, irá regularizar os PSA, o tamanho da próstata e, ainda, prevenir a biópsia e a cirurgia. É um produto seguro, não sintético, sem contra-indicação, produzido em laboratório sob certificação ISO 22000.</p>
+      <h3>Benefícios a partir da 6.ª semana</h3>
+      <ul>
+        <li>Redução do tamanho da próstata e desobstrução da uretra, melhorando a micção</li>
+        <li>Redução do PSA para níveis normais</li>
+        <li>Redução da frequência urinária (noites mais bem dormidas)</li>
+        <li>Melhoria do jato urinário</li>
+        <li>Melhoria da ereção e da ejaculação</li>
+        <li>Melhoria na espermatogênese (aumento da quantidade de espermatozóides)</li>
+        <li>Melhoria no desempenho sexual</li>
+      </ul>
+      <h3>Modo de tomar</h3>
+      <p>A dose diária vai de 2 a 3 cápsulas ao longo do dia, com as refeições, durante pelo menos 90 dias seguidos.</p>
+      <p><strong>a) Próstata entre 25 e 40g</strong> (ou levanta-se 1 vez à noite para urinar): 2 cápsulas por dia — uma no almoço e outra no jantar — durante 90 dias ou até os sintomas desaparecerem. Depois, passa a 2 cápsulas dia sim dia não (dose de manutenção).</p>
+      <p><strong>b) Próstata com mais de 40g</strong> (ou levanta-se 2 ou mais vezes à noite): 3 cápsulas por dia — uma com cada refeição — durante 90 dias. Depois, 2 cápsulas por dia durante mais 90 dias. Após isso, passa a 2 cápsulas dia sim dia não (dose de manutenção).</p>
+      <h3>Conselhos importantes</h3>
+      <p>Em conjunto com o SSP3-Forte, evite café, álcool (sobretudo cerveja), leite e refrigerantes — prejudicam a saúde da próstata e da bexiga. Não fumar e fazer exercício físico também ajudará muito.</p>
+      <div class="modal-note">
+        <p style="margin:0;"><strong>O SSP3-Forte NÃO DIMINUI a libido.</strong> Pelo contrário, ajuda a restabelecer a perda de libido causada pela próstata aumentada. São os fármacos sintéticos receitados para a HBP que causam perda da libido, impotência sexual, ejaculação retrógrada e ginecomastia. Leia sempre a bula dos medicamentos que lhe receitam.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
 </body>
 </html>
 
