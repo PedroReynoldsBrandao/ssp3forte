@@ -13,10 +13,12 @@ Single-page marketing website for **SSP3-Forte**, a natural prostate-health supp
 | `index.html` | The entire website — HTML, CSS, and JS all in one file |
 | `index-v1.html` / `index-v2.html` | Earlier versions kept for reference |
 | `frasco.jpg` | Product photo used as favicon and hero image |
-| `imgs/` | Ingredient photos (numbered `01`–`08`), flags (`pt`, `gb`, `br`) |
+| `imgs/` | Ingredient photos (`01`–`08`), flags (`pt`, `br`, `eu`, `world`) |
+| `imgs/zinc.png` | Zinc ingredient photo |
 | `CNAME` | GitHub Pages custom domain (`ssp3forte.com`) |
 | `worker/worker.js` | Cloudflare Worker — handles order form submissions, sends emails via Resend |
 | `worker/wrangler.toml` | Wrangler config for deploying the Worker |
+| `O que o SSP3-Forte pode fazer por Você.txt` | Source text for the info modal (PT/BR only) — written by the product author |
 
 ## Multilingual system
 
@@ -93,18 +95,19 @@ Fonts loaded from Google Fonts: **Lora** (headings, serif) + **Source Sans 3** (
 
 ## Sections (in order)
 
-1. Sticky language switcher bar
-2. Hero (2-col grid: copy + product image)
+1. Sticky language switcher bar (4 flags: PT, BR, EU, INT/world)
+2. Hero — PT/BR: 3 buttons + "Saber mais ▾" dropdown (Blog, Ebook, Info modal); EN/INT: 3 buttons only
 3. Social-proof bar
 4. Symptoms grid
 5. Ingredients list (with lightbox) + sticky callout
 6. Testimonials (`#testemunhos`)
 7. Video (`#video`) — "Ver em acção / Watch in action"
-8. Pricing cards (`#precos`, EUR and BRL toggle)
+8. Pricing cards (`#precos`, EUR and BRL toggle) — PT/BR have "O que este produto pode fazer" button
 9. Order form (`#encomenda`, submits via Cloudflare Worker → Resend email)
-10. Blog redirect CTA
-11. FAQ accordion (`#faq`)
-12. Footer
+10. FAQ accordion (`#faq`) — includes blog CTA + ebook CTA block (PT/BR only)
+11. Footer
+
+**Info modal** (`#info-modal`) — floating overlay, PT/BR only. Triggered from hero "Saber mais" dropdown and pricing section button. Source text: `O que o SSP3-Forte pode fazer por Você.txt`.
 
 ## Testimonials
 
@@ -155,4 +158,5 @@ Bibliography has 16 references in both PT and EN. Zinc refs: [8] Costello & Fran
 - JS lives in a `<script>` block at the bottom of `<body>`.
 - `font-size: 110%` on `html` and `font-size: 18px` on `body` set the baseline; don't shrink these.
 - Ingredient images use a click-to-zoom lightbox (`#lightbox`).
-- The `currentRegion` JS variable tracks `'pt'`, `'br'`, or `'eu'` — distinct from the `lang-*` body class.
+- The `currentRegion` JS variable tracks `'pt'`, `'br'`, `'eu'`, or `'world'` — distinct from the `lang-*` body class.
+- PT/BR-only features (ebook CTA, info modal, "Saber mais" dropdown) use `[data-lang="pt"]` / `[data-lang="br"]` blocks — they are invisible to EN/INT visitors automatically.

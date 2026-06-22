@@ -10,6 +10,24 @@
 
 const RESEND_API = 'https://api.resend.com/emails';
 
+// ── Payment / shipping label helpers ────────────────────────────────────────
+function paymentLabel(val, lang) {
+  const map = {
+    'deposito':    { pt: 'Depósito, Transf. bancária ou CTT à cobrança', en: 'Bank deposit, transfer or CTT cash on delivery' },
+    'mbway':       { pt: 'MBway (sem portes)',                            en: 'MBway (no shipping fee)' },
+    'deposito-br': { pt: 'Depósito ou transferência bancária',            en: 'Bank deposit or transfer' },
+  };
+  return map[val]?.[lang] ?? (lang === 'en' ? 'To be confirmed' : 'A confirmar');
+}
+function shippingLabel(val, lang) {
+  const map = {
+    'portugal':      { pt: 'Correios registado à cobrança — Portugal (+€4,99)', en: 'Registered mail COD — Portugal (+€4.99)' },
+    'europa':        { pt: 'Correios registado — Europa (+€9,00)',               en: 'Registered mail — Europe (+€9.00)' },
+    'correio-aereo': { pt: 'Correio aéreo — Entrega em mão',                    en: 'Air mail — Home delivery' },
+  };
+  return map[val]?.[lang] ?? (lang === 'en' ? 'To be confirmed' : 'A confirmar');
+}
+
 // ── Product catalogue ────────────────────────────────────────────────────────
 const PRODUCTS = {
   '1x':    { namePT: 'SSP3-Forte · 1 frasco',       nameEN: 'SSP3-Forte · 1 bottle',       qty: 1, pricePT: '€29,95', priceEN: '€29.95', code: 'SSP3-1X'    },
@@ -88,7 +106,7 @@ function addressBlock(d) {
 function buildEmailPT(d, orderNum, p) {
   const isBR = d.product.endsWith('-br') || (d.country || '').toLowerCase().includes('brasil');
   const addrLabel = isBR ? 'Endereço de entrega' : 'Morada para entrega';
-  return `<!DOCTYPE html><html><body style="margin:0;padding:0;background:#f5f5f0;font-family:Georgia,serif;">
+  return `<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body style="margin:0;padding:0;background:#f5f5f0;font-family:Georgia,serif;">
 <div style="max-width:600px;margin:32px auto;background:#fff;">
   ${headerHTML}
   <div style="padding:32px;">
@@ -123,8 +141,8 @@ function buildEmailPT(d, orderNum, p) {
     </table>
 
     <table width="100%" cellpadding="0" cellspacing="0" style="font-size:14px;margin-bottom:24px;">
-      <tr><td style="padding:3px 0;color:#7a7d72;width:170px;">Forma de pagamento:</td><td>A confirmar</td></tr>
-      <tr><td style="padding:3px 0;color:#7a7d72;">Método de envio:</td><td>A confirmar</td></tr>
+      <tr><td style="padding:3px 0;color:#7a7d72;width:170px;">Forma de pagamento:</td><td>${paymentLabel(d.paymentMethod, 'pt')}</td></tr>
+      <tr><td style="padding:3px 0;color:#7a7d72;">Método de envio:</td><td>${shippingLabel(d.shippingMethod, 'pt')}</td></tr>
     </table>
 
     <div style="font-size:14px;margin-bottom:24px;">
@@ -140,7 +158,7 @@ function buildEmailPT(d, orderNum, p) {
 
 // ── EN confirmation email ────────────────────────────────────────────────────
 function buildEmailEN(d, orderNum, p) {
-  return `<!DOCTYPE html><html><body style="margin:0;padding:0;background:#f5f5f0;font-family:Georgia,serif;">
+  return `<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body style="margin:0;padding:0;background:#f5f5f0;font-family:Georgia,serif;">
 <div style="max-width:600px;margin:32px auto;background:#fff;">
   ${headerHTML}
   <div style="padding:32px;">
@@ -175,8 +193,8 @@ function buildEmailEN(d, orderNum, p) {
     </table>
 
     <table width="100%" cellpadding="0" cellspacing="0" style="font-size:14px;margin-bottom:24px;">
-      <tr><td style="padding:3px 0;color:#7a7d72;width:170px;">Payment method:</td><td>To be confirmed</td></tr>
-      <tr><td style="padding:3px 0;color:#7a7d72;">Shipping method:</td><td>To be confirmed</td></tr>
+      <tr><td style="padding:3px 0;color:#7a7d72;width:170px;">Payment method:</td><td>${paymentLabel(d.paymentMethod, 'en')}</td></tr>
+      <tr><td style="padding:3px 0;color:#7a7d72;">Shipping method:</td><td>${shippingLabel(d.shippingMethod, 'en')}</td></tr>
     </table>
 
     <div style="font-size:14px;margin-bottom:24px;">
@@ -197,8 +215,9 @@ function buildInternalEmail(d, orderNum, p) {
     ['DOB', d.dob || '—'], ['Country', d.country], ['Product', `${p.namePT} (${p.code})`],
     ['Address', d.address], ['Postal', d.postal], ['City', d.city],
     ['State', d.state || '—'], ['Notes', d.notes || '—'],
+    ['Payment', paymentLabel(d.paymentMethod, 'pt')], ['Shipping', shippingLabel(d.shippingMethod, 'pt')],
   ].map(([k, v]) => `<tr><td style="padding:4px 12px;color:#555;width:140px;">${k}</td><td style="padding:4px 12px;">${v}</td></tr>`).join('');
-  return `<!DOCTYPE html><html><body style="font-family:sans-serif;font-size:14px;">
+  return `<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body style="font-family:sans-serif;font-size:14px;">
 <div style="max-width:560px;margin:24px auto;">
   <h2 style="color:#0d3d2b;margin-bottom:4px;">Novo pedido: ${orderNum}</h2>
   <table cellpadding="0" cellspacing="0" style="border-collapse:collapse;width:100%;border:1px solid #e0e0e0;">
