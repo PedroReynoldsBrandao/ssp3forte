@@ -22,11 +22,14 @@ Single-page marketing website for **SSP3-Forte**, a natural prostate-health supp
 
 The site supports three language variants switched at runtime via CSS class on `<body>`:
 
-| Class | Language | Flag |
-|---|---|---|
-| `lang-pt` | European Portuguese | 🇵🇹 |
-| `lang-br` | Brazilian Portuguese | 🇧🇷 |
-| `lang-en` | English (Europe/international) | 🇬🇧 |
+| Class | Language | Flag | Button ID |
+|---|---|---|---|
+| `lang-pt` | European Portuguese | 🇵🇹 | `btn-pt` |
+| `lang-br` | Brazilian Portuguese | 🇧🇷 | `btn-br` |
+| `lang-en` | English (Europe/EU) | 🇬🇧 | `btn-eu` |
+| `lang-world` | English (Rest of World) | 🌍 | `btn-world` |
+
+`lang-world` reuses all `[data-lang="en"]` content blocks. The only difference from `lang-en` is the pricing section lead text (worldwide shipping message instead of EU-specific countries). Globe SVG at `imgs/flags/world.svg`.
 
 Default language on page load is **Brazilian Portuguese** (`lang-br`).
 

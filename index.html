@@ -82,9 +82,14 @@
   body.lang-pt [data-lang="pt"] { display: block; }
   body.lang-br [data-lang="br"] { display: block; }
   body.lang-en [data-lang="en"] { display: block; }
+  body.lang-world [data-lang="en"] { display: block; }
   body.lang-pt [data-lang-inline="en"] { display: none; }
   body.lang-br [data-lang-inline="en"] { display: none; }
   body.lang-en [data-lang-inline="pt"] { display: none; }
+  body.lang-world [data-lang-inline="pt"] { display: none; }
+  .pricing-lead-world { display: none; }
+  .lang-world .pricing-lead-eu { display: none; }
+  .lang-world .pricing-lead-world { display: block; }
 
   [data-lang-inline] { display: inline; }
 
@@ -639,7 +644,8 @@
 
   .pt-payment-options { margin: 1.25rem 0; }
   .pt-payment-options .form-group + .form-group { margin-top: 1.25rem; }
-  .lang-en .pt-payment-options { display: none; }
+  .lang-en .pt-payment-options,
+  .lang-world .pt-payment-options { display: none; }
   .br-only-payment { display: none; }
   body.brl-pricing .br-only-payment { display: block; }
   body.brl-pricing .pt-only-payment { display: none; }
@@ -772,7 +778,8 @@
     transition: border-color 0.15s;
   }
   .brl-toggle:hover { border-color: var(--green-light); }
-  .lang-en .brl-toggle { display: none; }
+  .lang-en .brl-toggle,
+  .lang-world .brl-toggle { display: none; }
   .brl-toggle input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; accent-color: var(--green-mid); }
   .brl-toggle .flag-img { width: 24px; height: 17px; border-radius: 2px; border: 1px solid rgba(0,0,0,0.1); }
 
@@ -865,6 +872,8 @@
   <button class="lang-btn" onclick="setLang('br')" id="btn-br"><img class="flag-img" src="imgs/flags/br.svg" alt="BR"><span class="flag-label">BR</span></button>
   <span class="lang-divider">|</span>
   <button class="lang-btn" onclick="setLang('eu')" id="btn-eu"><img class="flag-img" src="imgs/flags/eu.svg" alt="EU"><span class="flag-label">EU</span></button>
+  <span class="lang-divider">|</span>
+  <button class="lang-btn" onclick="setLang('world')" id="btn-world"><img class="flag-img" src="imgs/flags/world.svg" alt="World"><span class="flag-label">MU</span></button>
 </div>
 
 <!-- TOP NAV MENU -->
@@ -1312,7 +1321,8 @@
     <div data-lang="en">
       <p class="section-label">Pricing</p>
       <h2>Choose your option</h2>
-      <p class="section-lead">Delivery to Portugal, Brazil, Europe, Angola and UK. Prices in euros; for payment in BRL contact us via the form below.</p>
+      <p class="section-lead pricing-lead-eu">Delivery to Portugal, Brazil, Europe, Angola and UK. Prices in euros; for payment in BRL contact us via the form below.</p>
+      <p class="section-lead pricing-lead-world">We ship worldwide — contact us via the form below to confirm shipping costs and payment method.</p>
     </div>
 
     <label class="brl-toggle">
@@ -1765,9 +1775,9 @@ const CURRENCY = { '1x': '€', '3x': '€', '1x-br': 'R$', '3x-br': 'R$' };
 let currentRegion = 'pt';
 function setLang(region) {
   currentRegion = region;
-  const lang = region === 'eu' ? 'en' : region === 'br' ? 'br' : 'pt';
-  document.body.className = 'lang-' + lang;
-  ['pt','br','eu'].forEach(r => {
+  const lang = (region === 'eu' || region === 'world') ? 'en' : region === 'br' ? 'br' : 'pt';
+  document.body.className = 'lang-' + (region === 'world' ? 'world' : lang);
+  ['pt','br','eu','world'].forEach(r => {
     const btn = document.getElementById('btn-' + r);
     if (btn) btn.classList.toggle('active', r === region);
   });
@@ -1791,7 +1801,8 @@ function setLang(region) {
   const countryInput = document.querySelector('[name="country"]');
   if (countryInput) {
     if (region === 'br') countryInput.value = 'Brasil';
-    else countryInput.value = region === 'eu' ? '' : 'Portugal';
+    else if (region === 'eu' || region === 'world') countryInput.value = '';
+    else countryInput.value = 'Portugal';
   }
   updateTotal();
 }
