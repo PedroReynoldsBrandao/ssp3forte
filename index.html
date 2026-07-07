@@ -1941,8 +1941,9 @@ function updateTotal() {
     document.getElementById('calcShipping').textContent = 'a confirmar';
     document.getElementById('calcTotal').textContent = 'a confirmar';
   } else if (isEU) {
-    document.getElementById('calcShipping').textContent = 'to confirm';
-    document.getElementById('calcTotal').textContent = 'to confirm';
+    const shippingPrice = SHIPPING.default;
+    document.getElementById('calcShipping').textContent = fmt(shippingPrice, '€');
+    document.getElementById('calcTotal').textContent = fmt(productPrice + shippingPrice, '€');
   } else {
     const mbway = document.querySelector('[name="paymentMethod"]:checked')?.value === 'mbway';
     let shippingPrice;
