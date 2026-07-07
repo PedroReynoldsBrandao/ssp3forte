@@ -63,6 +63,7 @@
     object-fit: cover;
     border-radius: 3px;
     border: 1px solid rgba(255,255,255,0.25);
+    background: #fff;
     display: block;
   }
   .lang-btn span.flag-label {
@@ -1601,7 +1602,11 @@
             <div class="payment-opts">
               <label class="payment-opt">
                 <input type="radio" name="paymentMethod" value="deposito" onchange="updateTotal()" checked>
-                Depósito, Transf. bancária ou CTT à cobrança
+                Depósito ou Transferência bancária
+              </label>
+              <label class="payment-opt">
+                <input type="radio" name="paymentMethod" value="ctt" onchange="updateTotal()">
+                CTT à cobrança postal
               </label>
               <label class="payment-opt">
                 <input type="radio" name="paymentMethod" value="mbway" onchange="updateTotal()">

@@ -13,7 +13,8 @@ const RESEND_API = 'https://api.resend.com/emails';
 // ── Payment / shipping label helpers ────────────────────────────────────────
 function paymentLabel(val, lang) {
   const map = {
-    'deposito':    { pt: 'Depósito, Transf. bancária ou CTT à cobrança', en: 'Bank deposit, transfer or CTT cash on delivery' },
+    'deposito':    { pt: 'Depósito ou Transferência bancária',             en: 'Bank deposit or transfer' },
+    'ctt':         { pt: 'CTT à cobrança postal',                        en: 'CTT cash on delivery (postal)' },
     'mbway':       { pt: 'MBway (sem portes)',                            en: 'MBway (no shipping fee)' },
     'deposito-br': { pt: 'Depósito ou transferência bancária',            en: 'Bank deposit or transfer' },
   };
