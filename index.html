@@ -39,14 +39,32 @@
   .lang-bar {
     background: #fff;
     border-bottom: 1px solid rgba(0,0,0,0.08);
-    padding: 8px 2rem;
+    padding: 6px 2rem;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+    align-items: center;
     gap: 0;
     position: sticky;
     top: 0;
     z-index: 100;
   }
+  .lang-bar-left { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .lang-bar-right { display: flex; align-items: center; gap: 0; }
+  .lang-bar-link {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(0,0,0,0.5);
+    text-decoration: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    letter-spacing: 0.02em;
+    line-height: 1;
+  }
+  .lang-bar-link:hover { color: var(--green-mid); text-decoration: underline; }
+  .lang-bar-sep { color: rgba(0,0,0,0.15); font-size: 11px; }
   .lang-btn {
     background: none;
     border: none;
@@ -435,6 +453,16 @@
   .ingredient-name { font-weight: 500; font-size: 0.95rem; margin-bottom: 3px; }
   .ingredient-desc { font-size: 0.95rem; color: var(--text-muted); line-height: 1.5; }
   /* INFO MODAL */
+  #disclaimer-modal { display: none; position: fixed; inset: 0; z-index: 999; align-items: center; justify-content: center; }
+  #disclaimer-modal.open { display: flex; }
+  #disclaimer-modal-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.6); }
+  #disclaimer-modal-box { position: relative; background: #fff; max-width: 700px; width: 92vw; max-height: 88vh; overflow-y: auto; border-radius: 6px; padding: 2.5rem 2.25rem 2rem; z-index: 1; }
+  #disclaimer-modal-close { position: absolute; top: 0.9rem; right: 1rem; background: none; border: none; font-size: 2rem; line-height: 1; cursor: pointer; color: var(--green-deep); padding: 0; }
+  #disclaimer-modal-close:hover { color: var(--gold); }
+  #disclaimer-modal-box h2 { font-family: 'Lora', serif; color: var(--green-deep); margin: 0 0 1.25rem; font-size: 1.25rem; padding-right: 2rem; line-height: 1.4; }
+  #disclaimer-modal-box p { font-size: 0.9rem; line-height: 1.7; margin: 0 0 0.85rem; color: #333; }
+  #disclaimer-modal-box ul { padding-left: 1.25rem; margin: 0 0 0.85rem; }
+  #disclaimer-modal-box ul li { font-size: 0.9rem; line-height: 1.65; margin-bottom: 0.4rem; color: #333; }
   #info-modal { display: none; position: fixed; inset: 0; z-index: 999; align-items: center; justify-content: center; }
   #info-modal.open { display: flex; }
   #info-modal-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.6); }
@@ -917,13 +945,21 @@
 <div id="lightbox"><img id="lightbox-img" src="" alt=""></div>
 
 <div class="lang-bar">
-  <button class="lang-btn active" onclick="setLang('pt')" id="btn-pt"><img class="flag-img" src="imgs/flags/pt.svg" alt="PT"><span class="flag-label">PT</span></button>
-  <span class="lang-divider">|</span>
-  <button class="lang-btn" onclick="setLang('br')" id="btn-br"><img class="flag-img" src="imgs/flags/br.svg" alt="BR"><span class="flag-label">BR</span></button>
-  <span class="lang-divider">|</span>
-  <button class="lang-btn" onclick="setLang('eu')" id="btn-eu"><img class="flag-img" src="imgs/flags/eu.svg" alt="EU"><span class="flag-label">EU</span></button>
-  <span class="lang-divider">|</span>
-  <button class="lang-btn" onclick="setLang('world')" id="btn-world"><img class="flag-img" src="imgs/flags/world.svg" alt="World"><span class="flag-label">INT</span></button>
+  <div class="lang-bar-left">
+    <a href="mailto:encomendas@ssp3forte.com" class="lang-bar-link" data-lang-inline="pt">✉ encomendas@ssp3forte.com</a>
+    <a href="mailto:orders@ssp3forte.com" class="lang-bar-link" data-lang-inline="en">✉ orders@ssp3forte.com</a>
+    <span class="lang-bar-sep">|</span>
+    <button type="button" class="lang-bar-link" onclick="openDisclaimerModal()"><span data-lang-inline="pt">Aviso Legal</span><span data-lang-inline="en">Legal Notice</span></button>
+  </div>
+  <div class="lang-bar-right">
+    <button class="lang-btn active" onclick="setLang('pt')" id="btn-pt"><img class="flag-img" src="imgs/flags/pt.svg" alt="PT"><span class="flag-label">PT</span></button>
+    <span class="lang-divider">|</span>
+    <button class="lang-btn" onclick="setLang('br')" id="btn-br"><img class="flag-img" src="imgs/flags/br.svg" alt="BR"><span class="flag-label">BR</span></button>
+    <span class="lang-divider">|</span>
+    <button class="lang-btn" onclick="setLang('eu')" id="btn-eu"><img class="flag-img" src="imgs/flags/eu.svg" alt="EU"><span class="flag-label">EU</span></button>
+    <span class="lang-divider">|</span>
+    <button class="lang-btn" onclick="setLang('world')" id="btn-world"><img class="flag-img" src="imgs/flags/world.svg" alt="World"><span class="flag-label">INT</span></button>
+  </div>
 </div>
 
 <!-- TOP NAV MENU -->
@@ -1663,6 +1699,10 @@
         <span data-lang-inline="pt">Ao submeter este formulário aceita ser contactado pela Naturalfarma para processar o seu pedido. Os seus dados não são partilhados com terceiros.</span>
         <span data-lang-inline="en">By submitting this form you agree to be contacted by Naturalfarma to process your order. Your data is not shared with third parties.</span>
       </p>
+      <p class="form-note" style="margin-top:0.5rem;">
+        <span data-lang-inline="pt">Suplemento alimentar. Não deve ser utilizado como substituto de um regime alimentar variado e equilibrado e de um estilo de vida saudável. Leia cuidadosamente a rotulagem e as instruções de utilização antes de consumir.</span>
+        <span data-lang-inline="en">Food supplement. Should not be used as a substitute for a varied and balanced diet and a healthy lifestyle. Read the label and instructions for use carefully before consuming.</span>
+      </p>
       <button type="submit" class="btn-submit">
         <span data-lang-inline="pt">Enviar pedido →</span>
         <span data-lang-inline="en">Send order →</span>
@@ -2039,6 +2079,14 @@ function closeHeroDropdowns() {
 document.addEventListener('click', e => {
   if (!e.target.closest('.hero-dropdown')) closeHeroDropdowns();
 });
+function openDisclaimerModal() {
+  document.getElementById('disclaimer-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeDisclaimerModal() {
+  document.getElementById('disclaimer-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
 function openInfoModal() {
   document.getElementById('info-modal').classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -2131,6 +2179,72 @@ function closeInfoModal() {
       <div class="modal-note">
         <p style="margin:0;"><strong>SSP3-Forte does NOT reduce libido.</strong> On the contrary, it helps restore the loss of libido caused by an enlarged prostate. It is the synthetic drugs prescribed for BPH that cause loss of libido, sexual impotency, retrograde ejaculation and gynaecomastia. Always read the patient information leaflet for any medication you are prescribed.</p>
       </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- DISCLAIMER MODAL -->
+<div id="disclaimer-modal">
+  <div id="disclaimer-modal-overlay" onclick="closeDisclaimerModal()"></div>
+  <div id="disclaimer-modal-box">
+    <button id="disclaimer-modal-close" onclick="closeDisclaimerModal()">×</button>
+
+    <div data-lang="pt">
+      <h2>Aviso Legal e Declaração de Responsabilidade</h2>
+      <p>O SSP3-Forte é um suplemento alimentar formulado com ingredientes de origem natural, destinado a complementar uma alimentação equilibrada e um estilo de vida saudável.</p>
+      <ul>
+        <li>Os suplementos alimentares não devem ser utilizados como substitutos de um regime alimentar variado e equilibrado e de um modo de vida saudável.</li>
+        <li>Não exceder a dose diária recomendada.</li>
+        <li>Manter fora do alcance e da vista das crianças.</li>
+        <li>Não recomendado a menores de 18 anos, mulheres grávidas ou a amamentar, salvo indicação de um profissional de saúde.</li>
+        <li>Se estiver a tomar medicamentos, sofrer de alguma condição médica ou estiver sob acompanhamento médico, consulte o seu médico ou profissional de saúde antes de iniciar a toma deste suplemento.</li>
+        <li>Em caso de reação adversa, interrompa a utilização e procure aconselhamento médico.</li>
+      </ul>
+      <p>As informações disponibilizadas neste website, incluindo textos, artigos, testemunhos, imagens e conteúdos informativos, têm apenas fins educativos e informativos e não se destinam a diagnosticar, prevenir, tratar ou substituir o aconselhamento de um médico ou de outro profissional de saúde qualificado.</p>
+      <p>Os resultados obtidos com a utilização do SSP3-Forte podem variar de pessoa para pessoa, dependendo de fatores individuais, incluindo idade, estado de saúde, alimentação, estilo de vida e adesão às recomendações de utilização.</p>
+      <p>Qualquer referência ao bem-estar urinário, ao conforto prostático ou à manutenção da saúde masculina deve ser entendida no âmbito das alegações de saúde autorizadas pela legislação aplicável e não constitui uma promessa de resultados específicos nem uma garantia de melhoria de qualquer condição de saúde.</p>
+      <p>Os testemunhos eventualmente apresentados neste website refletem experiências individuais dos respetivos utilizadores e não constituem garantia de que outros consumidores obtenham resultados idênticos.</p>
+      <p>A informação disponibilizada neste website não substitui a consulta, o diagnóstico ou o acompanhamento por um profissional de saúde devidamente habilitado.</p>
+      <p>Ao adquirir e utilizar o SSP3-Forte, o consumidor declara ter lido e compreendido o presente Aviso Legal e aceita que a utilização do produto é efetuada sob a sua responsabilidade, de acordo com as instruções de utilização fornecidas na embalagem e neste website.</p>
+    </div>
+
+    <div data-lang="br">
+      <h2>Aviso Legal e Declaração de Responsabilidade</h2>
+      <p>O SSP3-Forte é um suplemento alimentar formulado com ingredientes de origem natural, destinado a complementar uma alimentação equilibrada e um estilo de vida saudável.</p>
+      <ul>
+        <li>Os suplementos alimentares não devem ser utilizados como substitutos de uma alimentação variada e equilibrada e de um modo de vida saudável.</li>
+        <li>Não exceder a dose diária recomendada.</li>
+        <li>Manter fora do alcance e da vista das crianças.</li>
+        <li>Não recomendado para menores de 18 anos, mulheres grávidas ou em amamentação, salvo indicação de um profissional de saúde.</li>
+        <li>Se estiver tomando medicamentos, sofrendo de alguma condição médica ou sob acompanhamento médico, consulte seu médico ou profissional de saúde antes de iniciar o uso deste suplemento.</li>
+        <li>Em caso de reação adversa, interrompa o uso e procure orientação médica.</li>
+      </ul>
+      <p>As informações disponibilizadas neste website, incluindo textos, artigos, depoimentos, imagens e conteúdos informativos, têm apenas fins educativos e informativos e não se destinam a diagnosticar, prevenir, tratar ou substituir o aconselhamento de um médico ou de outro profissional de saúde qualificado.</p>
+      <p>Os resultados obtidos com a utilização do SSP3-Forte podem variar de pessoa para pessoa, dependendo de fatores individuais, incluindo idade, estado de saúde, alimentação, estilo de vida e adesão às recomendações de utilização.</p>
+      <p>Qualquer referência ao bem-estar urinário, ao conforto prostático ou à manutenção da saúde masculina deve ser entendida no âmbito das alegações de saúde autorizadas pela legislação aplicável e não constitui uma promessa de resultados específicos nem uma garantia de melhoria de qualquer condição de saúde.</p>
+      <p>Os depoimentos eventualmente apresentados neste website refletem experiências individuais dos respectivos usuários e não constituem garantia de que outros consumidores obtenham resultados idênticos.</p>
+      <p>A informação disponibilizada neste website não substitui a consulta, o diagnóstico ou o acompanhamento por um profissional de saúde devidamente habilitado.</p>
+      <p>Ao adquirir e utilizar o SSP3-Forte, o consumidor declara ter lido e compreendido o presente Aviso Legal e aceita que a utilização do produto é efetuada sob sua responsabilidade, de acordo com as instruções de utilização fornecidas na embalagem e neste website.</p>
+    </div>
+
+    <div data-lang="en">
+      <h2>Legal Notice and Disclaimer</h2>
+      <p>SSP3-Forte is a food supplement formulated with natural-origin ingredients, intended to complement a balanced diet and a healthy lifestyle.</p>
+      <ul>
+        <li>Food supplements should not be used as substitutes for a varied and balanced diet and a healthy lifestyle.</li>
+        <li>Do not exceed the recommended daily dose.</li>
+        <li>Keep out of reach and sight of children.</li>
+        <li>Not recommended for persons under 18 years of age, pregnant or breastfeeding women, unless advised by a healthcare professional.</li>
+        <li>If you are taking medication, suffering from any medical condition or under medical supervision, consult your doctor or healthcare professional before starting to take this supplement.</li>
+        <li>In the event of an adverse reaction, discontinue use and seek medical advice.</li>
+      </ul>
+      <p>The information provided on this website, including texts, articles, testimonials, images and informational content, is intended solely for educational and informational purposes and is not intended to diagnose, prevent, treat or replace the advice of a doctor or other qualified healthcare professional.</p>
+      <p>Results obtained from using SSP3-Forte may vary from person to person, depending on individual factors including age, health status, diet, lifestyle and adherence to the recommended directions for use.</p>
+      <p>Any reference to urinary well-being, prostate comfort or the maintenance of men's health should be understood within the scope of health claims authorised by applicable legislation and does not constitute a promise of specific results or a guarantee of improvement of any health condition.</p>
+      <p>Any testimonials presented on this website reflect the individual experiences of the respective users and do not constitute a guarantee that other consumers will obtain identical results.</p>
+      <p>The information provided on this website does not replace consultation, diagnosis or monitoring by a duly qualified healthcare professional.</p>
+      <p>By purchasing and using SSP3-Forte, the consumer declares to have read and understood this Legal Notice and accepts that use of the product is carried out at their own risk, in accordance with the instructions for use provided on the packaging and on this website.</p>
     </div>
 
   </div>
