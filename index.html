@@ -108,6 +108,12 @@
   body.lang-br [data-lang-inline="en"] { display: none; }
   body.lang-en [data-lang-inline="pt"] { display: none; }
   body.lang-world [data-lang-inline="pt"] { display: none; }
+  body.lang-pt [data-lang-inline="br"] { display: none; }
+  body.lang-en [data-lang-inline="br"] { display: none; }
+  body.lang-world [data-lang-inline="br"] { display: none; }
+  body.lang-br [data-lang-inline="pt-only"] { display: none; }
+  body.lang-en [data-lang-inline="pt-only"] { display: none; }
+  body.lang-world [data-lang-inline="pt-only"] { display: none; }
 
 
   [data-lang-inline] { display: inline; }
@@ -1625,7 +1631,7 @@
           <span id="calcProduct">—</span>
         </div>
         <div class="shipping-line">
-          <span data-lang-inline="pt">Envio</span><span data-lang-inline="en">Shipping</span>
+          <span data-lang-inline="pt-only">Envio</span><span data-lang-inline="br">Frete</span><span data-lang-inline="en">Shipping</span>
           <span id="calcShipping">—</span>
         </div>
         <div class="shipping-line total">
@@ -1657,7 +1663,7 @@
             <div class="payment-opts">
               <label class="payment-opt">
                 <input type="radio" name="shippingMethod" value="portugal" onchange="updateTotal()" checked>
-                Para Portugal, por correios registado à cobrança (+ €4,99)
+                Para Portugal, por correios registado à cobrança (+ €5,99)
               </label>
               <label class="payment-opt">
                 <input type="radio" name="shippingMethod" value="europa" onchange="updateTotal()">
@@ -1677,11 +1683,11 @@
             </div>
           </div>
           <div class="form-group">
-            <label>Escolha um método de envio</label>
+            <label>Escolha um método de frete</label>
             <div class="payment-opts">
               <label class="payment-opt">
                 <input type="radio" name="shippingMethod" value="correio-aereo" checked>
-                Envio por correio aéreo - Entrega em mão
+                Frete por correio aéreo - Entrega em mão
               </label>
             </div>
           </div>
@@ -1895,7 +1901,7 @@
 
 <script>
 const PRICES = { '1x': 29.95, '3x': 80.86, '1x-br': 165, '3x-br': 445 };
-const SHIPPING = { PT: 4.99, default: 9.00 };
+const SHIPPING = { PT: 5.99, default: 9.00 };
 const CURRENCY = { '1x': '€', '3x': '€', '1x-br': 'R$', '3x-br': 'R$' };
 
 let currentRegion = 'pt';
