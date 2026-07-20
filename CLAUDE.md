@@ -28,18 +28,24 @@ The site supports three language variants switched at runtime via CSS class on `
 |---|---|---|---|
 | `lang-pt` | European Portuguese | 🇵🇹 | `btn-pt` |
 | `lang-br` | Brazilian Portuguese | 🇧🇷 | `btn-br` |
-| `lang-en` | English (Europe/EU) | 🇬🇧 | `btn-eu` |
-| `lang-world` | English (Rest of World) | 🌍 | `btn-world` |
+| `lang-en` | English (EU) | 🇬🇧 | `btn-eu` |
 
-`lang-world` reuses all `[data-lang="en"]` content blocks. The only difference from `lang-en` is the pricing section lead text (worldwide shipping message instead of EU-specific countries). Globe SVG at `imgs/flags/world.svg`.
+Default language on page load is **European Portuguese** (`lang-pt`).
 
-Default language on page load is **Brazilian Portuguese** (`lang-br`).
+**Block-level content** uses `data-lang="pt"` / `data-lang="br"` / `data-lang="en"` on wrapper `<div>`s — only the active language's blocks are `display: block`. PT and BR are **fully separate block variants** with genuine language differences (spelling, vocabulary, grammar — see below).
 
-**Block-level content** uses `data-lang="pt"` / `"br"` / `"en"` on wrapper `<div>`s — only the active language's blocks are `display: block`.
+**Inline content** uses `data-lang-inline="pt"` / `"en"` — toggled with `display: inline` / `display: none`. BR shares inline text with PT (both show `data-lang-inline="pt"`); `body.lang-br [data-lang-inline="en"]` is hidden.
 
-**Inline content** uses `data-lang-inline="pt"` / `"en"` — toggled with `display: inline` / `display: none`. BR shares inline text with PT (both show `data-lang-inline="pt"`).
+**PT vs BR language differences** applied throughout all content blocks:
 
-When editing copy: every user-facing string must exist in all three variants. Never add text to one language without adding the equivalents for the other two.
+| Feature | PT (European) | BR (Brazilian) |
+|---|---|---|
+| Spelling | extracto, afecta, eréctil, crónica, acção, contacto, optimizada | extrato, afeta, erétil, crônica, ação, contato, otimizada |
+| Vocabulary | ácidos gordos, casa de banho, utilizadores, efeitos secundários, pretendida | ácidos graxos, banheiro, usuários, efeitos colaterais, desejada |
+| Grammar | "a sua opção", "entraremos em contacto" | "sua opção", "entre em contato" |
+| Tone | formal | direct, uses "você" |
+
+When editing copy: every user-facing string must exist in all three variants (pt, br, en). Never add text to one language without adding the equivalents for the other two.
 
 ## Contact emails
 
@@ -93,21 +99,31 @@ npx wrangler deploy
 
 Fonts loaded from Google Fonts: **Lora** (headings, serif) + **Source Sans 3** (body, UI).
 
+## Navigation
+
+**Language bar** — sticky top bar with PT 🇵🇹, BR 🇧🇷, EU 🇬🇧 flag buttons. Clicking BR also activates BRL pricing (equivalent to checking the BRL checkbox).
+
+**Top nav menu** (`#top-nav`) — fixed top-left hamburger button (☰) that expands horizontally to the right revealing section links: Início/Home, Ingredientes/Ingredients, Testemunhos/Testimonials, Preços/Pricing, Encomenda/Order, FAQ. Closes on link click or outside click. Hidden on mobile (≤768px).
+
 ## Sections (in order)
 
-1. Sticky language switcher bar (4 flags: PT, BR, EU, INT/world)
-2. Hero — PT/BR: 3 buttons + "Saber mais ▾" dropdown (Blog, Ebook, Info modal); EN/INT: 3 buttons only
-3. Social-proof bar
-4. Symptoms grid
-5. Ingredients list (with lightbox) + sticky callout
-6. Testimonials (`#testemunhos`)
-7. Video (`#video`) — "Ver em acção / Watch in action"
-8. Pricing cards (`#precos`, EUR and BRL toggle) — PT/BR have "O que este produto pode fazer" button
-9. Order form (`#encomenda`, submits via Cloudflare Worker → Resend email)
-10. FAQ accordion (`#faq`) — includes blog CTA + ebook CTA block (PT/BR only)
-11. Footer
+1. Sticky language switcher bar (3 flags: PT, BR, EU)
+2. `#top-nav` — sticky top-left hamburger nav menu
+3. `#hero` — Hero: 3 CTA buttons (order → `#precos`, ingredients, Blog)
+4. Social-proof bar
+5. Symptoms grid
+6. `#ingredientes` — Ingredients list (with lightbox) + sticky callout
+7. `#testemunhos` — Testimonials
+8. Video — "Ver em acção / Ver em ação / Watch in action"
+9. `#precos` — Pricing cards (EUR and BRL toggle) — PT/BR have "O que este produto pode fazer" button
+10. `#encomenda` / `#order` — Order form (submits via Cloudflare Worker → Resend email)
+11. `#faq` — FAQ accordion — includes blog CTA (PT/BR only)
+12. References section (scientific bibliography)
+13. Footer
 
 **Info modal** (`#info-modal`) — floating overlay, PT/BR only. Triggered from hero "Saber mais" dropdown and pricing section button. Source text: `O que o SSP3-Forte pode fazer por Você.txt`.
+
+**Hero CTA buttons** — font size 21px (scoped to `.hero-cta`). The order button links to `#precos` (pricing section), not `#encomenda`. The Blog button uses `.btn-blog` class (gold border, bold) to stand out.
 
 ## Testimonials
 
@@ -122,11 +138,28 @@ Fonts loaded from Google Fonts: **Lora** (headings, serif) + **Source Sans 3** (
 
 **Rules:** quotes must remain verbatim (original Brazilian Portuguese) in both PT and BR blocks. EN block is a faithful translation. Never paraphrase or adapt these quotes — they are real customer statements.
 
+## Pricing
+
+### EUR prices
+| Product | Price |
+|---|---|
+| 1 frasco / bottle | €29.95 |
+| Kit 3 frascos / 3-bottle kit | €80.86 (saves 10% off €89.85) |
+
+### BRL prices (R$) — shown when BR flag or BRL toggle is active
+| Product | Price |
+|---|---|
+| 1 frasco | R$210 |
+| Kit 3 frascos | R$567 (saves 10% off R$630) |
+
+JS `PRICES` object: `{ '1x': 29.95, '3x': 80.86, '1x-br': 210, '3x-br': 567 }`
+
+Shipping (EUR orders): Portugal €4.99, other countries €9.00.
+
 ## Order form behaviour
 
 - **Default country:** "Portugal" for PT/BR, empty for EN/EU
-- **BRL checkbox:** checking it sets country to "Brasil" and switches pricing to BRL; unchecking restores "Portugal"
-- **Shipping calc:** Portugal €4.99, other PT/BR countries €9.00, EN/EU and BR → "to confirm"
+- **BR flag / BRL checkbox:** activates `brl-pricing` body class, sets country to "Brasil", switches pricing display to BRL. Both the flag button and checkbox are kept in sync.
 - **Submit:** async fetch to Worker; shows success message on screen on success, alert with support email on failure
 
 ## Deployment
@@ -137,9 +170,9 @@ Worker changes require a separate `npx wrangler deploy` from the `worker/` direc
 
 ## Ingredients
 
-8 ingredients, each with a photo (`imgs/0N_*.jpg/png`), botanical name in italics, description, and superscript citation(s). Both PT/BR and EN versions must be kept in sync. Citation numbering follows the bibliography order below.
+8 ingredients, each with a photo (`imgs/0N_*.jpg/png`), botanical name in italics, description, and superscript citation(s). PT, BR, and EN versions must all be kept in sync. Citation numbering follows the bibliography order below.
 
-| # | Name (PT) | Name (EN) | Image | Citations |
+| # | Name (PT/BR) | Name (EN) | Image | Citations |
 |---|---|---|---|---|
 | 01 | Saw Palmetto *(Serenoa repens)* | Saw Palmetto *(Serenoa repens)* | `01_sawpalmetto.jpg` | [1,2] |
 | 02 | Pygeum africanum | Pygeum africanum | `02_pygeum_africanum.jfif` | [3,4] |
@@ -150,7 +183,7 @@ Worker changes require a separate `npx wrangler deploy` from the `worker/` direc
 | 07 | Licopeno | Lycopene | `07_licopeno.png` | [15] |
 | 08 | Vitamina E | Vitamin E | `08_vitamina_e.png` | [16] |
 
-Bibliography has 16 references in both PT and EN. Zinc refs: [8] Costello & Franklin DOI `10.3390/biomedicines10123206`; [9] Chen et al. 2025 DOI `10.1016/j.jtemb.2025.127605`.
+Bibliography has 16 references in PT, BR, and EN. Zinc refs: [8] Costello & Franklin DOI `10.3390/biomedicines10123206`; [9] Chen et al. 2025 DOI `10.1016/j.jtemb.2025.127605`.
 
 ## Key conventions
 
@@ -158,5 +191,9 @@ Bibliography has 16 references in both PT and EN. Zinc refs: [8] Costello & Fran
 - JS lives in a `<script>` block at the bottom of `<body>`.
 - `font-size: 110%` on `html` and `font-size: 18px` on `body` set the baseline; don't shrink these.
 - Ingredient images use a click-to-zoom lightbox (`#lightbox`).
-- The `currentRegion` JS variable tracks `'pt'`, `'br'`, `'eu'`, or `'world'` — distinct from the `lang-*` body class.
-- PT/BR-only features (ebook CTA, info modal, "Saber mais" dropdown) use `[data-lang="pt"]` / `[data-lang="br"]` blocks — they are invisible to EN/INT visitors automatically.
+- The `currentRegion` JS variable tracks `'pt'`, `'br'`, or `'eu'` — maps to body classes `lang-pt`, `lang-br`, `lang-en`.
+- `setLang(region)` sets `body.className` to `lang-pt`, `lang-br`, or `lang-en` and syncs all UI state (BRL toggle, country input, active flag buttons, order link href).
+- The `#encomenda` section ID becomes `#order` when EN is active (swapped by `setLang`); the top-nav order link href is updated in sync.
+- PT/BR-only features (info modal, "Saber mais" dropdown, blog CTA in FAQ) use `[data-lang="pt"]` / `[data-lang="br"]` blocks — invisible to EN visitors automatically.
+- `.btn-blog` — special class on Blog buttons for visual emphasis (gold border, bold, hover fills gold).
+- `.hero-cta .btn-primary` and `.hero-cta .btn-ghost` — font-size scoped to 21px; other buttons on the page remain at their own sizes.
