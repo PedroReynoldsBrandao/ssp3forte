@@ -118,8 +118,15 @@ Fonts loaded from Google Fonts: **Lora** (headings, serif) + **Source Sans 3** (
 9. `#precos` — Pricing cards (EUR and BRL toggle) — PT/BR have "O que este produto pode fazer" button
 10. `#encomenda` / `#order` — Order form (submits via Cloudflare Worker → Resend email)
 11. `#faq` — FAQ accordion — includes blog CTA (PT/BR only)
-12. References section (scientific bibliography)
-13. Footer
+12. `#artigos` — Blog articles grid (PT/BR only — see below)
+13. References section (scientific bibliography)
+14. Footer
+
+**Blog articles section** (`#artigos`) — a hand-curated grid of 6 articles from the Naturalfarma blog, hard-coded as static cards (title, date, excerpt, thumbnail, link). PT and BR variants; hidden for EN/INT via `body.lang-en .blog-section, body.lang-world .blog-section { display: none; }` because the blog is Portuguese-only.
+
+**Why curated and not a live feed:** the blog's 2026 output (122 posts) is AI-generated SEO content — slug titles (`Toque-retal-exame-prostata`), a rigid "symptom list → target keyword restated → answer" template, batches of 10 posts published within 28 minutes, and several posts whose title field is empty with the title left as the body's first line. Pulling the feed live would surface that content. The 6 featured articles are all pre-2026 and genuinely authored, chosen for educational value and for making no therapeutic claims about the product. Deliberately excluded: `SSP3-Forte tem Antivirais` (immunity-against-viruses claim), `SSP3_Forte, perguntas e respostas` ("prevenir e/ou tratar a hiperplasia"), and `Onde adquirir o SSP3-Forte em Portugal` / `SSP3 Testemunhos (PARTE 2)` (contain third-party names, addresses, phone numbers and an email address).
+
+To feature another post: copy one `<a class="blog-card">` block in **both** the `pt` and `br` blocks and set href, image, date, title and excerpt. Blogger thumbnails come from the feed at `/s72-c/`; swap that for `/s400/` (or `=s72-c` → `=s400`) for a usable size. Cards without a thumbnail use the `.blog-card-ph` inline-SVG placeholder.
 
 **Info modal** (`#info-modal`) — floating overlay, PT/BR only. Triggered from hero "Saber mais" dropdown and pricing section button. Source text: `O que o SSP3-Forte pode fazer por Você.txt`.
 
