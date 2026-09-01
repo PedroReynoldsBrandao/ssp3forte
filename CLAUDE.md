@@ -103,7 +103,7 @@ Fonts loaded from Google Fonts: **Lora** (headings, serif) + **Source Sans 3** (
 
 **Language bar** — sticky top bar with PT 🇵🇹, BR 🇧🇷, EU 🇬🇧 flag buttons. Clicking BR also activates BRL pricing (equivalent to checking the BRL checkbox).
 
-**Top nav menu** (`#top-nav`) — fixed top-left hamburger button (☰) that expands horizontally to the right revealing section links: Início/Home, Ingredientes/Ingredients, Testemunhos/Testimonials, Preços/Pricing, Encomenda/Order, FAQ. Closes on link click or outside click. Hidden on mobile (≤768px).
+**Top nav menu** (`#top-nav`) — fixed top-left hamburger button (☰) that expands **downwards into a compact vertical list**: Início/Home, Testemunhos/Testimonials, Encomenda/Order, Perguntas frequentes/FAQ, Artigos. Collapsed it is 38×34px; open it is 178px wide and grows to fit (`max-height: 280px`), animating `width` and `max-height`. Links are 13px. Closes on link click or outside click. The Artigos entry carries `li.nav-pt-only` and is hidden for EN/INT, matching the PT/BR-only `#artigos` section. Not hidden on mobile.
 
 ## Sections (in order)
 
