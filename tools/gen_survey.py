@@ -2,7 +2,7 @@
 """Gera o bloco HTML do #survey-modal nas tres linguas (pt / br / en).
 
 Regras acordadas com o cliente:
-  - titulo fixo "Estudo de satisfacao a utilizadores (2017)";
+  - titulo fixo "Estudo de satisfacao a utilizadores" (sem o ano);
   - a base de 290 questionarios so aparece no rodape em letra pequena;
   - a palavra "apenas" nao pode aparecer;
   - nada de comparacao com a amostra completa no corpo (e analise interna);
@@ -66,7 +66,7 @@ SAT = 88.06
 
 T = {
 'pt': dict(
-    h2='Estudo de satisfação a utilizadores (2017)',
+    h2='Estudo de satisfação a utilizadores',
     lead='Homens que tomaram o SSP3-Forte com regularidade responderam a um questionário sobre a experiência '
          'que tiveram com o produto. Foi isto que disseram.',
     donut_alt='88 por cento satisfeitos',
@@ -110,7 +110,7 @@ T = {
       'para pessoa e não substitui aconselhamento, diagnóstico ou tratamento médico.',
     ]),
 'br': dict(
-    h2='Estudo de satisfação com usuários (2017)',
+    h2='Estudo de satisfação com usuários',
     lead='Homens que tomaram o SSP3-Forte com regularidade responderam a um questionário sobre a experiência '
          'que tiveram com o produto. Foi isto que eles disseram.',
     donut_alt='88 por cento satisfeitos',
@@ -155,7 +155,7 @@ T = {
       'pessoa e não substitui orientação, diagnóstico ou tratamento médico.',
     ]),
 'en': dict(
-    h2='User satisfaction study (2017)',
+    h2='User satisfaction study',
     lead='Men who took SSP3-Forte regularly answered a questionnaire about their experience with the product. '
          'This is what they said.',
     donut_alt='88 per cent satisfied',

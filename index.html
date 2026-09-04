@@ -984,7 +984,7 @@
   /* TOP NAV MENU */
   #top-nav {
     position: fixed;
-    top: 36px;
+    top: 48px;
     left: 0;
     z-index: 950;
     display: flex;
@@ -1005,9 +1005,9 @@
     align-self: flex-start;
     width: 38px;
     height: 34px;
-    background: none;
+    background: var(--gold);
     border: none;
-    color: var(--gold);
+    color: var(--green-deep);
     font-size: 18px;
     cursor: pointer;
     display: flex;
@@ -1015,7 +1015,7 @@
     justify-content: center;
     padding: 0;
   }
-  #top-nav-toggle:hover { color: var(--gold-light); }
+  #top-nav-toggle:hover { background: var(--gold-light); color: var(--green-deep); }
   #top-nav ul {
     list-style: none;
     margin: 0;
@@ -1050,6 +1050,8 @@
     .lang-bar-link { font-size: 10px; }
     .lang-btn { padding: 2px 6px; }
     .lang-btn img.flag-img { width: 24px; height: 17px; }
+    /* the bar wraps to two rows here, so the nav has to start below it */
+    #top-nav { top: 66px; }
   }
 
   @media (max-width: 768px) {
@@ -1136,7 +1138,7 @@
           <button type="button" class="btn-ghost btn-blog" onclick="toggleHeroDropdown(this)">Saber mais <span class="hero-arrow"></span></button>
           <div class="hero-dropdown-menu">
             <button type="button" onclick="openInfoModal(); closeHeroDropdowns()">O que este produto pode fazer por si →</button>
-            <button type="button" onclick="openSurveyModal(); closeHeroDropdowns()">Estudo de satisfação a utilizadores (2017) →</button>
+            <button type="button" onclick="openSurveyModal(); closeHeroDropdowns()">Estudo de satisfação a utilizadores →</button>
             <a href="https://problemasnaprostata.blogspot.com/" target="_blank" rel="noopener">Blog →</a>
             <a href="http://ebookdoshomensdepoisdos40.blogspot.pt/" target="_blank" rel="noopener">Ebook gratuito →</a>
           </div>
@@ -1164,7 +1166,7 @@
           <button type="button" class="btn-ghost btn-blog" onclick="toggleHeroDropdown(this)">Saber mais <span class="hero-arrow"></span></button>
           <div class="hero-dropdown-menu">
             <button type="button" onclick="openInfoModal(); closeHeroDropdowns()">O que este produto pode fazer por você →</button>
-            <button type="button" onclick="openSurveyModal(); closeHeroDropdowns()">Estudo de satisfação com usuários (2017) →</button>
+            <button type="button" onclick="openSurveyModal(); closeHeroDropdowns()">Estudo de satisfação com usuários →</button>
             <a href="https://problemasnaprostata.blogspot.com/" target="_blank" rel="noopener">Blog →</a>
             <a href="http://ebookdoshomensdepoisdos40.blogspot.pt/" target="_blank" rel="noopener">Ebook gratuito →</a>
           </div>
@@ -1192,7 +1194,7 @@
           <button type="button" class="btn-ghost btn-blog" onclick="toggleHeroDropdown(this)">Learn more <span class="hero-arrow"></span></button>
           <div class="hero-dropdown-menu">
             <button type="button" onclick="openInfoModal(); closeHeroDropdowns()">What this product can do for you →</button>
-            <button type="button" onclick="openSurveyModal(); closeHeroDropdowns()">User satisfaction study (2017) →</button>
+            <button type="button" onclick="openSurveyModal(); closeHeroDropdowns()">User satisfaction study →</button>
           </div>
         </div>
       </div>
@@ -2573,7 +2575,7 @@ renderBlogCards();
     <button id="survey-modal-close" onclick="closeSurveyModal()" aria-label="Fechar">×</button>
 
     <div data-lang="pt">
-      <h2>Estudo de satisfação a utilizadores (2017)</h2>
+      <h2>Estudo de satisfação a utilizadores</h2>
       <p class="sv-lead">Homens que tomaram o SSP3-Forte com regularidade responderam a um questionário sobre a experiência que tiveram com o produto. Foi isto que disseram.</p>
       <div class="sv-donut-row">
         <svg class="sv-donut" viewBox="0 0 140 140" role="img" aria-label="88 por cento satisfeitos">
@@ -2632,7 +2634,7 @@ renderBlogCards();
     </div>
 
     <div data-lang="br">
-      <h2>Estudo de satisfação com usuários (2017)</h2>
+      <h2>Estudo de satisfação com usuários</h2>
       <p class="sv-lead">Homens que tomaram o SSP3-Forte com regularidade responderam a um questionário sobre a experiência que tiveram com o produto. Foi isto que eles disseram.</p>
       <div class="sv-donut-row">
         <svg class="sv-donut" viewBox="0 0 140 140" role="img" aria-label="88 por cento satisfeitos">
@@ -2691,7 +2693,7 @@ renderBlogCards();
     </div>
 
     <div data-lang="en">
-      <h2>User satisfaction study (2017)</h2>
+      <h2>User satisfaction study</h2>
       <p class="sv-lead">Men who took SSP3-Forte regularly answered a questionnaire about their experience with the product. This is what they said.</p>
       <div class="sv-donut-row">
         <svg class="sv-donut" viewBox="0 0 140 140" role="img" aria-label="88 per cent satisfied">
