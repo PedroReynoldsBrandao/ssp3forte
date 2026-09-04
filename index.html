@@ -1894,77 +1894,17 @@
 </section>
 
 <!-- BLOG ARTICLES (PT/BR only — the blog is Portuguese-only) -->
-<!-- To feature another post: copy one <a class="blog-card"> and set href, image, date, title, excerpt. -->
+<!-- Cards are rendered by JS from the BLOG_POSTS pool (bottom of the file). Six of them are drawn each week,
+     deterministically from the ISO week number, so every visitor sees the same six until the next Monday.
+     To add an article: append one entry to BLOG_POSTS. -->
 <section class="blog-section" id="artigos">
   <div class="section-inner">
 
     <div data-lang="pt">
       <p class="section-label">Artigos</p>
       <h2>Do nosso blog</h2>
-      <p class="section-lead">Uma selecção de artigos sobre a saúde da próstata, publicados ao longo dos anos no blog da Naturalfarma.</p>
-      <div class="blog-grid">
-
-        <a class="blog-card" href="https://problemasnaprostata.blogspot.com/2017/07/prostata-aumentada-mais-de-50-perguntas.html" target="_blank" rel="noopener">
-          <img class="blog-card-img" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgHCOENuxAJ5EzyS56oOxy1qKvizo95wPkpEjZI7VnhxEVZ3f7dcE9iZuhX5yo8LwB2-mdxTu9ECIdkf-P_4E3FuizuGG8btrHDYpmsI13yRVyZV5KSJ-yLiEOxtQeBuQXhZk1TmGY6syWF/s400/prostata+corte.jpg" alt="" loading="lazy">
-          <div class="blog-card-body">
-            <div class="blog-card-date">2 Julho 2017</div>
-            <h3 class="blog-card-title">Próstata aumentada: mais de 50 perguntas com respostas</h3>
-            <p class="blog-card-exc">Um guia extenso sobre a Hiperplasia Benigna da Próstata: o que é, porque acontece, que sintomas dá e o que fazer em cada fase.</p>
-            <span class="blog-card-more">Ler artigo →</span>
-          </div>
-        </a>
-
-        <a class="blog-card" href="https://problemasnaprostata.blogspot.com/2021/12/exame-de-toque.html" target="_blank" rel="noopener">
-          <div class="blog-card-ph"><svg viewBox="0 0 24 24" fill="none" stroke="#0d3d2b" stroke-width="1.5"><path d="M4 4h16v16H4z"/><path d="M8 9h8M8 13h8M8 17h5"/></svg></div>
-          <div class="blog-card-body">
-            <div class="blog-card-date">25 Dezembro 2021</div>
-            <h3 class="blog-card-title">Próstata: o exame de toque</h3>
-            <p class="blog-card-exc">Uma conversa franca, de homem para homem, sobre o exame que tantos adiam e porque não vale a pena deixá-lo para depois.</p>
-            <span class="blog-card-more">Ler artigo →</span>
-          </div>
-        </a>
-
-        <a class="blog-card" href="https://problemasnaprostata.blogspot.com/2022/08/exame-psa-total-e-livre-o-que-e-para.html" target="_blank" rel="noopener">
-          <img class="blog-card-img" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhvevMkN_jTTlxDTk16QaFR0uQ4aEwarqSqty7OhqWyxJ3DT-Qw5EFZgmLoxJnwIZuvOAQLL6DN35kSSRuQ_2GrHCt1nCJu4UymEswS8PRjaMQ_jlb1T1n4rBPxASuEOaO5UMPO8WDvWCEw7orXOwhDcizHDrbDpYIq-vDCkGJ43kXQorfkY4KCfjOlqQ/s400/PSA%20teste2.jpg" alt="" loading="lazy">
-          <div class="blog-card-body">
-            <div class="blog-card-date">17 Agosto 2022</div>
-            <h3 class="blog-card-title">O que é o PSA total e o PSA livre?</h3>
-            <p class="blog-card-exc">O que a análise ao PSA mede de facto, a diferença entre total e livre, e como interpretar os valores sem alarmismos.</p>
-            <span class="blog-card-more">Ler artigo →</span>
-          </div>
-        </a>
-
-        <a class="blog-card" href="https://problemasnaprostata.blogspot.com/2022/08/a-saude-da-prostata-esta-relacionada.html" target="_blank" rel="noopener">
-          <img class="blog-card-img" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjoS3jRdKBXE8GXGQjNQBqhZ0qfTERtOow40ZWQuiIlyIyalJp1aYNlluo5MEhXzsb5u5BqI0eoIGhk0JJ66diI3UCL4L4a-u6LnelukKpbszQw-bBtFxMJMnPoKdU1l3zKFjzhgedIcAqdPUY6ceWlAVN0ZCtkxwaWqCuDgHktWAUlqktqVLK-wcvOkg/s400/barriga%20grande.jpg" alt="" loading="lazy">
-          <div class="blog-card-body">
-            <div class="blog-card-date">17 Agosto 2022</div>
-            <h3 class="blog-card-title">A saúde da próstata está relacionada com a gordura abdominal</h3>
-            <p class="blog-card-exc">Um estudo publicado na BMC Medicine e apresentado no Congresso Europeu de Obesidade ligou o aumento da gordura abdominal a maior risco prostático.</p>
-            <span class="blog-card-more">Ler artigo →</span>
-          </div>
-        </a>
-
-        <a class="blog-card" href="https://problemasnaprostata.blogspot.com/2022/01/a-prostata-aumentada-e-impotencia.html" target="_blank" rel="noopener">
-          <img class="blog-card-img" src="https://blogger.googleusercontent.com/img/a/AVvXsEgAD4MYz0xEkoU0bwlYxaurYL-LQZ9HaeeuH4vAVDM9ocZCed5HJ0r3bi-Pt8ixynGvvFCubRY0olarz4FcheU0W6LNG7bUhdst-KB-1U3QfQob_k1uKV2bolek3DkysvmCLSghdzPhoMwnrqzaJWjirF55ub6HeI_SfNhQF9MymrFACOipPiU-YU4l0A=s400" alt="" loading="lazy">
-          <div class="blog-card-body">
-            <div class="blog-card-date">4 Janeiro 2022</div>
-            <h3 class="blog-card-title">A próstata aumentada e a impotência</h3>
-            <p class="blog-card-exc">As perguntas que os homens fazem mais vezes e menos em voz alta: o que muda na vida sexual quando a próstata aumenta.</p>
-            <span class="blog-card-more">Ler artigo →</span>
-          </div>
-        </a>
-
-        <a class="blog-card" href="https://problemasnaprostata.blogspot.com/2018/07/10-atitudes-para-prevenir-problemas-na.html" target="_blank" rel="noopener">
-          <div class="blog-card-ph"><svg viewBox="0 0 24 24" fill="none" stroke="#0d3d2b" stroke-width="1.5"><path d="M4 4h16v16H4z"/><path d="M8 9h8M8 13h8M8 17h5"/></svg></div>
-          <div class="blog-card-body">
-            <div class="blog-card-date">15 Julho 2018</div>
-            <h3 class="blog-card-title">10 atitudes para prevenir problemas na próstata</h3>
-            <p class="blog-card-exc">Dez hábitos simples, do prato ao sono, que ajudam a manter a próstata saudável a partir dos 40 anos.</p>
-            <span class="blog-card-more">Ler artigo →</span>
-          </div>
-        </a>
-
-      </div>
+      <p class="section-lead">Uma selecção de artigos sobre a saúde da próstata, publicados ao longo dos anos no blog da Naturalfarma. A selecção muda todas as semanas.</p>
+      <div class="blog-grid" id="blog-grid-pt"></div>
       <div class="blog-all">
         <a href="https://problemasnaprostata.blogspot.com/" target="_blank" rel="noopener" class="btn-ghost btn-blog">Ver todos os artigos →</a>
       </div>
@@ -1973,70 +1913,8 @@
     <div data-lang="br">
       <p class="section-label">Artigos</p>
       <h2>Do nosso blog</h2>
-      <p class="section-lead">Uma seleção de artigos sobre a saúde da próstata, publicados ao longo dos anos no blog da Naturalfarma.</p>
-      <div class="blog-grid">
-
-        <a class="blog-card" href="https://problemasnaprostata.blogspot.com/2017/07/prostata-aumentada-mais-de-50-perguntas.html" target="_blank" rel="noopener">
-          <img class="blog-card-img" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgHCOENuxAJ5EzyS56oOxy1qKvizo95wPkpEjZI7VnhxEVZ3f7dcE9iZuhX5yo8LwB2-mdxTu9ECIdkf-P_4E3FuizuGG8btrHDYpmsI13yRVyZV5KSJ-yLiEOxtQeBuQXhZk1TmGY6syWF/s400/prostata+corte.jpg" alt="" loading="lazy">
-          <div class="blog-card-body">
-            <div class="blog-card-date">2 Julho 2017</div>
-            <h3 class="blog-card-title">Próstata aumentada: mais de 50 perguntas com respostas</h3>
-            <p class="blog-card-exc">Um guia extenso sobre a Hiperplasia Benigna da Próstata: o que é, por que acontece, que sintomas dá e o que fazer em cada fase.</p>
-            <span class="blog-card-more">Ler artigo →</span>
-          </div>
-        </a>
-
-        <a class="blog-card" href="https://problemasnaprostata.blogspot.com/2021/12/exame-de-toque.html" target="_blank" rel="noopener">
-          <div class="blog-card-ph"><svg viewBox="0 0 24 24" fill="none" stroke="#0d3d2b" stroke-width="1.5"><path d="M4 4h16v16H4z"/><path d="M8 9h8M8 13h8M8 17h5"/></svg></div>
-          <div class="blog-card-body">
-            <div class="blog-card-date">25 Dezembro 2021</div>
-            <h3 class="blog-card-title">Próstata: o exame de toque</h3>
-            <p class="blog-card-exc">Uma conversa franca, de homem para homem, sobre o exame que tantos adiam e por que não vale a pena deixar para depois.</p>
-            <span class="blog-card-more">Ler artigo →</span>
-          </div>
-        </a>
-
-        <a class="blog-card" href="https://problemasnaprostata.blogspot.com/2022/08/exame-psa-total-e-livre-o-que-e-para.html" target="_blank" rel="noopener">
-          <img class="blog-card-img" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhvevMkN_jTTlxDTk16QaFR0uQ4aEwarqSqty7OhqWyxJ3DT-Qw5EFZgmLoxJnwIZuvOAQLL6DN35kSSRuQ_2GrHCt1nCJu4UymEswS8PRjaMQ_jlb1T1n4rBPxASuEOaO5UMPO8WDvWCEw7orXOwhDcizHDrbDpYIq-vDCkGJ43kXQorfkY4KCfjOlqQ/s400/PSA%20teste2.jpg" alt="" loading="lazy">
-          <div class="blog-card-body">
-            <div class="blog-card-date">17 Agosto 2022</div>
-            <h3 class="blog-card-title">O que é o PSA total e o PSA livre?</h3>
-            <p class="blog-card-exc">O que o exame de PSA mede de fato, a diferença entre total e livre, e como interpretar os valores sem alarmismos.</p>
-            <span class="blog-card-more">Ler artigo →</span>
-          </div>
-        </a>
-
-        <a class="blog-card" href="https://problemasnaprostata.blogspot.com/2022/08/a-saude-da-prostata-esta-relacionada.html" target="_blank" rel="noopener">
-          <img class="blog-card-img" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjoS3jRdKBXE8GXGQjNQBqhZ0qfTERtOow40ZWQuiIlyIyalJp1aYNlluo5MEhXzsb5u5BqI0eoIGhk0JJ66diI3UCL4L4a-u6LnelukKpbszQw-bBtFxMJMnPoKdU1l3zKFjzhgedIcAqdPUY6ceWlAVN0ZCtkxwaWqCuDgHktWAUlqktqVLK-wcvOkg/s400/barriga%20grande.jpg" alt="" loading="lazy">
-          <div class="blog-card-body">
-            <div class="blog-card-date">17 Agosto 2022</div>
-            <h3 class="blog-card-title">A saúde da próstata está relacionada com a gordura abdominal</h3>
-            <p class="blog-card-exc">Um estudo publicado na BMC Medicine e apresentado no Congresso Europeu de Obesidade ligou o aumento da gordura abdominal a maior risco prostático.</p>
-            <span class="blog-card-more">Ler artigo →</span>
-          </div>
-        </a>
-
-        <a class="blog-card" href="https://problemasnaprostata.blogspot.com/2022/01/a-prostata-aumentada-e-impotencia.html" target="_blank" rel="noopener">
-          <img class="blog-card-img" src="https://blogger.googleusercontent.com/img/a/AVvXsEgAD4MYz0xEkoU0bwlYxaurYL-LQZ9HaeeuH4vAVDM9ocZCed5HJ0r3bi-Pt8ixynGvvFCubRY0olarz4FcheU0W6LNG7bUhdst-KB-1U3QfQob_k1uKV2bolek3DkysvmCLSghdzPhoMwnrqzaJWjirF55ub6HeI_SfNhQF9MymrFACOipPiU-YU4l0A=s400" alt="" loading="lazy">
-          <div class="blog-card-body">
-            <div class="blog-card-date">4 Janeiro 2022</div>
-            <h3 class="blog-card-title">A próstata aumentada e a impotência</h3>
-            <p class="blog-card-exc">As perguntas que os homens fazem mais vezes e menos em voz alta: o que muda na vida sexual quando a próstata aumenta.</p>
-            <span class="blog-card-more">Ler artigo →</span>
-          </div>
-        </a>
-
-        <a class="blog-card" href="https://problemasnaprostata.blogspot.com/2018/07/10-atitudes-para-prevenir-problemas-na.html" target="_blank" rel="noopener">
-          <div class="blog-card-ph"><svg viewBox="0 0 24 24" fill="none" stroke="#0d3d2b" stroke-width="1.5"><path d="M4 4h16v16H4z"/><path d="M8 9h8M8 13h8M8 17h5"/></svg></div>
-          <div class="blog-card-body">
-            <div class="blog-card-date">15 Julho 2018</div>
-            <h3 class="blog-card-title">10 atitudes para prevenir problemas na próstata</h3>
-            <p class="blog-card-exc">Dez hábitos simples, do prato ao sono, que ajudam a manter a próstata saudável a partir dos 40 anos.</p>
-            <span class="blog-card-more">Ler artigo →</span>
-          </div>
-        </a>
-
-      </div>
+      <p class="section-lead">Uma seleção de artigos sobre a saúde da próstata, publicados ao longo dos anos no blog da Naturalfarma. A seleção muda toda semana.</p>
+      <div class="blog-grid" id="blog-grid-br"></div>
       <div class="blog-all">
         <a href="https://problemasnaprostata.blogspot.com/" target="_blank" rel="noopener" class="btn-ghost btn-blog">Ver todos os artigos →</a>
       </div>
@@ -2339,6 +2217,208 @@ function closeInfoModal() {
   document.getElementById('info-modal').classList.remove('open');
   document.body.style.overflow = '';
 }
+
+/* ---------- Blog articles: weekly rotation ----------
+   BLOG_POSTS is the curated pool. Six are drawn each week, chosen deterministically
+   from the ISO week number, so every visitor sees the same six and the set changes
+   every Monday. To add an article, append an entry (u=url, i=image or '', d=date,
+   tp/tb=title PT/BR, ep/eb=excerpt PT/BR). */
+const BLOG_POSTS = [
+  { u: 'https://problemasnaprostata.blogspot.com/2017/07/prostata-aumentada-mais-de-50-perguntas.html',
+    i: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgHCOENuxAJ5EzyS56oOxy1qKvizo95wPkpEjZI7VnhxEVZ3f7dcE9iZuhX5yo8LwB2-mdxTu9ECIdkf-P_4E3FuizuGG8btrHDYpmsI13yRVyZV5KSJ-yLiEOxtQeBuQXhZk1TmGY6syWF/s400/prostata+corte.jpg',
+    d: '2 Julho 2017',
+    tp: 'Próstata aumentada: mais de 50 perguntas com respostas',
+    tb: 'Próstata aumentada: mais de 50 perguntas com respostas',
+    ep: 'Um guia extenso sobre a Hiperplasia Benigna da Próstata: o que é, porque acontece, que sintomas dá e o que fazer em cada fase.',
+    eb: 'Um guia extenso sobre a Hiperplasia Benigna da Próstata: o que é, por que acontece, que sintomas dá e o que fazer em cada fase.' },
+
+  { u: 'https://problemasnaprostata.blogspot.com/2021/12/exame-de-toque.html',
+    i: '',
+    d: '25 Dezembro 2021',
+    tp: 'Próstata: o exame de toque',
+    tb: 'Próstata: o exame de toque',
+    ep: 'Uma conversa franca, de homem para homem, sobre o exame que tantos adiam e porque não vale a pena deixá-lo para depois.',
+    eb: 'Uma conversa franca, de homem para homem, sobre o exame que tantos adiam e por que não vale a pena deixar para depois.' },
+
+  { u: 'https://problemasnaprostata.blogspot.com/2022/08/exame-psa-total-e-livre-o-que-e-para.html',
+    i: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhvevMkN_jTTlxDTk16QaFR0uQ4aEwarqSqty7OhqWyxJ3DT-Qw5EFZgmLoxJnwIZuvOAQLL6DN35kSSRuQ_2GrHCt1nCJu4UymEswS8PRjaMQ_jlb1T1n4rBPxASuEOaO5UMPO8WDvWCEw7orXOwhDcizHDrbDpYIq-vDCkGJ43kXQorfkY4KCfjOlqQ/s400/PSA%20teste2.jpg',
+    d: '17 Agosto 2022',
+    tp: 'O que é o PSA total e o PSA livre?',
+    tb: 'O que é o PSA total e o PSA livre?',
+    ep: 'O que a análise ao PSA mede de facto, a diferença entre total e livre, e como interpretar os valores sem alarmismos.',
+    eb: 'O que o exame de PSA mede de fato, a diferença entre total e livre, e como interpretar os valores sem alarmismos.' },
+
+  { u: 'https://problemasnaprostata.blogspot.com/2022/08/a-saude-da-prostata-esta-relacionada.html',
+    i: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjoS3jRdKBXE8GXGQjNQBqhZ0qfTERtOow40ZWQuiIlyIyalJp1aYNlluo5MEhXzsb5u5BqI0eoIGhk0JJ66diI3UCL4L4a-u6LnelukKpbszQw-bBtFxMJMnPoKdU1l3zKFjzhgedIcAqdPUY6ceWlAVN0ZCtkxwaWqCuDgHktWAUlqktqVLK-wcvOkg/s400/barriga%20grande.jpg',
+    d: '17 Agosto 2022',
+    tp: 'A saúde da próstata está relacionada com a gordura abdominal',
+    tb: 'A saúde da próstata está relacionada com a gordura abdominal',
+    ep: 'Um estudo publicado na BMC Medicine e apresentado no Congresso Europeu de Obesidade ligou o aumento da gordura abdominal a maior risco prostático.',
+    eb: 'Um estudo publicado na BMC Medicine e apresentado no Congresso Europeu de Obesidade ligou o aumento da gordura abdominal a maior risco prostático.' },
+
+  { u: 'https://problemasnaprostata.blogspot.com/2022/01/a-prostata-aumentada-e-impotencia.html',
+    i: 'https://blogger.googleusercontent.com/img/a/AVvXsEgAD4MYz0xEkoU0bwlYxaurYL-LQZ9HaeeuH4vAVDM9ocZCed5HJ0r3bi-Pt8ixynGvvFCubRY0olarz4FcheU0W6LNG7bUhdst-KB-1U3QfQob_k1uKV2bolek3DkysvmCLSghdzPhoMwnrqzaJWjirF55ub6HeI_SfNhQF9MymrFACOipPiU-YU4l0A=s400',
+    d: '4 Janeiro 2022',
+    tp: 'A próstata aumentada e a impotência',
+    tb: 'A próstata aumentada e a impotência',
+    ep: 'As perguntas que os homens fazem mais vezes e menos em voz alta: o que muda na vida sexual quando a próstata aumenta.',
+    eb: 'As perguntas que os homens fazem mais vezes e menos em voz alta: o que muda na vida sexual quando a próstata aumenta.' },
+
+  { u: 'https://problemasnaprostata.blogspot.com/2018/07/10-atitudes-para-prevenir-problemas-na.html',
+    i: '',
+    d: '15 Julho 2018',
+    tp: '10 atitudes para prevenir problemas na próstata',
+    tb: '10 atitudes para prevenir problemas na próstata',
+    ep: 'Dez hábitos simples, do prato ao sono, que ajudam a manter a próstata saudável a partir dos 40 anos.',
+    eb: 'Dez hábitos simples, do prato ao sono, que ajudam a manter a próstata saudável a partir dos 40 anos.' },
+
+  { u: 'https://problemasnaprostata.blogspot.com/2023/12/prostataapenas-2-colheres-de-acucar-por.html',
+    i: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiPIqcX30ijnIF981H5N3rLxAGRLZIjZkQjT-Nr-4U7mWhxbmjA8bwaXAYlemn9ipk7jsnXJEyVbw1LQCyUuSMhqioRV0selUft2X4N0OXLVBTZUaFOV_s0mE333Nu2HYmi3sd3Dj80b0irLoK6bYBvUi2Rpkj6VVK2WEUjxkwKOK0OY1IxrfsycWG4i-TM/s400/A%C3%A7ucar%201.jpg',
+    d: '15 Dezembro 2023',
+    tp: 'Duas colheres de açúcar por dia já fazem diferença',
+    tb: 'Duas colheres de açúcar por dia já fazem diferença',
+    ep: 'Um estudo chinês publicado no British Medical Journal associou o excesso de açúcar a 45 doenças crónicas — entre elas, os problemas na próstata.',
+    eb: 'Um estudo chinês publicado no British Medical Journal associou o excesso de açúcar a 45 doenças crônicas — entre elas, os problemas na próstata.' },
+
+  { u: 'https://problemasnaprostata.blogspot.com/2023/11/prostata-os-beneficios-das-frutas-e.html',
+    i: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgF-rWrFSMR3Q06WSswZMuoWA7m6MBnDLunJsd9NMYLZPeG7O258FqNed1UVcrW-FU0xHTDqdcnz5p_vBJmyS7axWGdMDS3xGIUsI-EXO6BGdCD1qQiQ9uMvefEkbTJnRe9-nuHXtV8ALCWDWNvDdGjnODmDHZfuhQLcmflUxYa62vFk7LvkMnjZcl7mZz5/s400/fruits-and-vegetables.jpg',
+    d: '6 Novembro 2023',
+    tp: 'Próstata: os benefícios das frutas e vegetais coloridos',
+    tb: 'Próstata: os benefícios das frutas e vegetais coloridos',
+    ep: 'Quinze frutas e dez vegetais coloridos que vale a pena ter no prato todos os dias, e o que cada um traz de bom.',
+    eb: 'Quinze frutas e dez vegetais coloridos que vale a pena ter no prato todos os dias, e o que cada um traz de bom.' },
+
+  { u: 'https://problemasnaprostata.blogspot.com/2023/11/cafe-e-bom-para-prostata.html',
+    i: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgru5LLNaIU0kls0VS1V4taHNaKB0qyqoaI5z4mc7c1zf92XmbCFxhmAvkpcSgakCpWx2hMA9FgRUB9L5SF5Oc_adDV7Blso6J7lOQz6YAVq1nlbbsqKkDepLJjzzV4OvKV_AePSwkr5cRTD0MbXK9GndMtPmv5ndxkffONuPX8XqjNMlgelX9hbx0xLgiE/s400/caf%C3%A9%20na%20chavena.jpg',
+    d: '6 Novembro 2023',
+    tp: 'O café faz bem à próstata?',
+    tb: 'O café faz bem à próstata?',
+    ep: 'O que dizem os estudos sobre cafeína e saúde prostática, e a razão pela qual o metabolismo da cafeína consome o zinco do organismo.',
+    eb: 'O que dizem os estudos sobre cafeína e saúde prostática, e a razão pela qual o metabolismo da cafeína consome o zinco do organismo.' },
+
+  { u: 'https://problemasnaprostata.blogspot.com/2023/11/fumar-e-o-desempenho-sexual-do-homem.html',
+    i: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhTq856M2R3Zu0p2YP9ZxNeFbM2i09FB7_RYPNsYCpWSHhqHAwqTysgtFk3R-vVbeLq41pyl5hammgBzE_EXLYHUbNFYhWPKlA9esiwqon_KZio-DsVVFdBGBLgL_oKvUj52JZhnLahbYbyeOIWs_5zh8gTRHlRBL39ABJM6cOBwtbCyd9kkefqQ2VMAM6w/s400/FUMAR.jpg',
+    d: '30 Novembro 2023',
+    tp: 'Fumar, próstata e desempenho sexual',
+    tb: 'Fumar, próstata e desempenho sexual',
+    ep: 'Como o tabaco afecta a circulação, a libido e a próstata — e o que muda quando se deixa de fumar.',
+    eb: 'Como o tabaco afeta a circulação, a libido e a próstata — e o que muda quando se para de fumar.' },
+
+  { u: 'https://problemasnaprostata.blogspot.com/2018/04/vitamina-d-e-prostata.html',
+    i: '',
+    d: '16 Abril 2018',
+    tp: 'Vitamina D e a próstata',
+    tb: 'Vitamina D e a próstata',
+    ep: 'Porque é que a carência de vitamina D é tão comum, como medi-la nas análises e as duas formas de a corrigir.',
+    eb: 'Por que a carência de vitamina D é tão comum, como medi-la nos exames e as duas formas de corrigi-la.' },
+
+  { u: 'https://problemasnaprostata.blogspot.com/2018/08/vegetais-indispensaveis-na-nossa.html',
+    i: '',
+    d: '16 Agosto 2018',
+    tp: 'Vegetais indispensáveis que evitam doenças',
+    tb: 'Vegetais indispensáveis que evitam doenças',
+    ep: 'Uma lista comentada, alimento a alimento, do que cada vegetal e cada fruta faz pelo organismo.',
+    eb: 'Uma lista comentada, alimento a alimento, do que cada vegetal e cada fruta faz pelo organismo.' },
+
+  { u: 'https://problemasnaprostata.blogspot.com/2017/10/factos-medicos-que-acabaram-por-nao-ser.html',
+    i: '',
+    d: '12 Outubro 2017',
+    tp: 'Factos médicos que acabaram por não ser verdadeiros',
+    tb: 'Fatos médicos que acabaram não sendo verdadeiros',
+    ep: 'Da sangria à margarina: verdades científicas que a própria ciência veio mais tarde desmentir.',
+    eb: 'Da sangria à margarina: verdades científicas que a própria ciência veio mais tarde desmentir.' },
+
+  { u: 'https://problemasnaprostata.blogspot.com/2017/04/lacticinios-cancer-na-prostata-e-outros.html',
+    i: '',
+    d: '27 Abril 2017',
+    tp: 'Lacticínios, próstata e outros problemas',
+    tb: 'Laticínios, próstata e outros problemas',
+    ep: 'Lactose, caseína e hormonas: as razões pelas quais Harvard limitou os lacticínios na sua pirâmide alimentar.',
+    eb: 'Lactose, caseína e hormônios: as razões pelas quais Harvard limitou os laticínios em sua pirâmide alimentar.' },
+
+  { u: 'https://problemasnaprostata.blogspot.com/2017/03/colesterol-e-trigliceridos.html',
+    i: '',
+    d: '16 Março 2017',
+    tp: 'Colesterol e triglicéridos: o que os valores dizem',
+    tb: 'Colesterol e triglicerídeos: o que os valores dizem',
+    ep: 'Como ler os valores, a importância do HDL face ao colesterol total e o papel do exercício físico.',
+    eb: 'Como ler os valores, a importância do HDL em relação ao colesterol total e o papel do exercício físico.' },
+
+  { u: 'https://problemasnaprostata.blogspot.com/2018/05/omega-3-e-prostata.html',
+    i: '',
+    d: '25 Maio 2018',
+    tp: 'Ómega 3 e a próstata',
+    tb: 'Ômega 3 e a próstata',
+    ep: 'O que a investigação encontrou sobre os ácidos gordos essenciais e o crescimento celular na próstata.',
+    eb: 'O que a pesquisa encontrou sobre os ácidos graxos essenciais e o crescimento celular na próstata.' }
+];
+
+const BLOG_SHOW = 6;
+const BLOG_WITH_IMG = 4;   // how many of the six must carry a photo
+const BLOG_PLACEHOLDER = '<div class="blog-card-ph"><svg viewBox="0 0 24 24" fill="none" stroke="#0d3d2b" stroke-width="1.5"><path d="M4 4h16v16H4z"/><path d="M8 9h8M8 13h8M8 17h5"/></svg></div>';
+
+/* Whole weeks since the Unix epoch, Monday-based (1 Jan 1970 was a Thursday). */
+function blogWeekSeed() {
+  return Math.floor((Date.now() / 86400000 + 3) / 7);
+}
+
+/* mulberry32 — small deterministic PRNG: same seed, same sequence. */
+function blogRandom(seed) {
+  let a = seed >>> 0;
+  return function () {
+    a = (a + 0x6D2B79F5) >>> 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+function blogShuffle(list, rand) {
+  const out = list.slice();
+  for (let i = out.length - 1; i > 0; i--) {           // Fisher-Yates
+    const j = Math.floor(rand() * (i + 1));
+    const tmp = out[i]; out[i] = out[j]; out[j] = tmp;
+  }
+  return out;
+}
+
+/* Draws BLOG_WITH_IMG cards with a photo and fills the rest from the ones without,
+   so the grid never comes out mostly placeholders. */
+function blogWeeklyPick() {
+  const rand = blogRandom(blogWeekSeed());
+  const withImg = blogShuffle(BLOG_POSTS.filter(p => p.i), rand);
+  const noImg   = blogShuffle(BLOG_POSTS.filter(p => !p.i), rand);
+  const picked  = withImg.slice(0, BLOG_WITH_IMG);
+  picked.push.apply(picked, noImg.slice(0, BLOG_SHOW - picked.length));
+  picked.push.apply(picked, withImg.slice(BLOG_WITH_IMG, BLOG_WITH_IMG + BLOG_SHOW - picked.length));
+  return blogShuffle(picked, rand);
+}
+
+function blogCard(post, lang) {
+  const title = lang === 'br' ? post.tb : post.tp;
+  const exc   = lang === 'br' ? post.eb : post.ep;
+  const media = post.i
+    ? '<img class="blog-card-img" src="' + post.i + '" alt="" loading="lazy">'
+    : BLOG_PLACEHOLDER;
+  return '<a class="blog-card" href="' + post.u + '" target="_blank" rel="noopener">' +
+    media +
+    '<div class="blog-card-body">' +
+      '<div class="blog-card-date">' + post.d + '</div>' +
+      '<h3 class="blog-card-title">' + title + '</h3>' +
+      '<p class="blog-card-exc">' + exc + '</p>' +
+      '<span class="blog-card-more">Ler artigo →</span>' +
+    '</div></a>';
+}
+
+function renderBlogCards() {
+  const picked = blogWeeklyPick();
+  ['pt', 'br'].forEach(lang => {
+    const grid = document.getElementById('blog-grid-' + lang);
+    if (grid) grid.innerHTML = picked.map(p => blogCard(p, lang)).join('');
+  });
+}
+renderBlogCards();
+
 </script>
 
 <!-- INFO MODAL -->
