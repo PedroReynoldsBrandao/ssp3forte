@@ -481,6 +481,43 @@
   #info-modal-box ul { padding-left: 1.25rem; margin: 0 0 0.85rem; }
   #info-modal-box li { font-size: 0.95rem; line-height: 1.65; margin-bottom: 0.35rem; }
   #info-modal-box .modal-note { background: var(--green-pale); border-left: 3px solid var(--gold); padding: 0.85rem 1rem; border-radius: 3px; margin-top: 1.25rem; }
+  /* SURVEY MODAL — satisfaction survey report, same chrome as #info-modal */
+  #survey-modal { display: none; position: fixed; inset: 0; z-index: 999; align-items: center; justify-content: center; }
+  #survey-modal.open { display: flex; }
+  #survey-modal-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.6); }
+  #survey-modal-box { position: relative; background: #fff; max-width: 760px; width: 92vw; max-height: 88vh; overflow-y: auto; border-radius: 6px; padding: 2.5rem 2.25rem 2rem; z-index: 1; }
+  #survey-modal-close { position: absolute; top: 0.9rem; right: 1rem; background: none; border: none; font-size: 2rem; line-height: 1; cursor: pointer; color: var(--green-deep); padding: 0; }
+  #survey-modal-close:hover { color: var(--gold); }
+  #survey-modal-box h2 { font-family: 'Lora', serif; color: var(--green-deep); margin: 0 0 1rem; font-size: 1.25rem; padding-right: 2rem; line-height: 1.4; }
+  #survey-modal-box h3 { color: var(--green-deep); font-size: 0.85rem; margin: 1.75rem 0 0.6rem; text-transform: uppercase; letter-spacing: .07em; font-family: 'Source Sans 3', sans-serif; }
+  #survey-modal-box p { font-size: 0.92rem; line-height: 1.7; margin: 0 0 0.85rem; }
+  #survey-modal-box ul { padding-left: 1.15rem; margin: 0 0 0.85rem; }
+  #survey-modal-box li { font-size: 0.92rem; line-height: 1.6; margin-bottom: 0.5rem; }
+  .sv-eyebrow { font-size: 0.68rem; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); font-weight: 700; margin-bottom: 0.5rem; }
+  .sv-hero { display: flex; gap: 0.7rem; flex-wrap: wrap; margin: 1.35rem 0 0.5rem; }
+  .sv-stat { flex: 1 1 160px; background: var(--green-pale); border-radius: 5px; padding: 0.9rem 1rem; }
+  .sv-stat b { display: block; font-family: 'Lora', serif; font-size: 1.55rem; color: var(--green-deep); line-height: 1.1; }
+  .sv-stat span { display: block; font-size: 0.76rem; line-height: 1.35; color: #3c5348; margin-top: 0.3rem; }
+  .sv-stat em { display: block; font-style: normal; font-size: 0.7rem; color: #6b7d74; margin-top: 0.25rem; }
+  .sv-table { width: 100%; border-collapse: collapse; margin: 0.4rem 0 0.5rem; font-size: 0.85rem; }
+  .sv-table th { text-align: left; font-size: 0.66rem; text-transform: uppercase; letter-spacing: .08em; color: #6b7d74; font-weight: 700; border-bottom: 1px solid rgba(0,0,0,0.14); padding: 0.4rem 0.5rem; }
+  .sv-table td { padding: 0.45rem 0.5rem; border-bottom: 1px solid rgba(0,0,0,0.06); }
+  .sv-table th.n, .sv-table td.n { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .sv-table td.b { width: 34%; padding-right: 0; }
+  .sv-table tr.tot td { font-weight: 700; color: var(--green-deep); border-bottom: none; }
+  .sv-bar { display: block; height: 7px; border-radius: 4px; background: var(--green-mid); min-width: 2px; }
+  .sv-table tr.tot .sv-bar { background: var(--gold); }
+  .sv-cap { font-size: 0.72rem !important; color: #6b7d74; line-height: 1.55 !important; margin: 0 0 1rem !important; }
+  .sv-disclaimer { border: 1px solid rgba(0,0,0,0.12); border-left: 3px solid var(--gold); background: #fbf9f4; border-radius: 3px; padding: 1.1rem 1.25rem 0.6rem; margin-top: 1.75rem; }
+  .sv-disclaimer h3 { margin-top: 0 !important; }
+  .sv-disclaimer h4 { font-size: 0.8rem; color: var(--green-deep); margin: 1.1rem 0 0.45rem; font-family: 'Source Sans 3', sans-serif; }
+  .sv-disclaimer p, .sv-disclaimer li { font-size: 0.82rem !important; line-height: 1.6 !important; color: #333; }
+  .sv-source { font-size: 0.72rem !important; color: #6b7d74; line-height: 1.55 !important; margin-top: 1rem !important; }
+  @media (max-width: 600px) {
+    #survey-modal-box { padding: 2.25rem 1.15rem 1.5rem; }
+    .sv-table { font-size: 0.78rem; }
+    .sv-table td.b { display: none; }
+  }
   button.btn-ghost { background: none; font-family: inherit; cursor: pointer; }
   /* HERO DROPDOWN */
   .hero-dropdown { position: relative; display: inline-block; }
@@ -1089,9 +1126,10 @@
         <div class="hero-dropdown">
           <button type="button" class="btn-ghost btn-blog" onclick="toggleHeroDropdown(this)">Saber mais <span class="hero-arrow"></span></button>
           <div class="hero-dropdown-menu">
+            <button type="button" onclick="openInfoModal(); closeHeroDropdowns()">O que este produto pode fazer por si →</button>
+            <button type="button" onclick="openSurveyModal(); closeHeroDropdowns()">Inquérito de satisfação →</button>
             <a href="https://problemasnaprostata.blogspot.com/" target="_blank" rel="noopener">Blog →</a>
             <a href="http://ebookdoshomensdepoisdos40.blogspot.pt/" target="_blank" rel="noopener">Ebook gratuito →</a>
-            <button type="button" onclick="openInfoModal(); closeHeroDropdowns()">O que este produto pode fazer por si →</button>
           </div>
         </div>
       </div>
@@ -1116,9 +1154,10 @@
         <div class="hero-dropdown">
           <button type="button" class="btn-ghost btn-blog" onclick="toggleHeroDropdown(this)">Saber mais <span class="hero-arrow"></span></button>
           <div class="hero-dropdown-menu">
+            <button type="button" onclick="openInfoModal(); closeHeroDropdowns()">O que este produto pode fazer por você →</button>
+            <button type="button" onclick="openSurveyModal(); closeHeroDropdowns()">Pesquisa de satisfação →</button>
             <a href="https://problemasnaprostata.blogspot.com/" target="_blank" rel="noopener">Blog →</a>
             <a href="http://ebookdoshomensdepoisdos40.blogspot.pt/" target="_blank" rel="noopener">Ebook gratuito →</a>
-            <button type="button" onclick="openInfoModal(); closeHeroDropdowns()">O que este produto pode fazer por você →</button>
           </div>
         </div>
       </div>
@@ -1144,6 +1183,7 @@
           <button type="button" class="btn-ghost btn-blog" onclick="toggleHeroDropdown(this)">Learn more <span class="hero-arrow"></span></button>
           <div class="hero-dropdown-menu">
             <button type="button" onclick="openInfoModal(); closeHeroDropdowns()">What this product can do for you →</button>
+            <button type="button" onclick="openSurveyModal(); closeHeroDropdowns()">User satisfaction survey →</button>
           </div>
         </div>
       </div>
@@ -2209,6 +2249,14 @@ function closeDisclaimerModal() {
   document.getElementById('disclaimer-modal').classList.remove('open');
   document.body.style.overflow = '';
 }
+function openSurveyModal() {
+  document.getElementById('survey-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeSurveyModal() {
+  document.getElementById('survey-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
 function openInfoModal() {
   document.getElementById('info-modal').classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -2509,6 +2557,210 @@ renderBlogCards();
 </div>
 
 <!-- DISCLAIMER MODAL -->
+<!-- SURVEY MODAL — satisfaction survey report (subgroup: regular use, no medication declared) -->
+<div id="survey-modal">
+  <div id="survey-modal-overlay" onclick="closeSurveyModal()"></div>
+  <div id="survey-modal-box">
+    <button id="survey-modal-close" onclick="closeSurveyModal()" aria-label="Fechar">×</button>
+
+    <div data-lang="pt">
+      <div class="sv-eyebrow">Inquérito a utilizadores · 2017</div>
+      <h2>Inquérito de satisfação aos utilizadores</h2>
+      <p>Em 2017 foram reunidos 290 inquéritos preenchidos por utilizadores do SSP3-Forte. Os números que se seguem <b>não se referem aos 290</b>: referem-se apenas ao subgrupo de <b>67 utilizadores</b> que declararam tomar o produto com regularidade e que não indicaram estar a tomar medicação. Os critérios de exclusão e aquilo que estes dados não permitem concluir estão explicados no fim.</p>
+
+      <div class="sv-hero">
+        <div class="sv-stat"><b>67</b><span>utilizadores neste subgrupo</span><em>23% dos 290 inquéritos</em></div>
+        <div class="sv-stat"><b>88,1%</b><span>satisfeitos ou muito satisfeitos</span><em>IC 95%: 80,3 a 95,8</em></div>
+        <div class="sv-stat"><b>32,8%</b><span>muito satisfeitos</span><em>22 dos 67</em></div>
+      </div>
+
+      <h3>Respostas</h3>
+      <table class="sv-table">
+        <tr><th>Resposta</th><th class="n">n</th><th class="n">%</th><th></th></tr>
+        <tr><td>Muito satisfeito</td><td class="n">22</td><td class="n">32,8</td><td class="b"><span class="sv-bar" style="width:32.8%"></span></td></tr>
+        <tr><td>Satisfeito</td><td class="n">37</td><td class="n">55,2</td><td class="b"><span class="sv-bar" style="width:55.2%"></span></td></tr>
+        <tr><td>Pouco satisfeito</td><td class="n">7</td><td class="n">10,4</td><td class="b"><span class="sv-bar" style="width:10.4%"></span></td></tr>
+        <tr><td>Nada satisfeito</td><td class="n">1</td><td class="n">1,5</td><td class="b"><span class="sv-bar" style="width:1.5%"></span></td></tr>
+        <tr class="tot"><td>Satisfeitos ou muito satisfeitos</td><td class="n">59</td><td class="n">88,1</td><td class="b"><span class="sv-bar" style="width:88.1%"></span></td></tr>
+      </table>
+      <p class="sv-cap">Os 67 responderam todos a esta pergunta. Intervalo de confiança a 95% para os 88,1%: 80,3 a 95,8.</p>
+
+      <h3>Satisfação por tempo de toma</h3>
+      <table class="sv-table">
+        <tr><th>Tempo de toma</th><th class="n">n</th><th class="n">Satisfeitos+</th><th></th></tr>
+        <tr><td>3 meses</td><td class="n">11</td><td class="n">81,8%</td><td class="b"><span class="sv-bar" style="width:81.8%"></span></td></tr>
+        <tr><td>6 meses</td><td class="n">15</td><td class="n">80,0%</td><td class="b"><span class="sv-bar" style="width:80%"></span></td></tr>
+        <tr><td>Mais de 1 ano</td><td class="n">38</td><td class="n">92,1%</td><td class="b"><span class="sv-bar" style="width:92.1%"></span></td></tr>
+      </table>
+      <p class="sv-cap">A banda de 1 mês tinha apenas três respostas e foi omitida: com tão poucas pessoas, qualquer percentagem seria enganadora. Mesmo nas bandas apresentadas, os intervalos de confiança são largos e não permitem afirmar que a satisfação aumenta com o tempo de toma.</p>
+
+      <h3>Comparação com a amostra completa</h3>
+      <table class="sv-table">
+        <tr><th>Grupo analisado</th><th class="n">n</th><th class="n">Satisfeitos+</th><th class="n">IC 95%</th></tr>
+        <tr><td>Todos os inquéritos</td><td class="n">289</td><td class="n">81,3%</td><td class="n">76,8 a 85,8</td></tr>
+        <tr><td>Só toma regular</td><td class="n">185</td><td class="n">81,1%</td><td class="n">75,4 a 86,7</td></tr>
+        <tr class="tot"><td>Toma regular e sem medicação</td><td class="n">67</td><td class="n">88,1%</td><td class="n">80,3 a 95,8</td></tr>
+      </table>
+      <p>A diferença entre este subgrupo e o resto da amostra é de 8,8 pontos percentuais, mas <b>não é estatisticamente significativa</b> (p = 0,106) e os intervalos de confiança sobrepõem-se. Por palavras simples: os dados não permitem afirmar que esta diferença seja real e não fruto do acaso.</p>
+
+      <div class="sv-disclaimer">
+        <h3>Como ler estes números</h3>
+        <p>Estes resultados são <b>declarações de satisfação de clientes</b>, recolhidas por questionário. Não resultam de um ensaio clínico e não medem nem demonstram qualquer efeito do produto sobre a saúde.</p>
+
+        <h4>Quem ficou de fora, e porquê</h4>
+        <ul>
+          <li><b>223 dos 290 inquéritos (77%) não entram nestes números.</b> Foram excluídos todos os utilizadores que não declararam toma regular do produto e todos os que declararam estar a tomar medicação. Restaram 67 pessoas.</li>
+          <li>Quem interrompeu ou abandonou o produto não pode ter declarado toma regular. O subgrupo exclui, por construção, quem terá tido pior experiência — o que empurra o resultado para cima.</li>
+          <li>A ausência de medicação corresponde a um campo do questionário deixado em branco, e um campo em branco tanto pode significar «não tomo nenhum medicamento» como «não respondi a esta pergunta». Com rigor, este é o grupo dos utilizadores assíduos que não indicaram medicação.</li>
+          <li>O subgrupo foi definido depois de os dados terem sido observados. Escolher a posteriori o corte com melhor resultado inflaciona a estimativa.</li>
+        </ul>
+
+        <h4>O que estes dados não permitem dizer</h4>
+        <ul>
+          <li><b>Não são «88% dos utilizadores».</b> Considerando todos os inquéritos, 81,3% declararam-se satisfeitos ou muito satisfeitos. Os 88,1% dizem respeito a 67 pessoas e não devem ser citados sem esse enquadramento.</li>
+          <li>Não houve grupo de comparação, nem medição antes e depois da toma: <b>nenhuma melhoria pode ser medida</b> a partir deste inquérito.</li>
+          <li>Os inquiridos são clientes que responderam voluntariamente; não constituem uma amostra aleatória da população.</li>
+          <li>Nada aqui constitui uma alegação de saúde. Na União Europeia, as alegações de saúde sobre suplementos alimentares só são permitidas se constarem da lista autorizada ao abrigo do Regulamento (CE) n.º 1924/2006. Estes resultados não sustentam qualquer afirmação sobre PSA, tamanho da próstata, sintomas urinários, biópsia ou cirurgia.</li>
+          <li>Os resultados variam de pessoa para pessoa. O SSP3-Forte é um suplemento alimentar e não substitui aconselhamento, diagnóstico ou tratamento médico. Perante sintomas, consulte o seu médico.</li>
+        </ul>
+
+        <p class="sv-source">Fonte: inquéritos de satisfação recolhidos até Outubro de 2017 (n=290). Intervalos de confiança a 95% por aproximação normal; comparações por teste z para duas proporções, bilateral.</p>
+      </div>
+    </div>
+
+    <div data-lang="br">
+      <div class="sv-eyebrow">Pesquisa com usuários · 2017</div>
+      <h2>Pesquisa de satisfação com os usuários</h2>
+      <p>Em 2017 foram reunidos 290 questionários preenchidos por usuários do SSP3-Forte. Os números a seguir <b>não se referem aos 290</b>: referem-se apenas ao subgrupo de <b>67 usuários</b> que declararam tomar o produto com regularidade e que não indicaram estar tomando medicação. Os critérios de exclusão e aquilo que estes dados não permitem concluir estão explicados no final.</p>
+
+      <div class="sv-hero">
+        <div class="sv-stat"><b>67</b><span>usuários neste subgrupo</span><em>23% dos 290 questionários</em></div>
+        <div class="sv-stat"><b>88,1%</b><span>satisfeitos ou muito satisfeitos</span><em>IC 95%: 80,3 a 95,8</em></div>
+        <div class="sv-stat"><b>32,8%</b><span>muito satisfeitos</span><em>22 dos 67</em></div>
+      </div>
+
+      <h3>Respostas</h3>
+      <table class="sv-table">
+        <tr><th>Resposta</th><th class="n">n</th><th class="n">%</th><th></th></tr>
+        <tr><td>Muito satisfeito</td><td class="n">22</td><td class="n">32,8</td><td class="b"><span class="sv-bar" style="width:32.8%"></span></td></tr>
+        <tr><td>Satisfeito</td><td class="n">37</td><td class="n">55,2</td><td class="b"><span class="sv-bar" style="width:55.2%"></span></td></tr>
+        <tr><td>Pouco satisfeito</td><td class="n">7</td><td class="n">10,4</td><td class="b"><span class="sv-bar" style="width:10.4%"></span></td></tr>
+        <tr><td>Nada satisfeito</td><td class="n">1</td><td class="n">1,5</td><td class="b"><span class="sv-bar" style="width:1.5%"></span></td></tr>
+        <tr class="tot"><td>Satisfeitos ou muito satisfeitos</td><td class="n">59</td><td class="n">88,1</td><td class="b"><span class="sv-bar" style="width:88.1%"></span></td></tr>
+      </table>
+      <p class="sv-cap">Todos os 67 responderam a esta pergunta. Intervalo de confiança de 95% para os 88,1%: 80,3 a 95,8.</p>
+
+      <h3>Satisfação por tempo de uso</h3>
+      <table class="sv-table">
+        <tr><th>Tempo de uso</th><th class="n">n</th><th class="n">Satisfeitos+</th><th></th></tr>
+        <tr><td>3 meses</td><td class="n">11</td><td class="n">81,8%</td><td class="b"><span class="sv-bar" style="width:81.8%"></span></td></tr>
+        <tr><td>6 meses</td><td class="n">15</td><td class="n">80,0%</td><td class="b"><span class="sv-bar" style="width:80%"></span></td></tr>
+        <tr><td>Mais de 1 ano</td><td class="n">38</td><td class="n">92,1%</td><td class="b"><span class="sv-bar" style="width:92.1%"></span></td></tr>
+      </table>
+      <p class="sv-cap">A faixa de 1 mês tinha apenas três respostas e foi omitida: com tão poucas pessoas, qualquer percentual seria enganoso. Mesmo nas faixas apresentadas, os intervalos de confiança são largos e não permitem afirmar que a satisfação aumenta com o tempo de uso.</p>
+
+      <h3>Comparação com a amostra completa</h3>
+      <table class="sv-table">
+        <tr><th>Grupo analisado</th><th class="n">n</th><th class="n">Satisfeitos+</th><th class="n">IC 95%</th></tr>
+        <tr><td>Todos os questionários</td><td class="n">289</td><td class="n">81,3%</td><td class="n">76,8 a 85,8</td></tr>
+        <tr><td>Só uso regular</td><td class="n">185</td><td class="n">81,1%</td><td class="n">75,4 a 86,7</td></tr>
+        <tr class="tot"><td>Uso regular e sem medicação</td><td class="n">67</td><td class="n">88,1%</td><td class="n">80,3 a 95,8</td></tr>
+      </table>
+      <p>A diferença entre este subgrupo e o restante da amostra é de 8,8 pontos percentuais, mas <b>não é estatisticamente significativa</b> (p = 0,106) e os intervalos de confiança se sobrepõem. Em palavras simples: os dados não permitem afirmar que essa diferença seja real e não fruto do acaso.</p>
+
+      <div class="sv-disclaimer">
+        <h3>Como ler estes números</h3>
+        <p>Estes resultados são <b>declarações de satisfação de clientes</b>, coletadas por questionário. Não são resultado de um ensaio clínico e não medem nem demonstram qualquer efeito do produto sobre a saúde.</p>
+
+        <h4>Quem ficou de fora, e por quê</h4>
+        <ul>
+          <li><b>223 dos 290 questionários (77%) não entram nestes números.</b> Foram excluídos todos os usuários que não declararam uso regular do produto e todos os que declararam estar tomando medicação. Restaram 67 pessoas.</li>
+          <li>Quem interrompeu ou abandonou o produto não pode ter declarado uso regular. O subgrupo exclui, por construção, quem provavelmente teve a pior experiência — o que empurra o resultado para cima.</li>
+          <li>A ausência de medicação corresponde a um campo do questionário deixado em branco, e um campo em branco tanto pode significar "não tomo nenhum medicamento" quanto "não respondi a esta pergunta". Com rigor, este é o grupo dos usuários assíduos que não indicaram medicação.</li>
+          <li>O subgrupo foi definido depois de os dados terem sido observados. Escolher a posteriori o recorte com melhor resultado infla a estimativa.</li>
+        </ul>
+
+        <h4>O que estes dados não permitem dizer</h4>
+        <ul>
+          <li><b>Não são "88% dos usuários".</b> Considerando todos os questionários, 81,3% se declararam satisfeitos ou muito satisfeitos. Os 88,1% dizem respeito a 67 pessoas e não devem ser citados sem esse enquadramento.</li>
+          <li>Não houve grupo de comparação nem medição antes e depois do uso: <b>nenhuma melhora pode ser medida</b> a partir desta pesquisa.</li>
+          <li>Os respondentes são clientes que responderam voluntariamente; não constituem uma amostra aleatória da população.</li>
+          <li>Nada aqui constitui alegação de saúde. Na União Europeia, as alegações de saúde sobre suplementos alimentares só são permitidas se constarem da lista autorizada pelo Regulamento (CE) n.º 1924/2006. Estes resultados não sustentam qualquer afirmação sobre PSA, tamanho da próstata, sintomas urinários, biópsia ou cirurgia.</li>
+          <li>Os resultados variam de pessoa para pessoa. O SSP3-Forte é um suplemento alimentar e não substitui orientação, diagnóstico ou tratamento médico. Diante de sintomas, consulte seu médico.</li>
+        </ul>
+
+        <p class="sv-source">Fonte: questionários de satisfação coletados até outubro de 2017 (n=290). Intervalos de confiança de 95% por aproximação normal; comparações por teste z para duas proporções, bilateral.</p>
+      </div>
+    </div>
+
+    <div data-lang="en">
+      <div class="sv-eyebrow">User survey · 2017</div>
+      <h2>User satisfaction survey</h2>
+      <p>In 2017, 290 questionnaires were collected from SSP3-Forte users. The figures below <b>do not describe all 290</b>: they describe only the subgroup of <b>67 users</b> who reported taking the product regularly and who did not report taking any medication. The exclusion criteria, and what these data cannot show, are set out at the end.</p>
+
+      <div class="sv-hero">
+        <div class="sv-stat"><b>67</b><span>users in this subgroup</span><em>23% of the 290 questionnaires</em></div>
+        <div class="sv-stat"><b>88.1%</b><span>satisfied or very satisfied</span><em>95% CI: 80.3 to 95.8</em></div>
+        <div class="sv-stat"><b>32.8%</b><span>very satisfied</span><em>22 of 67</em></div>
+      </div>
+
+      <h3>Responses</h3>
+      <table class="sv-table">
+        <tr><th>Answer</th><th class="n">n</th><th class="n">%</th><th></th></tr>
+        <tr><td>Very satisfied</td><td class="n">22</td><td class="n">32.8</td><td class="b"><span class="sv-bar" style="width:32.8%"></span></td></tr>
+        <tr><td>Satisfied</td><td class="n">37</td><td class="n">55.2</td><td class="b"><span class="sv-bar" style="width:55.2%"></span></td></tr>
+        <tr><td>Slightly satisfied</td><td class="n">7</td><td class="n">10.4</td><td class="b"><span class="sv-bar" style="width:10.4%"></span></td></tr>
+        <tr><td>Not satisfied</td><td class="n">1</td><td class="n">1.5</td><td class="b"><span class="sv-bar" style="width:1.5%"></span></td></tr>
+        <tr class="tot"><td>Satisfied or very satisfied</td><td class="n">59</td><td class="n">88.1</td><td class="b"><span class="sv-bar" style="width:88.1%"></span></td></tr>
+      </table>
+      <p class="sv-cap">All 67 answered this question. 95% confidence interval for the 88.1%: 80.3 to 95.8.</p>
+
+      <h3>Satisfaction by length of use</h3>
+      <table class="sv-table">
+        <tr><th>Length of use</th><th class="n">n</th><th class="n">Satisfied+</th><th></th></tr>
+        <tr><td>3 months</td><td class="n">11</td><td class="n">81.8%</td><td class="b"><span class="sv-bar" style="width:81.8%"></span></td></tr>
+        <tr><td>6 months</td><td class="n">15</td><td class="n">80.0%</td><td class="b"><span class="sv-bar" style="width:80%"></span></td></tr>
+        <tr><td>More than 1 year</td><td class="n">38</td><td class="n">92.1%</td><td class="b"><span class="sv-bar" style="width:92.1%"></span></td></tr>
+      </table>
+      <p class="sv-cap">The 1-month band held only three answers and was left out: with so few people, any percentage would mislead. Even in the bands shown, the confidence intervals are wide and do not support the claim that satisfaction rises with length of use.</p>
+
+      <h3>Compared with the full sample</h3>
+      <table class="sv-table">
+        <tr><th>Group analysed</th><th class="n">n</th><th class="n">Satisfied+</th><th class="n">95% CI</th></tr>
+        <tr><td>All questionnaires</td><td class="n">289</td><td class="n">81.3%</td><td class="n">76.8 to 85.8</td></tr>
+        <tr><td>Regular use only</td><td class="n">185</td><td class="n">81.1%</td><td class="n">75.4 to 86.7</td></tr>
+        <tr class="tot"><td>Regular use, no medication</td><td class="n">67</td><td class="n">88.1%</td><td class="n">80.3 to 95.8</td></tr>
+      </table>
+      <p>The gap between this subgroup and the rest of the sample is 8.8 percentage points, but it is <b>not statistically significant</b> (p = 0.106) and the confidence intervals overlap. In plain terms: the data cannot establish that the difference is real rather than chance.</p>
+
+      <div class="sv-disclaimer">
+        <h3>How to read these figures</h3>
+        <p>These results are <b>customer statements of satisfaction</b>, collected by questionnaire. They are not the result of a clinical trial and they neither measure nor demonstrate any effect of the product on health.</p>
+
+        <h4>Who was excluded, and why</h4>
+        <ul>
+          <li><b>223 of the 290 questionnaires (77%) are not in these figures.</b> Every user who did not report regular use of the product, and every user who reported taking medication, was excluded. 67 people remained.</li>
+          <li>Anyone who stopped or abandoned the product cannot have reported regular use. By construction, the subgroup leaves out precisely those likely to have had the worst experience — which pushes the result upwards.</li>
+          <li>"No medication" means the medication field of the questionnaire was left blank, and a blank field can mean either "I take none" or "I did not answer this question". Strictly, this is the group of regular users who did not state a medication.</li>
+          <li>The subgroup was defined after the data had been examined. Choosing the best-performing cut after the fact inflates the estimate.</li>
+        </ul>
+
+        <h4>What these data cannot say</h4>
+        <ul>
+          <li><b>This is not "88% of users".</b> Across all questionnaires, 81.3% reported being satisfied or very satisfied. The 88.1% refers to 67 people and should never be quoted without that context.</li>
+          <li>There was no comparison group and no before-and-after measurement: <b>no improvement can be measured</b> from this survey.</li>
+          <li>Respondents are customers who replied voluntarily; they are not a random sample of any population.</li>
+          <li>Nothing here constitutes a health claim. In the European Union, health claims on food supplements are permitted only if they appear on the authorised list under Regulation (EC) No 1924/2006. These results support no statement about PSA, prostate size, urinary symptoms, biopsy or surgery.</li>
+          <li>Results vary from person to person. SSP3-Forte is a food supplement and is not a substitute for medical advice, diagnosis or treatment. If you have symptoms, consult your doctor.</li>
+        </ul>
+
+        <p class="sv-source">Source: satisfaction questionnaires collected up to October 2017 (n=290). 95% confidence intervals by normal approximation; comparisons by two-proportion z-test, two-sided.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 <div id="disclaimer-modal">
   <div id="disclaimer-modal-overlay" onclick="closeDisclaimerModal()"></div>
   <div id="disclaimer-modal-box">

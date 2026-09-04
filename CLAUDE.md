@@ -132,6 +132,14 @@ To add an article to the pool: append one entry to `BLOG_POSTS` — `u` (url), `
 
 **Info modal** (`#info-modal`) — floating overlay, PT/BR only. Triggered from hero "Saber mais" dropdown and pricing section button. Source text: `O que o SSP3-Forte pode fazer por Você.txt`.
 
+**Survey modal** (`#survey-modal`) — floating overlay in all four languages (pt/br/en blocks; `lang-world` shows the `en` one), opened by `openSurveyModal()` from the second entry of the "Saber mais" / "Learn more" dropdown. It reports the 2017 satisfaction survey **for one subgroup only**: the 67 respondents who declared regular use *and* declared no medication — 88.1% satisfied or very satisfied [95% CI 80.3–95.8], 32.8% very satisfied, one respondent not satisfied.
+
+The modal is built so the headline number cannot be read out of context: the comparison table shows the full sample (289, 81.3%) and the regular-use-only cut (185, 81.1%) alongside it, the text states that the 8.8-point gap is not significant (p=0.106) with overlapping CIs, and a closing `.sv-disclaimer` block spells out that 223 of 290 questionnaires (77%) were excluded, that "no medication" is really a blank field, that the subgroup was chosen post hoc, that survivorship bias inflates it, that no improvement can be measured without a control group or a baseline, and that nothing in it supports a health claim under Regulation (EC) 1924/2006. **Do not quote "88%" anywhere on the site without both filters and the n=67** — the figure for all respondents is 81.3%.
+
+Numbers come from `satisfaction_dataset/Inqueritos (290), Mapa em 02102017.xls`, sheet "Dados Actualizados"; the full working analysis lives in the scratchpad generators (`gen_semmeds.py` and siblings), not in the repo.
+
+**"Saber mais" dropdown order** (`.hero-dropdown-menu`): product info modal → survey modal → Blog → free Ebook. The EN/INT block carries only the two modals.
+
 **Hero CTA buttons** — font size 21px (scoped to `.hero-cta`). The order button links to `#precos` (pricing section), not `#encomenda`. The Blog button uses `.btn-blog` class (gold border, bold) to stand out.
 
 ## Testimonials
