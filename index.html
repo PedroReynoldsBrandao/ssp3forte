@@ -862,14 +862,39 @@
     display: block;
     background: var(--green-pale);
   }
-  .blog-card-ph {
+  /* Cards without a photo get a drawn cover instead of a grey placeholder.
+     Four ground variants cycle by article so neighbouring covers differ. */
+  .blog-card-cover {
     height: 148px;
-    background: var(--green-pale);
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
+    background: linear-gradient(135deg, #0d3d2b 0%, #14523a 55%, #1a6645 100%);
   }
-  .blog-card-ph svg { width: 42px; height: 42px; opacity: 0.28; }
+  .blog-card-cover.cv2 { background: linear-gradient(135deg, #14523a 0%, #1a6645 60%, #24805a 100%); }
+  .blog-card-cover.cv3 { background: linear-gradient(140deg, #0b3324 0%, #12492f 55%, #1d6a49 100%); }
+  .blog-card-cover.cv4 { background: linear-gradient(125deg, #17573e 0%, #1a6645 45%, #2a9460 100%); }
+  .blog-card-cover::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.04) 0 10px, transparent 10px 22px);
+  }
+  .blog-card-cover svg {
+    position: relative;
+    z-index: 1;
+    width: 52px;
+    height: 52px;
+    stroke: var(--gold);
+    fill: none;
+    stroke-width: 1.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    opacity: 0.82;
+    transition: opacity 0.15s, transform 0.15s;
+  }
+  .blog-card:hover .blog-card-cover svg { opacity: 1; transform: scale(1.06); }
   .blog-card-body { padding: 1.2rem 1.35rem 1.35rem; display: flex; flex-direction: column; flex: 1; }
   .blog-card-date {
     font-size: 11px;
@@ -1931,8 +1956,8 @@
         </div>
       </div>
       <div class="blog-cta">
-        <p>Want to learn more about prostate health? Visit our <a href="https://problemasnaprostata.blogspot.com/" target="_blank" style="font-weight:700;color:var(--green-deep);text-decoration:underline;">blog</a> with articles, testimonials and answers to common questions.</p>
-        <a href="https://problemasnaprostata.blogspot.com/" target="_blank" class="btn-ghost">Visit the Blog →</a>
+        <p>Want to learn more about prostate health? Visit our <a href="https://bph-prostate-enlarged.blogspot.com/" target="_blank" style="font-weight:700;color:var(--green-deep);text-decoration:underline;">blog</a> with articles, testimonials and answers to common questions.</p>
+        <a href="https://bph-prostate-enlarged.blogspot.com/" target="_blank" class="btn-ghost">Visit the Blog →</a>
       </div>
     </div>
 
@@ -2059,7 +2084,8 @@
     </div>
   </div>
   <div class="footer-links">
-    <a href="https://problemasnaprostata.blogspot.com/" target="_blank">Blog</a>
+    <a href="https://problemasnaprostata.blogspot.com/" target="_blank" data-lang-inline="pt">Blog</a>
+    <a href="https://bph-prostate-enlarged.blogspot.com/" target="_blank" data-lang-inline="en">Blog</a>
     <a href="mailto:encomendas@ssp3forte.com" data-lang-inline="pt">Contacto</a>
     <a href="mailto:orders@ssp3forte.com" data-lang-inline="en">Contact</a>
     <a href="#encomenda">
@@ -2300,6 +2326,7 @@ const BLOG_POSTS = [
 
   { u: 'https://problemasnaprostata.blogspot.com/2021/12/exame-de-toque.html',
     i: '',
+    k: 'check',
     d: '25 Dezembro 2021',
     tp: 'Próstata: o exame de toque',
     tb: 'Próstata: o exame de toque',
@@ -2332,6 +2359,7 @@ const BLOG_POSTS = [
 
   { u: 'https://problemasnaprostata.blogspot.com/2018/07/10-atitudes-para-prevenir-problemas-na.html',
     i: '',
+    k: 'check',
     d: '15 Julho 2018',
     tp: '10 atitudes para prevenir problemas na próstata',
     tb: '10 atitudes para prevenir problemas na próstata',
@@ -2372,6 +2400,7 @@ const BLOG_POSTS = [
 
   { u: 'https://problemasnaprostata.blogspot.com/2018/04/vitamina-d-e-prostata.html',
     i: '',
+    k: 'sun',
     d: '16 Abril 2018',
     tp: 'Vitamina D e a próstata',
     tb: 'Vitamina D e a próstata',
@@ -2380,6 +2409,7 @@ const BLOG_POSTS = [
 
   { u: 'https://problemasnaprostata.blogspot.com/2018/08/vegetais-indispensaveis-na-nossa.html',
     i: '',
+    k: 'leaf',
     d: '16 Agosto 2018',
     tp: 'Vegetais indispensáveis que evitam doenças',
     tb: 'Vegetais indispensáveis que evitam doenças',
@@ -2388,6 +2418,7 @@ const BLOG_POSTS = [
 
   { u: 'https://problemasnaprostata.blogspot.com/2017/10/factos-medicos-que-acabaram-por-nao-ser.html',
     i: '',
+    k: 'guide',
     d: '12 Outubro 2017',
     tp: 'Factos médicos que acabaram por não ser verdadeiros',
     tb: 'Fatos médicos que acabaram não sendo verdadeiros',
@@ -2396,6 +2427,7 @@ const BLOG_POSTS = [
 
   { u: 'https://problemasnaprostata.blogspot.com/2017/04/lacticinios-cancer-na-prostata-e-outros.html',
     i: '',
+    k: 'drop',
     d: '27 Abril 2017',
     tp: 'Lacticínios, próstata e outros problemas',
     tb: 'Laticínios, próstata e outros problemas',
@@ -2404,6 +2436,7 @@ const BLOG_POSTS = [
 
   { u: 'https://problemasnaprostata.blogspot.com/2017/03/colesterol-e-trigliceridos.html',
     i: '',
+    k: 'heart',
     d: '16 Março 2017',
     tp: 'Colesterol e triglicéridos: o que os valores dizem',
     tb: 'Colesterol e triglicerídeos: o que os valores dizem',
@@ -2412,6 +2445,7 @@ const BLOG_POSTS = [
 
   { u: 'https://problemasnaprostata.blogspot.com/2018/05/omega-3-e-prostata.html',
     i: '',
+    k: 'fish',
     d: '25 Maio 2018',
     tp: 'Ómega 3 e a próstata',
     tb: 'Ômega 3 e a próstata',
@@ -2425,36 +2459,42 @@ const BLOG_POSTS = [
 const BLOG_POSTS_EN = [
   { u: 'https://bph-prostate-enlarged.blogspot.com/2018/10/what-you-must-know-about-prostate.html',
     i: '',
+    k: 'guide',
     d: '10 October 2018',
     tp: 'What you must know about prostate problems',
     ep: 'A long guide to the gland: what it does, what goes wrong with it after 40, and what the conventional and natural options actually involve.' },
 
   { u: 'https://bph-prostate-enlarged.blogspot.com/2011/10/men-little-gland-big-troubles.html',
     i: '',
+    k: 'drop',
     d: '20 October 2011',
     tp: 'Benign prostatic hyperplasia: a little gland, big trouble',
     ep: 'Why the prostate grows twice in a man’s life, how it presses on the urethra like a clamp on a hose, and what the symptoms mean. With references.' },
 
   { u: 'https://bph-prostate-enlarged.blogspot.com/2013/07/prostate-and-inflamation.html',
     i: '',
+    k: 'flame',
     d: '14 July 2013',
     tp: 'The prostate and inflammation',
     ep: 'Why inflammation sits underneath so much prostate pain — and why masking the pain is not the same as removing the cause.' },
 
   { u: 'https://bph-prostate-enlarged.blogspot.com/2013/07/the-prostate-pain-apocalypse-its-not.html',
     i: '',
+    k: 'clock',
     d: '11 July 2013',
     tp: 'Prostate pain is not just an old man’s complaint',
     ep: 'Truck drivers, cyclists, desk-bound men: how hours of pressure on the pelvic floor bring prostate pain to men in their thirties and forties.' },
 
   { u: 'https://bph-prostate-enlarged.blogspot.com/2013/07/prostate-pain.html',
     i: '',
+    k: 'dna',
     d: '11 July 2013',
     tp: 'The part of prostate risk you cannot change',
     ep: 'Family history is the one risk factor no diet fixes. Knowing yours early is the move that always pays.' },
 
   { u: 'https://bph-prostate-enlarged.blogspot.com/2013/07/bike-riding-is-bad-for-your-prostate.html',
     i: '',
+    k: 'bike',
     d: '11 July 2013',
     tp: 'Is cycling bad for your prostate?',
     ep: 'An account of heavy cycling, a rising PSA and what happened after cutting back. A caution worth knowing, not a conclusion.' }
@@ -2462,7 +2502,38 @@ const BLOG_POSTS_EN = [
 
 const BLOG_SHOW = 6;
 const BLOG_WITH_IMG = 4;   // how many of the six must carry a photo
-const BLOG_PLACEHOLDER = '<div class="blog-card-ph"><svg viewBox="0 0 24 24" fill="none" stroke="#0d3d2b" stroke-width="1.5"><path d="M4 4h16v16H4z"/><path d="M8 9h8M8 13h8M8 17h5"/></svg></div>';
+/* Drawn covers for posts with no usable photo. `k` on a BLOG_POSTS entry picks one;
+   anything unrecognised falls back to `doc`. Icons are 24x24, stroke-only. */
+const BLOG_COVERS = {
+  doc:     '<path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/><path d="M9 12h6M9 16h4"/>',
+  guide:   '<path d="M4 5h6a2 2 0 0 1 2 2v12a2.4 2.4 0 0 0-2-1H4z"/><path d="M20 5h-6a2 2 0 0 0-2 2v12a2.4 2.4 0 0 1 2-1h6z"/>',
+  flame:   '<path d="M12 21a5.2 5.2 0 0 0 5.2-5.2c0-4.2-5.2-9.4-5.2-9.4S6.8 11.6 6.8 15.8A5.2 5.2 0 0 0 12 21z"/><path d="M12 21a2.2 2.2 0 0 0 2.2-2.2c0-1.9-2.2-4.2-2.2-4.2s-2.2 2.3-2.2 4.2A2.2 2.2 0 0 0 12 21z"/>',
+  moon:    '<path d="M20.5 15A8.6 8.6 0 0 1 9 3.5a8.8 8.8 0 1 0 11.5 11.5z"/>',
+  dna:     '<path d="M8 3c0 6 8 6 8 9s-8 3-8 9"/><path d="M16 3c0 6-8 6-8 9s8 3 8 9"/><path d="M9.4 6.6h5.2M8.2 12h7.6M9.4 17.4h5.2"/>',
+  bike:    '<circle cx="5.8" cy="16.6" r="3.4"/><circle cx="18.2" cy="16.6" r="3.4"/><path d="M5.8 16.6l4.4-7.4h4.2l3.8 7.4"/><path d="M9 9.2h4.6"/><path d="M14.4 9.2l-1.2-3h2.6"/>',
+  sun:     '<circle cx="12" cy="12" r="4"/><path d="M12 3v2.2M12 18.8V21M3 12h2.2M18.8 12H21M5.6 5.6l1.6 1.6M16.8 16.8l1.6 1.6M18.4 5.6l-1.6 1.6M7.2 16.8l-1.6 1.6"/>',
+  leaf:    '<path d="M20 4C10.6 4 4.6 8.6 4.6 14.4A5.4 5.4 0 0 0 10 19.8C15.8 19.8 20 13.6 20 4z"/><path d="M5.6 20c3.4-5.6 7.2-8.6 11.6-10.6"/>',
+  drop:    '<path d="M12 3.2s6.2 6.6 6.2 10.6a6.2 6.2 0 0 1-12.4 0C5.8 9.8 12 3.2 12 3.2z"/>',
+  heart:   '<path d="M12 20.2S4.6 15.6 4.6 10.6A3.9 3.9 0 0 1 12 8.4a3.9 3.9 0 0 1 7.4 2.2c0 5-7.4 9.6-7.4 9.6z"/>',
+  fish:    '<path d="M22 12c-2.6-3.6-6.2-5.2-9.8-5.2S5.4 8.4 3.4 12c2 3.6 5.2 5.2 8.8 5.2S19.4 15.6 22 12z"/><path d="M3.4 12L1 8.6v6.8z"/><circle cx="17.6" cy="10.8" r="0.9"/>',
+  cup:     '<path d="M4 8.4h12v5.8a4.2 4.2 0 0 1-4.2 4.2H8.2A4.2 4.2 0 0 1 4 14.2z"/><path d="M16 10h1.9a2.6 2.6 0 0 1 0 5.2H16"/><path d="M7 3v2.4M10.5 3v2.4M14 3v2.4"/>',
+  check:   '<path d="M6 3.6h12v16.8H6z"/><path d="M9 8.6l1.6 1.6L13.6 7"/><path d="M9 14.6l1.6 1.6L13.6 13"/>',
+  clock:   '<circle cx="12" cy="12" r="8.4"/><path d="M12 7.2V12l3.2 2.2"/>'
+};
+
+/* Stable per-article variant, so the same post always gets the same ground. */
+function blogCoverGround(url) {
+  let h = 0;
+  for (let i = 0; i < url.length; i++) h = (h * 31 + url.charCodeAt(i)) >>> 0;
+  const n = (h % 4) + 1;
+  return n === 1 ? '' : ' cv' + n;
+}
+
+function blogCover(post) {
+  const icon = BLOG_COVERS[post.k] || BLOG_COVERS.doc;
+  return '<div class="blog-card-cover' + blogCoverGround(post.u) + '">' +
+         '<svg viewBox="0 0 24 24" aria-hidden="true">' + icon + '</svg></div>';
+}
 
 /* Whole weeks since the Unix epoch, Monday-based (1 Jan 1970 was a Thursday). */
 function blogWeekSeed() {
@@ -2507,7 +2578,7 @@ function blogCard(post, lang) {
   const more  = lang === 'en' ? 'Read article →' : 'Ler artigo →';
   const media = post.i
     ? '<img class="blog-card-img" src="' + post.i + '" alt="" loading="lazy">'
-    : BLOG_PLACEHOLDER;
+    : blogCover(post);
   return '<a class="blog-card" href="' + post.u + '" target="_blank" rel="noopener">' +
     media +
     '<div class="blog-card-body">' +
