@@ -833,8 +833,6 @@
 
   /* BLOG ARTICLES */
   .blog-section { background: #fff; }
-  body.lang-en .blog-section,
-  body.lang-world .blog-section { display: none; }
   .blog-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
@@ -1039,8 +1037,6 @@
   }
   #top-nav ul li a:hover { color: var(--gold); background: rgba(255,255,255,0.07); }
   /* the Artigos section is PT/BR only, so its nav entry must be too */
-  body.lang-en #top-nav li.nav-pt-only,
-  body.lang-world #top-nav li.nav-pt-only { display: none; }
 
   /* RESPONSIVE */
   @media (max-width: 600px) {
@@ -1109,7 +1105,7 @@
     <li><a href="#testemunhos" onclick="closeTopNav()"><span data-lang-inline="pt">Testemunhos</span><span data-lang-inline="en">Testimonials</span></a></li>
     <li><a href="#precos" onclick="closeTopNav()"><span data-lang-inline="pt">Encomenda</span><span data-lang-inline="en">Order</span></a></li>
     <li><a href="#faq" onclick="closeTopNav()"><span data-lang-inline="pt">Perguntas frequentes</span><span data-lang-inline="en">FAQ</span></a></li>
-    <li class="nav-pt-only"><a href="#artigos" onclick="closeTopNav()">Artigos</a></li>
+    <li><a href="#artigos" onclick="closeTopNav()"><span data-lang-inline="pt">Artigos</span><span data-lang-inline="en">Articles</span></a></li>
   </ul>
 </nav>
 
@@ -1195,6 +1191,7 @@
           <div class="hero-dropdown-menu">
             <button type="button" onclick="openInfoModal(); closeHeroDropdowns()">What this product can do for you →</button>
             <button type="button" onclick="openSurveyModal(); closeHeroDropdowns()">User satisfaction study →</button>
+            <a href="https://bph-prostate-enlarged.blogspot.com/" target="_blank" rel="noopener">Blog →</a>
           </div>
         </div>
       </div>
@@ -1971,6 +1968,16 @@
       </div>
     </div>
 
+    <div data-lang="en">
+      <p class="section-label">Articles</p>
+      <h2>From our blog</h2>
+      <p class="section-lead">A selection of articles on prostate health from the Naturalfarma blog.</p>
+      <div class="blog-grid" id="blog-grid-en"></div>
+      <div class="blog-all">
+        <a href="https://bph-prostate-enlarged.blogspot.com/" target="_blank" rel="noopener" class="btn-ghost btn-blog">See all articles →</a>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -2412,6 +2419,47 @@ const BLOG_POSTS = [
     eb: 'O que a pesquisa encontrou sobre os ácidos graxos essenciais e o crescimento celular na próstata.' }
 ];
 
+/* The English blog is a different site (bph-prostate-enlarged.blogspot.com), so EN/INT
+   draws from its own pool. Entries use tp/ep only — there is no PT/BR split here.
+   None of these posts carries a usable photo, so they all take the placeholder. */
+const BLOG_POSTS_EN = [
+  { u: 'https://bph-prostate-enlarged.blogspot.com/2018/10/what-you-must-know-about-prostate.html',
+    i: '',
+    d: '10 October 2018',
+    tp: 'What you must know about prostate problems',
+    ep: 'A long guide to the gland: what it does, what goes wrong with it after 40, and what the conventional and natural options actually involve.' },
+
+  { u: 'https://bph-prostate-enlarged.blogspot.com/2011/10/men-little-gland-big-troubles.html',
+    i: '',
+    d: '20 October 2011',
+    tp: 'Benign prostatic hyperplasia: a little gland, big trouble',
+    ep: 'Why the prostate grows twice in a man’s life, how it presses on the urethra like a clamp on a hose, and what the symptoms mean. With references.' },
+
+  { u: 'https://bph-prostate-enlarged.blogspot.com/2013/07/prostate-and-inflamation.html',
+    i: '',
+    d: '14 July 2013',
+    tp: 'The prostate and inflammation',
+    ep: 'Why inflammation sits underneath so much prostate pain — and why masking the pain is not the same as removing the cause.' },
+
+  { u: 'https://bph-prostate-enlarged.blogspot.com/2013/07/the-prostate-pain-apocalypse-its-not.html',
+    i: '',
+    d: '11 July 2013',
+    tp: 'Prostate pain is not just an old man’s complaint',
+    ep: 'Truck drivers, cyclists, desk-bound men: how hours of pressure on the pelvic floor bring prostate pain to men in their thirties and forties.' },
+
+  { u: 'https://bph-prostate-enlarged.blogspot.com/2013/07/prostate-pain.html',
+    i: '',
+    d: '11 July 2013',
+    tp: 'The part of prostate risk you cannot change',
+    ep: 'Family history is the one risk factor no diet fixes. Knowing yours early is the move that always pays.' },
+
+  { u: 'https://bph-prostate-enlarged.blogspot.com/2013/07/bike-riding-is-bad-for-your-prostate.html',
+    i: '',
+    d: '11 July 2013',
+    tp: 'Is cycling bad for your prostate?',
+    ep: 'An account of heavy cycling, a rising PSA and what happened after cutting back. A caution worth knowing, not a conclusion.' }
+];
+
 const BLOG_SHOW = 6;
 const BLOG_WITH_IMG = 4;   // how many of the six must carry a photo
 const BLOG_PLACEHOLDER = '<div class="blog-card-ph"><svg viewBox="0 0 24 24" fill="none" stroke="#0d3d2b" stroke-width="1.5"><path d="M4 4h16v16H4z"/><path d="M8 9h8M8 13h8M8 17h5"/></svg></div>';
@@ -2443,10 +2491,10 @@ function blogShuffle(list, rand) {
 
 /* Draws BLOG_WITH_IMG cards with a photo and fills the rest from the ones without,
    so the grid never comes out mostly placeholders. */
-function blogWeeklyPick() {
+function blogWeeklyPick(pool) {
   const rand = blogRandom(blogWeekSeed());
-  const withImg = blogShuffle(BLOG_POSTS.filter(p => p.i), rand);
-  const noImg   = blogShuffle(BLOG_POSTS.filter(p => !p.i), rand);
+  const withImg = blogShuffle(pool.filter(p => p.i), rand);
+  const noImg   = blogShuffle(pool.filter(p => !p.i), rand);
   const picked  = withImg.slice(0, BLOG_WITH_IMG);
   picked.push.apply(picked, noImg.slice(0, BLOG_SHOW - picked.length));
   picked.push.apply(picked, withImg.slice(BLOG_WITH_IMG, BLOG_WITH_IMG + BLOG_SHOW - picked.length));
@@ -2456,6 +2504,7 @@ function blogWeeklyPick() {
 function blogCard(post, lang) {
   const title = lang === 'br' ? post.tb : post.tp;
   const exc   = lang === 'br' ? post.eb : post.ep;
+  const more  = lang === 'en' ? 'Read article →' : 'Ler artigo →';
   const media = post.i
     ? '<img class="blog-card-img" src="' + post.i + '" alt="" loading="lazy">'
     : BLOG_PLACEHOLDER;
@@ -2465,15 +2514,16 @@ function blogCard(post, lang) {
       '<div class="blog-card-date">' + post.d + '</div>' +
       '<h3 class="blog-card-title">' + title + '</h3>' +
       '<p class="blog-card-exc">' + exc + '</p>' +
-      '<span class="blog-card-more">Ler artigo →</span>' +
+      '<span class="blog-card-more">' + more + '</span>' +
     '</div></a>';
 }
 
 function renderBlogCards() {
-  const picked = blogWeeklyPick();
-  ['pt', 'br'].forEach(lang => {
-    const grid = document.getElementById('blog-grid-' + lang);
-    if (grid) grid.innerHTML = picked.map(p => blogCard(p, lang)).join('');
+  const ptbr = blogWeeklyPick(BLOG_POSTS);       // PT and BR share the Portuguese blog
+  const en   = blogWeeklyPick(BLOG_POSTS_EN);    // EN and INT read the English one
+  [['pt', ptbr], ['br', ptbr], ['en', en]].forEach(pair => {
+    const grid = document.getElementById('blog-grid-' + pair[0]);
+    if (grid) grid.innerHTML = pair[1].map(p => blogCard(p, pair[0])).join('');
   });
 }
 renderBlogCards();
@@ -2488,87 +2538,129 @@ renderBlogCards();
 
     <div data-lang="pt">
       <h2>O que o SSP3-Forte pode fazer por si?</h2>
-      <p>O SSP3-FORTE, remédio natural para a próstata aumentada, é fabricado na Europa, em laboratório que segue o GMP (<em>Good Manufacturing Practices</em>) e certificado com ISO 22000. Além dos outros nutrientes protectores, também contém os Antivirais: Zinco, Selénio e Vitamina E.</p>
-      <p>SSP3-Forte foi formulado para tratar a próstata inflamada, aumentada ou inchada e outros problemas de origem benigna. Comprovado pelos próprios utilizadores, é o melhor tratamento natural sem efeitos secundários adversos, porque não contém ingredientes químicos sintéticos como os fármacos normalmente receitados.</p>
-      <p>SSP3-Forte, quando tomado regularmente, irá regularizar os PSA, o tamanho da próstata e, ainda, prevenir a biópsia e a cirurgia. É um produto seguro, não sintético, sem contra-indicação, produzido em laboratório sob certificação ISO 22000.</p>
-      <h3>Benefícios a partir da 6.ª semana</h3>
+      <p>O SSP3-Forte é um suplemento e remédio natural para a próstata aumentada desenvolvido na Europa sob rigorosos padrões de qualidade GMP e certificação ISO 22000. Formulado especificamente para homens que procuram aliviar os sintomas da Hiperplasia Benigna da Próstata (HBP) — também conhecida popularmente como próstata grande —, este produto combina nutrientes essenciais e antioxidantes. Ingredientes activos que actuam directamente no combate à próstata inflamada, promovendo a protecção do tecido prostático de forma segura, sem os efeitos secundários dos fármacos químicos comuns.</p>
+
+      <h3>Benefícios do SSP3-Forte (resultados a partir da 6.ª semana)</h3>
+      <p>O uso regular e contínuo deste tratamento natural para a próstata actua de forma progressiva na saúde urinária e no bem-estar sexual masculino, promovendo melhorias visíveis a médio prazo.</p>
       <ul>
-        <li>Redução do tamanho da próstata e desobstrução da uretra, melhorando a micção</li>
-        <li>Redução do PSA para níveis normais</li>
-        <li>Redução da frequência urinária (noites mais bem dormidas)</li>
-        <li>Melhoria do jato urinário</li>
-        <li>Melhoria da erecção e da ejaculação</li>
-        <li>Melhoria na espermatogénese (aumento da quantidade de espermatozóides)</li>
-        <li>Melhoria no desempenho sexual</li>
+        <li><strong>Normalização do PSA:</strong> auxilia na redução e estabilização dos níveis do Antigénio Prostático Específico (PSA) no sangue, ajudando a baixar o PSA alto.</li>
+        <li><strong>Melhoria do fluxo urinário:</strong> contribui para a redução do tamanho da próstata, ajudando a desobstruir a uretra, combater a urina presa e a fortalecer o jacto urinário fraco.</li>
+        <li><strong>Fim das noites interrompidas:</strong> reduz drasticamente a frequência urinária nocturna (nictúria, ou o hábito de levantar à noite para urinar), permitindo um sono mais profundo e reparador.</li>
+        <li><strong>Suporte à função sexual:</strong> ao contrário dos medicamentos tradicionais, o SSP3-Forte não diminui a libido. Ajuda a restabelecer o desejo e melhora a qualidade da erecção e da ejaculação, combatendo a impotência sexual associada aos problemas de próstata.</li>
+        <li><strong>Optimização da fertilidade:</strong> actua positivamente na espermatogénese, promovendo o aumento da quantidade e da qualidade dos espermatozóides.</li>
       </ul>
-      <h3>Modo de toma</h3>
-      <p>A dose diária vai de 2 a 3 cápsulas ao longo do dia, com as refeições, durante pelo menos 90 dias seguidos.</p>
-      <p><strong>a) Próstata entre 25 e 40g</strong> (ou levanta-se 1 vez à noite para urinar): 2 cápsulas por dia — uma ao almoço e outra ao jantar — durante 90 dias ou até os sintomas desaparecerem. Depois, passa a 2 cápsulas dia sim dia não (dose de manutenção).</p>
-      <p><strong>b) Próstata com mais de 40g</strong> (ou levanta-se 2 ou mais vezes à noite): 3 cápsulas por dia — uma com cada refeição — durante 90 dias. Depois, 2 cápsulas por dia durante mais 90 dias. Após isso, passa a 2 cápsulas dia sim dia não (dose de manutenção).</p>
-      <h3>Conselhos importantes</h3>
-      <p>Em conjunto com o SSP3-Forte, evite café, álcool (sobretudo cerveja), leite e refrigerantes — prejudicam a saúde da próstata e da bexiga. Não fumar e fazer exercício físico também ajudará muito.</p>
-      <div class="modal-note">
-        <p style="margin:0;"><strong>O SSP3-Forte NÃO DIMINUI a libido.</strong> Pelo contrário, ajuda a restabelecer a perda de libido causada pela próstata aumentada. São os fármacos sintéticos receitados para a HBP que causam perda da libido, impotência sexual, ejaculação retrógrada e ginecomastia. Leia sempre os folhetos informativos dos medicamentos que lhe receitam.</p>
-      </div>
+
+      <h3>Guia de utilização e modo de toma</h3>
+      <p>Para garantir a máxima eficácia e apoiar a saúde urológica, o suplemento deve ser utilizado de forma contínua conforme as orientações de um profissional de saúde, ingerindo as cápsulas juntamente com as principais refeições.</p>
+      <ul>
+        <li><strong>Casos com sintomas leves:</strong> recomenda-se a utilização regular das cápsulas associada às refeições por um período prolongado. Após a estabilização dos sintomas, pode avaliar-se com um especialista a adopção de uma rotina de manutenção ajustada às necessidades individuais.</li>
+        <li><strong>Casos com sintomas mais acentuados:</strong> recomenda-se um acompanhamento médico rigoroso e a utilização contínua do suplemento conforme a avaliação clínica do especialista, ajustando o plano de suporte ao longo do tempo.</li>
+      </ul>
+
+      <h3>SSP3-Forte vs. tratamentos farmacêuticos comuns</h3>
+      <p>Muitos pacientes com hiperplasia prostática benigna acompanham de perto os impactos dos tratamentos convencionais na sua qualidade de vida. Veja como este suplemento para a próstata se posiciona face às terapias convencionais.</p>
+      <ul>
+        <li><strong>Origem dos ingredientes:</strong> o SSP3-Forte possui uma formulação de base natural, enquanto os remédios alopáticos tradicionais (fármacos) contam com compostos químicos sintéticos.</li>
+        <li><strong>Impacto na vida sexual:</strong> o SSP3-Forte é formulado para preservar o bem-estar geral. Já os fármacos sintéticos receitados para a HBP estão frequentemente associados a disfunções graves, como perda de libido, ejaculação retrógrada, ginecomastia e disfunção eréctil.</li>
+        <li><strong>Efeitos secundários:</strong> o SSP3-Forte apresenta um perfil de tolerabilidade favorável por ser livre de químicos sintéticos, reduzindo os riscos de reacções adversas no organismo.</li>
+        <li><strong>Certificação de qualidade:</strong> produzido em laboratório europeu certificado com GMP e ISO 22000, o produto garante total segurança e pureza em cada lote.</li>
+      </ul>
+
+      <h3>Conselhos de estilo de vida e alimentos a evitar</h3>
+      <p>O bem-estar urinário e prostático é amplificado quando associado a hábitos diários que evitam a inflamação e o desconforto pélvico:</p>
+      <ul>
+        <li><strong>Alimentos irritantes:</strong> é aconselhável reduzir ou evitar o consumo de substâncias que irritam a bexiga, como o café, bebidas alcoólicas (sobretudo a cerveja), leite e refrigerantes.</li>
+        <li><strong>Actividade física:</strong> praticar exercícios moderados regularmente melhora a circulação sanguínea na zona pélvica e ajuda a desinflamar a próstata naturalmente.</li>
+        <li><strong>Hábitos saudáveis:</strong> eliminar o tabagismo contribui directamente para a redução de processos inflamatórios sistémicos.</li>
+        <li><strong>Consulta médica:</strong> mantenha sempre o seu exame de próstata e o acompanhamento com o urologista em dia para monitorizar a evolução da sua saúde de forma segura.</li>
+      </ul>
     </div>
 
     <div data-lang="br">
       <h2>O que o SSP3-Forte pode fazer por você?</h2>
-      <p>O SSP3-FORTE, remédio natural para a próstata aumentada, é fabricado na Europa, em laboratório que segue o GMP (<em>Good Manufacturing Practices</em>) e certificado com ISO 22000. Além dos outros nutrientes protetores, também contém os Antivirais: Zinco, Selênio e Vitamina E.</p>
-      <p>SSP3-Forte foi formulado para tratar a próstata inflamada, aumentada ou inchada e outros problemas de origem benigna. Comprovado pelos próprios utilizadores, é o melhor tratamento natural sem efeitos colaterais adversos, porque não contém ingredientes químicos sintéticos como os fármacos normalmente receitados.</p>
-      <p>SSP3-Forte, quando tomado regularmente, irá regularizar os PSA, o tamanho da próstata e, ainda, prevenir a biópsia e a cirurgia. É um produto seguro, não sintético, sem contra-indicação, produzido em laboratório sob certificação ISO 22000.</p>
-      <h3>Benefícios a partir da 6.ª semana</h3>
+      <p>O SSP3-Forte é um suplemento e remédio natural para a próstata aumentada desenvolvido na Europa sob rigorosos padrões de qualidade GMP e certificação ISO 22000. Formulado especificamente para homens que procuram aliviar os sintomas da Hiperplasia Benigna da Próstata (HBP) — também conhecida popularmente como próstata grande —, este produto combina nutrientes essenciais e antioxidantes. Ingredientes ativos que atuam diretamente no combate à próstata inflamada, promovendo a proteção do tecido prostático de forma segura, sem os efeitos colaterais dos fármacos químicos comuns.</p>
+
+      <h3>Benefícios do SSP3-Forte (resultados a partir da 6.ª semana)</h3>
+      <p>O uso regular e contínuo deste tratamento natural para a próstata atua de forma progressiva na saúde urinária e no bem-estar sexual masculino, promovendo melhorias visíveis a médio prazo.</p>
       <ul>
-        <li>Redução do tamanho da próstata e desobstrução da uretra, melhorando a micção</li>
-        <li>Redução do PSA para níveis normais</li>
-        <li>Redução da frequência urinária (noites mais bem dormidas)</li>
-        <li>Melhoria do jato urinário</li>
-        <li>Melhoria da ereção e da ejaculação</li>
-        <li>Melhoria na espermatogênese (aumento da quantidade de espermatozóides)</li>
-        <li>Melhoria no desempenho sexual</li>
+        <li><strong>Normalização do PSA:</strong> auxilia na redução e estabilização dos níveis do Antígeno Prostático Específico (PSA) no sangue, ajudando a baixar o PSA alto.</li>
+        <li><strong>Melhoria do fluxo urinário:</strong> contribui para a redução do tamanho da próstata, ajudando a desobstruir a uretra, combater a urina presa e a fortalecer o jato urinário fraco.</li>
+        <li><strong>Fim das noites interrompidas:</strong> reduz drasticamente a frequência urinária noturna (nictúria, ou o hábito de levantar à noite para urinar), permitindo um sono mais profundo e reparador.</li>
+        <li><strong>Suporte à função sexual:</strong> ao contrário dos medicamentos tradicionais, o SSP3-Forte não diminui a libido. Ajuda a restabelecer o desejo e melhora a qualidade da ereção e da ejaculação, combatendo a impotência sexual associada aos problemas de próstata.</li>
+        <li><strong>Otimização da fertilidade:</strong> atua positivamente na espermatogênese, promovendo o aumento da quantidade e da qualidade dos espermatozoides.</li>
       </ul>
-      <h3>Modo de tomar</h3>
-      <p>A dose diária vai de 2 a 3 cápsulas ao longo do dia, com as refeições, durante pelo menos 90 dias seguidos.</p>
-      <p><strong>a) Próstata entre 25 e 40g</strong> (ou levanta-se 1 vez à noite para urinar): 2 cápsulas por dia — uma no almoço e outra no jantar — durante 90 dias ou até os sintomas desaparecerem. Depois, passa a 2 cápsulas dia sim dia não (dose de manutenção).</p>
-      <p><strong>b) Próstata com mais de 40g</strong> (ou levanta-se 2 ou mais vezes à noite): 3 cápsulas por dia — uma com cada refeição — durante 90 dias. Depois, 2 cápsulas por dia durante mais 90 dias. Após isso, passa a 2 cápsulas dia sim dia não (dose de manutenção).</p>
-      <h3>Conselhos importantes</h3>
-      <p>Em conjunto com o SSP3-Forte, evite café, álcool (sobretudo cerveja), leite e refrigerantes — prejudicam a saúde da próstata e da bexiga. Não fumar e fazer exercício físico também ajudará muito.</p>
-      <div class="modal-note">
-        <p style="margin:0;"><strong>O SSP3-Forte NÃO DIMINUI a libido.</strong> Pelo contrário, ajuda a restabelecer a perda de libido causada pela próstata aumentada. São os fármacos sintéticos receitados para a HBP que causam perda da libido, impotência sexual, ejaculação retrógrada e ginecomastia. Leia sempre a bula dos medicamentos que lhe receitam.</p>
-      </div>
+
+      <h3>Guia de uso e modo de tomar</h3>
+      <p>Para garantir a máxima eficácia e apoiar a saúde urológica, o suplemento deve ser usado de forma contínua conforme as orientações de um profissional de saúde, ingerindo as cápsulas junto com as principais refeições.</p>
+      <ul>
+        <li><strong>Casos com sintomas leves:</strong> recomenda-se o uso regular das cápsulas associado às refeições por um período prolongado. Após a estabilização dos sintomas, pode-se avaliar com um especialista a adoção de uma rotina de manutenção ajustada às necessidades individuais.</li>
+        <li><strong>Casos com sintomas mais acentuados:</strong> recomenda-se um acompanhamento médico rigoroso e o uso contínuo do suplemento conforme a avaliação clínica do especialista, ajustando o plano de suporte ao longo do tempo.</li>
+      </ul>
+
+      <h3>SSP3-Forte vs. tratamentos farmacêuticos comuns</h3>
+      <p>Muitos pacientes com hiperplasia prostática benigna acompanham de perto os impactos dos tratamentos convencionais na sua qualidade de vida. Veja como este suplemento para a próstata se posiciona diante das terapias convencionais.</p>
+      <ul>
+        <li><strong>Origem dos ingredientes:</strong> o SSP3-Forte tem uma formulação de base natural, enquanto os remédios alopáticos tradicionais (fármacos) contam com compostos químicos sintéticos.</li>
+        <li><strong>Impacto na vida sexual:</strong> o SSP3-Forte é formulado para preservar o bem-estar geral. Já os fármacos sintéticos receitados para a HBP estão frequentemente associados a disfunções graves, como perda de libido, ejaculação retrógrada, ginecomastia e disfunção erétil.</li>
+        <li><strong>Efeitos colaterais:</strong> o SSP3-Forte apresenta um perfil de tolerabilidade favorável por ser livre de químicos sintéticos, reduzindo os riscos de reações adversas no organismo.</li>
+        <li><strong>Certificação de qualidade:</strong> produzido em laboratório europeu certificado com GMP e ISO 22000, o produto garante total segurança e pureza em cada lote.</li>
+      </ul>
+
+      <h3>Conselhos de estilo de vida e alimentos a evitar</h3>
+      <p>O bem-estar urinário e prostático é amplificado quando associado a hábitos diários que evitam a inflamação e o desconforto pélvico:</p>
+      <ul>
+        <li><strong>Alimentos irritantes:</strong> é aconselhável reduzir ou evitar o consumo de substâncias que irritam a bexiga, como café, bebidas alcoólicas (sobretudo a cerveja), leite e refrigerantes.</li>
+        <li><strong>Atividade física:</strong> praticar exercícios moderados regularmente melhora a circulação sanguínea na região pélvica e ajuda a desinflamar a próstata naturalmente.</li>
+        <li><strong>Hábitos saudáveis:</strong> eliminar o tabagismo contribui diretamente para a redução de processos inflamatórios sistêmicos.</li>
+        <li><strong>Consulta médica:</strong> mantenha sempre seu exame de próstata e o acompanhamento com o urologista em dia para monitorar a evolução da sua saúde de forma segura.</li>
+      </ul>
     </div>
 
     <div data-lang="en">
       <h2>What can SSP3-Forte do for you?</h2>
-      <p>SSP3-Forte, a natural remedy for an enlarged prostate, is manufactured in Europe in a laboratory following GMP (<em>Good Manufacturing Practices</em>) and certified to ISO 22000. In addition to other protective nutrients, it also contains the antivirals Zinc, Selenium and Vitamin E.</p>
-      <p>SSP3-Forte was formulated to treat an inflamed, enlarged or swollen prostate and other conditions of benign origin. Proven by users themselves, it is the best natural treatment without adverse side effects, as it contains no synthetic chemical ingredients unlike the drugs commonly prescribed for these prostate problems.</p>
-      <p>SSP3-Forte, when taken regularly, will normalise PSA levels, reduce prostate size and help prevent biopsy and surgery. It is a safe, non-synthetic product with no contraindications, produced in an ISO 22000 certified laboratory.</p>
-      <h3>Benefits from the 6th week onwards</h3>
+      <p>SSP3-Forte is a natural supplement and remedy for an enlarged prostate, developed in Europe under strict GMP quality standards and ISO 22000 certification. Formulated specifically for men seeking relief from the symptoms of Benign Prostatic Hyperplasia (BPH) — commonly known as an enlarged prostate — this product combines essential nutrients and antioxidants. Active ingredients that work directly against prostate inflammation, protecting prostate tissue safely, without the side effects of common pharmaceutical drugs.</p>
+
+      <h3>Benefits of SSP3-Forte (results from week 6 onwards)</h3>
+      <p>Regular, continuous use of this natural prostate treatment acts progressively on urinary health and male sexual well-being, bringing visible improvement over the medium term.</p>
       <ul>
-        <li>Reduction in prostate size and clearance of the urethra, improving urination</li>
-        <li>Reduction of PSA to normal levels</li>
-        <li>Reduction in urinary frequency (better sleep through the night)</li>
-        <li>Improvement in urine flow</li>
-        <li>Improvement in erection and ejaculation</li>
-        <li>Improvement in spermatogenesis (increased sperm count)</li>
-        <li>Improvement in sexual performance</li>
+        <li><strong>PSA normalisation:</strong> helps reduce and stabilise Prostate-Specific Antigen (PSA) levels in the blood, helping to bring down a high PSA.</li>
+        <li><strong>Better urinary flow:</strong> contributes to reducing the size of the prostate, helping to clear the urethra, relieve retained urine and strengthen a weak urine stream.</li>
+        <li><strong>An end to broken nights:</strong> sharply reduces night-time urinary frequency (nocturia, the habit of getting up at night to urinate), allowing deeper, more restorative sleep.</li>
+        <li><strong>Support for sexual function:</strong> unlike conventional medicines, SSP3-Forte does not reduce libido. It helps restore desire and improves the quality of erection and ejaculation, countering the sexual impotence associated with prostate problems.</li>
+        <li><strong>Fertility support:</strong> acts positively on spermatogenesis, promoting an increase in both the quantity and the quality of sperm.</li>
       </ul>
-      <h3>Dosage</h3>
-      <p>The daily dose ranges from 2 to 3 capsules throughout the day, with meals, for at least 90 consecutive days.</p>
-      <p><strong>a) Prostate between 25 and 40g</strong> (or waking once at night to urinate): 2 capsules per day — one at lunch and one at dinner — for 90 days or until symptoms disappear. Afterwards, take 2 capsules every other day (maintenance dose).</p>
-      <p><strong>b) Prostate over 40g</strong> (or waking 2 or more times at night): 3 capsules per day — one with each main meal — for 90 days. Then 2 capsules per day for a further 90 days. Afterwards, take 2 capsules every other day (maintenance dose).</p>
-      <h3>Important advice</h3>
-      <p>Alongside SSP3-Forte, avoid coffee, alcohol (especially beer), milk and fizzy drinks — all harmful to prostate and bladder health. Not smoking and taking regular exercise will also help greatly.</p>
-      <div class="modal-note">
-        <p style="margin:0;"><strong>SSP3-Forte does NOT reduce libido.</strong> On the contrary, it helps restore the loss of libido caused by an enlarged prostate. It is the synthetic drugs prescribed for BPH that cause loss of libido, sexual impotency, retrograde ejaculation and gynaecomastia. Always read the patient information leaflet for any medication you are prescribed.</p>
-      </div>
+
+      <h3>How to use it</h3>
+      <p>For maximum effectiveness and to support urological health, the supplement should be used continuously as directed by a healthcare professional, taking the capsules with main meals.</p>
+      <ul>
+        <li><strong>Mild symptoms:</strong> regular use of the capsules with meals over an extended period is recommended. Once symptoms have stabilised, a maintenance routine adjusted to individual needs can be discussed with a specialist.</li>
+        <li><strong>More pronounced symptoms:</strong> close medical supervision is recommended, along with continuous use of the supplement as assessed clinically by a specialist, adjusting the plan over time.</li>
+      </ul>
+
+      <h3>SSP3-Forte vs. common pharmaceutical treatments</h3>
+      <p>Many patients with benign prostatic hyperplasia follow closely how conventional treatments affect their quality of life. Here is how this prostate supplement compares with conventional therapies.</p>
+      <ul>
+        <li><strong>Origin of the ingredients:</strong> SSP3-Forte has a naturally based formulation, whereas conventional allopathic remedies (drugs) rely on synthetic chemical compounds.</li>
+        <li><strong>Impact on sexual life:</strong> SSP3-Forte is formulated to preserve general well-being. Synthetic drugs prescribed for BPH, by contrast, are frequently associated with serious dysfunctions such as loss of libido, retrograde ejaculation, gynecomastia and erectile dysfunction.</li>
+        <li><strong>Side effects:</strong> SSP3-Forte has a favourable tolerability profile as it is free of synthetic chemicals, reducing the risk of adverse reactions in the body.</li>
+        <li><strong>Quality certification:</strong> produced in a European laboratory certified to GMP and ISO 22000, the product guarantees full safety and purity in every batch.</li>
+      </ul>
+
+      <h3>Lifestyle advice and foods to avoid</h3>
+      <p>Urinary and prostate well-being is amplified when combined with daily habits that keep inflammation and pelvic discomfort at bay:</p>
+      <ul>
+        <li><strong>Irritant foods:</strong> it is advisable to cut down or avoid substances that irritate the bladder, such as coffee, alcoholic drinks (beer above all), milk and soft drinks.</li>
+        <li><strong>Physical activity:</strong> regular moderate exercise improves blood circulation in the pelvic area and helps reduce prostate inflammation naturally.</li>
+        <li><strong>Healthy habits:</strong> giving up smoking contributes directly to reducing systemic inflammatory processes.</li>
+        <li><strong>Medical check-ups:</strong> always keep your prostate examinations and your urologist appointments up to date, so your health can be monitored safely.</li>
+      </ul>
     </div>
 
   </div>
 </div>
 
 <!-- DISCLAIMER MODAL -->
-<!-- SURVEY MODAL - satisfaction study, chart-led. Generated by scratchpad/gen_survey.py -->
+<!-- SURVEY MODAL - satisfaction study, chart-led. Generated by tools/gen_survey.py -->
 <div id="survey-modal">
   <div id="survey-modal-overlay" onclick="closeSurveyModal()"></div>
   <div id="survey-modal-box">
