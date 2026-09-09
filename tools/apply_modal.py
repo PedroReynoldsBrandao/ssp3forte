@@ -9,15 +9,22 @@ Funciona a partir da raiz do repositorio ou de dentro de tools/.
 Os geradores escrevem um .txt intermedio; este script cola-o entre os marcadores
 certos, verifica o equilibrio das tags e apaga o ficheiro temporario.
 
-Depois de correr: confirmar a sintaxe do JS da pagina e so depois fazer commit.
-    python -c "import io,re; s=io.open('index.html',encoding='utf-8').read(); io.open('page.js','w',encoding='utf-8').write(re.findall(r'<script>(.*?)</script>',s,re.S)[0])"
-    node --check page.js && rm page.js
+E idempotente: correr sem alterar nada reproduz o ficheiro byte a byte, incluindo
+os fins-de-linha. Isso torna-o seguro de correr so para confirmar o estado.
+
+Depois de correr, confirmar a sintaxe do JS da pagina antes do commit:
+    python -c "import io,re; s=io.open('index.html',encoding='utf-8').read(); io.open('_p.js','w',encoding='utf-8').write(re.findall(r'<script>(.*?)</script>',s,re.S)[0])"
+    node --check _p.js
 """
-import io, os, re, subprocess, sys
+import io, os, subprocess, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 INDEX = os.path.join(ROOT, 'index.html')
+
+CR = chr(13)
+LF = chr(10)
+CRLF = CR + LF
 
 # nome -> (gerador, ficheiro gerado, marcador de inicio, marcador de fim)
 JOBS = {
@@ -43,10 +50,17 @@ def apply(name):
         raise SystemExit('%s nao escreveu %s' % (script, produced))
     block = io.open(out, encoding='utf-8').read()
 
-    s = io.open(INDEX, encoding='utf-8').read()
+    # newline='' preserva os fins-de-linha tal como estao no ficheiro. Um clone
+    # acabado de fazer traz CRLF no Windows; sem isto o splice convertia tudo para
+    # LF e produzia um diff do ficheiro inteiro, que so confunde quem vem a seguir.
+    s = io.open(INDEX, encoding='utf-8', newline='').read()
+    crlf = s.count(CRLF)
+    nl = CRLF if crlf > (s.count(LF) - crlf) else LF
+    block = block.replace(CRLF, LF).replace(LF, nl)
+
     i, j = s.index(start), s.index(end)
     before = len(s[i:j])
-    s = s[:i] + block + '\n' + s[j:]
+    s = s[:i] + block + nl + s[j:]
     io.open(INDEX, 'w', encoding='utf-8', newline='').write(s)
     os.remove(out)
 
