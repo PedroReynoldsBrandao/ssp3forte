@@ -6,6 +6,61 @@ Single-page marketing website for **SSP3-Forte**, a natural prostate-health supp
 
 **Stack:** Pure HTML + CSS + vanilla JS in a single file (`index.html`). No build tools, no framework, no npm. What you edit is what ships.
 
+## Working on another machine
+
+Everything the site needs is in the repo. Three things are **not**, and they are the ones that catch you out.
+
+```bash
+git clone https://github.com/PedroReynoldsBrandao/ssp3forte.git
+cd ssp3forte
+```
+
+**Prerequisites:** git, Python 3 (the two modal generators, no third-party packages), Node (only for `node --check` and `npx wrangler`), curl. Nothing to install, no `npm install`, no build step.
+
+**What is not in the repo, and why**
+
+| Missing | Where it lives | Consequence |
+|---|---|---|
+| `satisfaction_dataset/` | Pedro's OneDrive only — gitignored | The survey figures cannot be re-derived without it. The numbers that matter are written down under *Survey figures* below, so the site is maintainable without the file. Copy it across manually if you need to re-run the analysis. **Do not commit it: the repo is public and the file holds customer records.** |
+| Wrangler credentials | `worker/.wrangler/` on the machine you last deployed from — gitignored | On a new machine the first `npx wrangler deploy` opens a browser to log in to Cloudflare. Expected, not an error. |
+| `RESEND_API_KEY` | A Cloudflare secret, server-side | Never on any machine. It survives redeploys; you do not need to re-enter it. |
+
+**Deploying**
+
+- **Site:** push to `main`. GitHub Pages rebuilds in roughly 30–90 seconds. Confirm with `curl -s https://ssp3forte.com/ | grep <something you changed>` rather than trusting the push.
+- **Worker:** `cd worker && npx wrangler deploy`. On Windows PowerShell the execution policy blocks the `npx.ps1` shim — use `npx.cmd wrangler deploy`. **The live config is `worker/wrangler.toml`** (that is the directory you deploy from); the `wrangler.jsonc` at the repo root is a leftover duplicate and is not what ships.
+
+**Editing the two modals**
+
+Do not hand-edit the three language blocks in `index.html`. Edit the generator, then splice:
+
+```bash
+python tools/apply_modal.py both     # or: info | survey
+```
+
+It runs the generator, replaces the block between the right markers, checks the tags balance and deletes the temporary file. It is idempotent — running it with no changes reproduces the file byte for byte, which makes it safe to run just to check.
+
+**Checking your work before committing**
+
+```bash
+python -c "import io,re; s=io.open('index.html',encoding='utf-8').read(); io.open('_p.js','w',encoding='utf-8').write(re.findall(r'<script>(.*?)</script>',s,re.S)[0])" && node --check _p.js && rm _p.js
+```
+
+All the CSS and JS is inside `index.html`, so a stray quote takes the whole page down with no build step to catch it. To read a language variant as a visitor sees it, write `index.html` out with `<body class="lang-pt|lang-br|lang-en|lang-world">` and open that file — the switching is pure CSS, so a static copy renders correctly (the JS-rendered blog grid will be empty).
+
+## Survey figures (so the site is maintainable without the dataset)
+
+From `Inqueritos (290), Mapa em 02102017.xls`, sheet "Dados Actualizados". Satisfied = "satisfeito" + "muito satisfeito".
+
+| Group | n | Satisfied | 95% CI |
+|---|---|---|---|
+| All respondents | 289 | **81.3%** | 76.8–85.8 |
+| Regular use only | 185 | 81.1% | 75.4–86.7 |
+| No medication only | 108 | 85.2% | 78.5–91.9 |
+| **Regular use + no medication** | **67** | **88.1%** | 80.3–95.8 |
+
+Within the n=67 group: very satisfied 22 (32.8%), satisfied 37 (55.2%), slightly satisfied 7 (10.4%), not satisfied 1 (1.5%). By length of use: 3 months 81.8% (n=11), 6 months 80.0% (n=15), over a year 92.1% (n=38); the 1-month band held three answers and is omitted. The n=67 group differs from the rest at p=0.106 — not significant. "No medication" means the questionnaire field was left blank, which may mean "none" or "did not answer". No control group, no baseline, so no improvement can be measured from it.
+
 ## File map
 
 | File | Purpose |
@@ -20,6 +75,9 @@ Single-page marketing website for **SSP3-Forte**, a natural prostate-health supp
 | `worker/wrangler.toml` | Wrangler config for deploying the Worker |
 | `O que o SSP3-Forte pode fazer por Você.txt` | Superseded source text for the info modal — written by the product author |
 | `tools/gen_survey.py`, `tools/gen_info_modal.py` | Generators for the two modals’ three-language markup |
+| `tools/apply_modal.py` | Runs a generator and splices the result into `index.html` |
+| `.gitignore` | Keeps customer data and Cloudflare credentials out of a public repo |
+| `wrangler.jsonc` (root) | Leftover duplicate — the live Worker config is `worker/wrangler.toml` |
 
 ## Multilingual system
 
@@ -122,8 +180,8 @@ Fonts loaded from Google Fonts: **Lora** (headings, serif) + **Source Sans 3** (
 8. Video — "Ver em acção / Ver em ação / Watch in action"
 9. `#precos` — Pricing cards (EUR and BRL toggle) — PT/BR have "O que este produto pode fazer" button
 10. `#encomenda` / `#order` — Order form (submits via Cloudflare Worker → Resend email)
-11. `#faq` — FAQ accordion — includes blog CTA (PT/BR only)
-12. `#artigos` — Blog articles grid, 6 of 16 drawn weekly (PT/BR only — see below)
+11. `#faq` — FAQ accordion — includes a blog CTA in every language, pointing at that language’s blog
+12. `#artigos` — Blog articles grid, shown in all four languages: 6 of 16 drawn weekly for PT/BR, 6 of 7 for EN/INT (see below)
 13. References section (scientific bibliography)
 14. Footer
 
@@ -164,7 +222,7 @@ It is a **sales page, not a report**: donut at 88%, a 9-in-10 pictogram, the res
 
 The caption under the length-of-use table is a **selling line, not a caveat** ("Mais de metade deste grupo já tomava o SSP3-Forte há mais de um ano — e é nesse grupo que a satisfação é mais alta" — 38 of 67); the omitted 1-month band and the width of the intervals moved to the small print, at the client’s request. The `.sv-fine` block at the end carries everything else in 0.68rem grey: the 290 base, the 223 excluded questionnaires, the 81.3% across all respondents, the blank-field caveat behind "no medication", post-hoc selection with p=0.106, survivorship bias, the absence of a control group or baseline, and Regulation (EC) 1924/2006. **Anywhere "88%" or "9 in 10" appears outside `#survey-modal`, the two filters must appear in the same sentence.** The figure for all respondents is 81.3%; for regular use alone, 81.1%.
 
-The markup is generated by `tools/gen_survey.py` (donut, pictogram and tables are computed there); edit that script and re-paste rather than hand-editing three language blocks. Numbers come from `satisfaction_dataset/Inqueritos (290), Mapa em 02102017.xls`, sheet "Dados Actualizados".
+The markup is generated by `tools/gen_survey.py` (donut, pictogram and tables are computed there); edit that script and re-paste rather than hand-editing three language blocks. Numbers come from `satisfaction_dataset/Inqueritos (290), Mapa em 02102017.xls`, sheet "Dados Actualizados" — **not in the repo** (see *Working on another machine*); the figures are tabulated under *Survey figures*.
 
 **"Saber mais" dropdown order** (`.hero-dropdown-menu`): product info modal → survey modal → Blog → free Ebook. The EN/INT block carries only the two modals.
 
@@ -209,9 +267,7 @@ Shipping (EUR orders): Portugal €4.99, other countries €9.00.
 
 ## Deployment
 
-Push to `main` on GitHub → GitHub Pages rebuilds automatically in ~30 s. No CI, no build step. The `CNAME` file must remain at repo root.
-
-Worker changes require a separate `npx wrangler deploy` from the `worker/` directory.
+Push to `main` → GitHub Pages rebuilds automatically. No CI, no build step. The `CNAME` file must remain at repo root. Worker changes need a separate deploy from `worker/`. Commands, the PowerShell gotcha and which wrangler config is live are all under *Working on another machine*.
 
 ## Global review, Sep 2026
 

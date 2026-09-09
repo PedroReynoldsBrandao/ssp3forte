@@ -1,0 +1,19 @@
+# Dados de clientes — NÃO versionar. O repositório é público.
+# Os inquéritos contêm códigos de cliente, idades, países e datas.
+satisfaction_dataset/
+all_testemonies.txt
+
+# Credenciais em cache do Wrangler (contém o token da conta Cloudflare)
+worker/.wrangler/
+.wrangler/
+
+# Local do Claude Code / editores
+.claude/
+*.code-workspace
+
+# Ficheiros temporários dos geradores e das verificações
+tools/info_modal.txt
+tools/survey_modal_v2.txt
+_p.js
+_rev-*.html
+_t-*.html
