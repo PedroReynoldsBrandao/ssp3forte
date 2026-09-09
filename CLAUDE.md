@@ -151,7 +151,7 @@ The current copy sells on what is verifiable: EU manufacture under GMP, ISO 2200
 
 *Available upgrade:* zinc and vitamin E carry genuinely authorised claims ("o zinco contribui para a manutenção de níveis normais de testosterona no sangue", "para a fertilidade e reprodução normais", "o zinco e a vitamina E contribuem para a protecção das células contra as oxidações indesejadas"). They are **not** in the copy because they require the daily dose to supply ≥15% of the NRV (1.5 mg zinc, 1.8 mg vitamin E) and the label quantities are not documented anywhere in this repo. Confirm them against the label and these three lines can be added — they are the strongest legitimate claims available to this product.
 
-The modal quotes **"perto de 9 em cada 10" / "close to 9 in 10"** (the 88.1% subgroup), and **the qualifying condition travels with it in the same sentence** — "utilizadores com toma regular e sem medicação declarada" / "users taking it regularly and reporting no medication". The client chose this figure over the 81.3% across all respondents in Sep 2026. **The condition must never be dropped from that sentence:** without it the number is false, since regular use alone gives 81.1% and the whole sample gives 81.3%. The modal links through to `#survey-modal`, where the base and the limits are set out. Older source text: `O que o SSP3-Forte pode fazer por Você.txt`.
+The modal quotes **"perto de 9 em cada 10" / "close to 9 in 10"** of *users*, unqualified. That figure is the n=67 subgroup (regular use + no medication declared, 88.1%). The number for "users" without qualification is **81.3%** across all 290 respondents, and 81.1% for regular use alone. The unqualified wording was the client’s express decision in Sep 2026, taken after the discrepancy was put to him in writing three times; he stated the responsibility was his. Do not silently "fix" it — and do not extend it to new places without asking him. The full framing remains one click away in `#survey-modal`, which this modal links to. Older source text: `O que o SSP3-Forte pode fazer por Você.txt`.
 
 **Survey modal** (`#survey-modal`) — floating overlay in all four languages (pt/br/en blocks; `lang-world` shows the `en` one), opened by `openSurveyModal()` from the second entry of the "Saber mais" / "Learn more" dropdown. Title: **"Estudo de satisfação a utilizadores"** (no year in the title — 2017 appears only in the small print). It reports the 2017 survey for the group of 67 respondents who declared regular use *and* declared no medication.
 
@@ -212,6 +212,25 @@ Shipping (EUR orders): Portugal €4.99, other countries €9.00.
 Push to `main` on GitHub → GitHub Pages rebuilds automatically in ~30 s. No CI, no build step. The `CNAME` file must remain at repo root.
 
 Worker changes require a separate `npx wrangler deploy` from the `worker/` directory.
+
+## Global review, Sep 2026
+
+A pass over all four language variants turned up defects that had been live for some time:
+
+- **The English bibliography was broken.** It had 15 references against 16 in PT/BR: the Chen et al. 2025 zinc reference was missing, and `[8]` read "DOI to verify before publication" — an editorial placeholder that had shipped. Because one entry was missing, **every citation from `[9]` onwards in the English ingredient list pointed at the wrong paper.** Fixed; all three lists are now 16 and aligned.
+- The "6ª" in the results callout was a shared element, so English read "6ª week". Now switched per language.
+- The footer said © 2024.
+- The product `<select>` carried both languages in one label ("1 frasco / 1 bottle — €29,95"). CSS cannot hide an `<option>` reliably across browsers, so `setLang()` relabels the two EUR options instead (`OPT` map).
+- The English blog lead did not mention the weekly rotation, which it now does — the EN pool rotates too.
+- The results callout quoted **Naturalfarma quoting itself**. It now cites the 2017 survey: "Mais de 8 em cada 10 utilizadores inquiridos declararam-se satisfeitos ou muito satisfeitos" — the unconditional 81.3% figure, attributed to a source rather than asserted by the seller.
+
+**Still outstanding, put to the client and awaiting his decision** (all are claims, not defects):
+
+- H1 "Trate a Próstata, **Evite a Cirurgia**" / "avoid surgery" — the surgery-avoidance claim removed from the info modal still sits in the headline.
+- Proof bar "Sem efeitos adversos" / "No adverse effects" — absolute; the FAQ’s "geralmente bem tolerado" is the defensible version.
+- Symptom card: erectile dysfunction "— tratável com abordagem natural" / "treatable with a natural approach".
+- Callout stat: "70% dos homens com HPB têm disfunção eréctil associada. **SSP3-Forte ajudará.**"
+- Section heading "Ingredientes com eficácia comprovada" / "Ingredients with proven efficacy".
 
 ## Ingredients
 
