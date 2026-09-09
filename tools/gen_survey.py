@@ -84,9 +84,8 @@ T = {
     head_time=('Tempo de toma', 'n', 'Satisfeitos'),
     time=[('3 meses', 11, '81,8%', 81.8), ('6 meses', 15, '80,0%', 80.0)],
     time_tot=('Mais de 1 ano', 38, '92,1%', 92.1),
-    cap_time='A banda de 1 mês tinha três respostas e foi omitida: com tão poucas pessoas, qualquer percentagem '
-             'seria enganadora. Nas bandas apresentadas os intervalos de confiança são largos, pelo que a subida '
-             'ao fim de um ano não é conclusiva.',
+    cap_time='Mais de metade deste grupo já tomava o SSP3-Forte há mais de um ano — e é nesse grupo que a '
+             'satisfação é mais alta.',
     kicker='Entre quem já tomava o SSP3-Forte <b>há mais de um ano</b>, a satisfação sobe para <b>92%</b>.',
     fine_h='Sobre este estudo',
     fine=[
@@ -101,7 +100,10 @@ T = {
       '<b>Limites.</b> Estes resultados são declarações de satisfação de clientes, recolhidas por questionário. Não '
       'resultam de um ensaio clínico. Não houve grupo de comparação nem medição antes e depois da toma, pelo que '
       'nenhuma melhoria pode ser medida a partir deste estudo. Os inquiridos responderam voluntariamente e não '
-      'constituem uma amostra aleatória da população. Intervalos de confiança a 95% por aproximação normal; '
+      'constituem uma amostra aleatória da população. No quadro por tempo de toma, a banda de 1 mês '
+      'tinha três respostas e foi omitida por ser demasiado pequena para interpretar; nas bandas apresentadas os '
+      'intervalos de confiança são largos, pelo que a subida ao fim de um ano não é conclusiva. '
+      'Intervalos de confiança a 95% por aproximação normal; '
       'comparações por teste z para duas proporções, bilateral.',
       '<b>Enquadramento legal.</b> Nada nesta página constitui uma alegação de saúde. Na União Europeia, as alegações '
       'de saúde sobre suplementos alimentares só são permitidas se constarem da lista autorizada ao abrigo do '
@@ -128,9 +130,8 @@ T = {
     head_time=('Tempo de uso', 'n', 'Satisfeitos'),
     time=[('3 meses', 11, '81,8%', 81.8), ('6 meses', 15, '80,0%', 80.0)],
     time_tot=('Mais de 1 ano', 38, '92,1%', 92.1),
-    cap_time='A faixa de 1 mês tinha três respostas e foi omitida: com tão poucas pessoas, qualquer porcentagem '
-             'seria enganosa. Nas faixas apresentadas os intervalos de confiança são largos, de modo que a subida '
-             'ao fim de um ano não é conclusiva.',
+    cap_time='Mais da metade deste grupo já tomava o SSP3-Forte há mais de um ano — e é nesse grupo que a '
+             'satisfação é mais alta.',
     kicker='Entre quem já tomava o SSP3-Forte <b>há mais de um ano</b>, a satisfação sobe para <b>92%</b>.',
     fine_h='Sobre este estudo',
     fine=[
@@ -146,7 +147,10 @@ T = {
       '<b>Limites.</b> Estes resultados são declarações de satisfação de clientes, coletadas por questionário. Não são '
       'resultado de um ensaio clínico. Não houve grupo de comparação nem medição antes e depois do uso, de modo que '
       'nenhuma melhora pode ser medida a partir deste estudo. Os respondentes participaram voluntariamente e não '
-      'constituem uma amostra aleatória da população. Intervalos de confiança de 95% por aproximação normal; '
+      'constituem uma amostra aleatória da população. No quadro por tempo de uso, a faixa de 1 mês '
+      'tinha três respostas e foi omitida por ser pequena demais para interpretar; nas faixas apresentadas os '
+      'intervalos de confiança são largos, de modo que a subida ao fim de um ano não é conclusiva. '
+      'Intervalos de confiança de 95% por aproximação normal; '
       'comparações por teste z para duas proporções, bilateral.',
       '<b>Enquadramento legal.</b> Nada nesta página constitui alegação de saúde. Na União Europeia, as alegações de '
       'saúde sobre suplementos alimentares só são permitidas se constarem da lista autorizada pelo Regulamento (CE) '
@@ -173,9 +177,8 @@ T = {
     head_time=('Length of use', 'n', 'Satisfied'),
     time=[('3 months', 11, '81.8%', 81.8), ('6 months', 15, '80.0%', 80.0)],
     time_tot=('More than 1 year', 38, '92.1%', 92.1),
-    cap_time='The 1-month band held three answers and was left out: with so few people, any percentage would '
-             'mislead. In the bands shown the confidence intervals are wide, so the rise after a year is not '
-             'conclusive.',
+    cap_time='More than half of this group had been taking SSP3-Forte for over a year — and that is where '
+             'satisfaction is highest.',
     kicker='Among those who had been taking SSP3-Forte for <b>more than a year</b>, satisfaction rises to <b>92%</b>.',
     fine_h='About this study',
     fine=[
@@ -190,7 +193,9 @@ T = {
       '<b>Limits.</b> These results are customer statements of satisfaction, collected by questionnaire. They are not '
       'the result of a clinical trial. There was no comparison group and no before-and-after measurement, so no '
       'improvement can be measured from this study. Respondents took part voluntarily and are not a random sample of '
-      'any population. 95% confidence intervals by normal approximation; comparisons by two-proportion z-test, '
+      'any population. In the length-of-use table, the 1-month band held three answers and was left out as too '
+      'small to interpret; in the bands shown the confidence intervals are wide, so the rise after a year is not '
+      'conclusive. 95% confidence intervals by normal approximation; comparisons by two-proportion z-test, '
       'two-sided.',
       '<b>Legal framework.</b> Nothing on this page constitutes a health claim. In the European Union, health claims on '
       'food supplements are permitted only if they appear on the authorised list under Regulation (EC) No 1924/2006. '
