@@ -13,8 +13,10 @@ o inquerito de satisfacao, e conselhos de estilo de vida. Nao inclui as alegacoe
 autorizadas do zinco e da vitamina E porque dependem de o rotulo fornecer >=15% do VRN
 por dose diaria, o que nao esta confirmado. Confirmando-se, podem ser acrescentadas.
 
-NAO citar "88%" aqui: esse valor e do subgrupo e vive no #survey-modal. Aqui usa-se o
-valor de todos os inqueridos (81,3% -> "8 em cada 10").
+O numero citado ("perto de 9 em cada 10", 88,1%) e o do subgrupo com toma regular e sem
+medicacao declarada, e vem sempre com essa condicao na mesma frase. Foi decisao do cliente
+em Set/2026 usar este valor em vez dos 81,3% de todos os inqueridos. A condicao NAO pode
+cair da frase: sem ela o numero passa a ser falso.
 """
 import io
 
@@ -35,9 +37,9 @@ T = {
           'Semente de abóbora <i>(Cucurbita pepo)</i>, Licopeno e Vitamina E. Cada um está descrito em detalhe, com '
           'as respectivas referências científicas, na secção de ingredientes desta página.'),
     h_users='O que dizem os utilizadores',
-    users=('Em 2017 foi feito um inquérito de satisfação a utilizadores do SSP3-Forte. <b>Cerca de 8 em cada 10 '
-           'declararam-se satisfeitos ou muito satisfeitos</b> com a experiência que tiveram com o produto. '
-           'Os resultados completos, incluindo a base do estudo e os seus limites, estão no estudo publicado nesta página.'),
+    users=('Num inquérito de satisfação feito em 2017, <b>perto de 9 em cada 10</b> dos utilizadores com toma '
+           'regular e sem medicação declarada disseram-se <b>satisfeitos ou muito satisfeitos</b> com a experiência '
+           'que tiveram com o produto. A base do estudo e os seus limites estão no estudo publicado nesta página.'),
     users_btn='Ver o estudo de satisfação →',
     h_take='Como tomar',
     take=('Tome as cápsulas <b>com as principais refeições</b>, seguindo a dose indicada no rótulo. Como em qualquer '
@@ -73,9 +75,9 @@ T = {
           'Semente de abóbora <i>(Cucurbita pepo)</i>, Licopeno e Vitamina E. Cada um está descrito em detalhe, com '
           'as respectivas referências científicas, na seção de ingredientes desta página.'),
     h_users='O que dizem os usuários',
-    users=('Em 2017 foi feita uma pesquisa de satisfação com usuários do SSP3-Forte. <b>Cerca de 8 em cada 10 se '
-           'declararam satisfeitos ou muito satisfeitos</b> com a experiência que tiveram com o produto. '
-           'Os resultados completos, incluindo a base do estudo e seus limites, estão no estudo publicado nesta página.'),
+    users=('Numa pesquisa de satisfação feita em 2017, <b>perto de 9 em cada 10</b> dos usuários com uso regular '
+           'e sem medicação declarada se disseram <b>satisfeitos ou muito satisfeitos</b> com a experiência que '
+           'tiveram com o produto. A base do estudo e seus limites estão no estudo publicado nesta página.'),
     users_btn='Ver o estudo de satisfação →',
     h_take='Como tomar',
     take=('Tome as cápsulas <b>com as principais refeições</b>, seguindo a dose indicada no rótulo. Como em qualquer '
@@ -111,9 +113,9 @@ T = {
           'Pumpkin seed <i>(Cucurbita pepo)</i>, Lycopene and Vitamin E. Each one is described in detail, with its '
           'scientific references, in the ingredients section of this page.'),
     h_users='What users say',
-    users=('In 2017 a satisfaction survey was carried out among users of SSP3-Forte. <b>Around 8 in 10 reported being '
-           'satisfied or very satisfied</b> with their experience of the product. The full results, including the '
-           'study base and its limits, are in the study published on this page.'),
+    users=('In a 2017 satisfaction survey, <b>close to 9 in 10</b> of the users taking it regularly and reporting no '
+           'medication said they were <b>satisfied or very satisfied</b> with their experience of the product. The '
+           'study base and its limits are in the study published on this page.'),
     users_btn='See the satisfaction study →',
     h_take='How to take it',
     take=('Take the capsules <b>with your main meals</b>, following the dose stated on the label. As with any '
