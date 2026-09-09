@@ -28,7 +28,7 @@ T = {
     made=['Fabricado na <b>União Europeia</b>, em laboratório que segue as boas práticas de fabrico (GMP).',
           'Produzido sob <b>certificação ISO 22000</b>, a norma internacional de segurança alimentar, com controlo lote a lote.',
           'Fórmula de base natural, <b>sem substâncias químicas sintéticas</b>.',
-          'Presente no mercado europeu <b>há mais de duas décadas</b>.'],
+          'No mercado europeu <b>desde 1995</b>.'],
     h_what='O que leva',
     what=('Oito ingredientes de origem vegetal e nutrientes, numa fórmula estável há anos: Saw Palmetto '
           '<i>(Serenoa repens)</i>, Pygeum africanum, Beta-sitosterol, Zinco, Urtiga <i>(Urtica dioica)</i>, '
@@ -66,7 +66,7 @@ T = {
     made=['Fabricado na <b>União Europeia</b>, em laboratório que segue as boas práticas de fabricação (GMP).',
           'Produzido sob <b>certificação ISO 22000</b>, a norma internacional de segurança de alimentos, com controle lote a lote.',
           'Fórmula de base natural, <b>sem substâncias químicas sintéticas</b>.',
-          'Presente no mercado europeu <b>há mais de duas décadas</b>.'],
+          'No mercado europeu <b>desde 1995</b>.'],
     h_what='O que leva',
     what=('Oito ingredientes de origem vegetal e nutrientes, numa fórmula estável há anos: Saw Palmetto '
           '<i>(Serenoa repens)</i>, Pygeum africanum, Beta-sitosterol, Zinco, Urtiga <i>(Urtica dioica)</i>, '
@@ -104,7 +104,7 @@ T = {
     made=['Manufactured in the <b>European Union</b>, in a laboratory following Good Manufacturing Practice (GMP).',
           'Produced under <b>ISO 22000 certification</b>, the international food safety standard, with batch-by-batch control.',
           'A natural formula, <b>free of synthetic chemicals</b>.',
-          'On the European market for <b>more than two decades</b>.'],
+          'On the European market <b>since 1995</b>.'],
     h_what='What is in it',
     what=('Eight plant-derived ingredients and nutrients, in a formula unchanged for years: Saw Palmetto '
           '<i>(Serenoa repens)</i>, Pygeum africanum, Beta-sitosterol, Zinc, Nettle <i>(Urtica dioica)</i>, '
