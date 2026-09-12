@@ -33,8 +33,8 @@ function shippingLabel(val, lang) {
 const PRODUCTS = {
   '1x':    { namePT: 'SSP3-Forte · 1 frasco',       nameEN: 'SSP3-Forte · 1 bottle',       qty: 1, pricePT: '€29,95', priceEN: '€29.95', code: 'SSP3-1X'    },
   '3x':    { namePT: 'SSP3-Forte · Kit 3 frascos',  nameEN: 'SSP3-Forte · 3-bottle kit',   qty: 3, pricePT: '€80,86', priceEN: '€80.86', code: 'SSP3-3X'    },
-  '1x-br': { namePT: 'SSP3-Forte · 1 frasco',       nameEN: 'SSP3-Forte · 1 bottle',       qty: 1, pricePT: 'R$165',  priceEN: 'R$165',  code: 'SSP3-1X-BR' },
-  '3x-br': { namePT: 'SSP3-Forte · Kit 3 frascos',  nameEN: 'SSP3-Forte · 3-bottle kit',   qty: 3, pricePT: 'R$445',  priceEN: 'R$445',  code: 'SSP3-3X-BR' },
+  '1x-br': { namePT: 'SSP3-Forte · 1 frasco',       nameEN: 'SSP3-Forte · 1 bottle',       qty: 1, pricePT: 'R$210',  priceEN: 'R$210',  code: 'SSP3-1X-BR' },
+  '3x-br': { namePT: 'SSP3-Forte · Kit 3 frascos',  nameEN: 'SSP3-Forte · 3-bottle kit',   qty: 3, pricePT: 'R$567',  priceEN: 'R$567',  code: 'SSP3-3X-BR' },
 };
 
 // ── Country code helper ──────────────────────────────────────────────────────
