@@ -40,6 +40,27 @@ python tools/apply_modal.py both     # or: info | survey
 
 It runs the generator, replaces the block between the right markers, checks the tags balance and deletes the temporary file. It is idempotent — running it with no changes reproduces the file byte for byte, which makes it safe to run just to check.
 
+**Checking prices before publishing**
+
+```bash
+python tools/check_prices.py
+```
+
+The price is written in places that do not know about each other: the `PRICES`
+object, the pricing cards in each language block, the form's `<option>` labels
+and the `OPT` map (all in `index.html`), the `PRODUCTS` table in
+`worker/worker.js`, and the tables in this file. The Worker deliberately prices
+from its own table rather than from the submitted payload — otherwise anyone
+could forge an order at an invented price — so the two can drift with nothing to
+catch it. **They did: from 20 Jul to 12 Sep 2026 the site charged R$210 while
+every Brazilian confirmation email said R$165**, because the price rise touched
+`index.html` and `CLAUDE.md` and not the Worker.
+
+The script treats `PRICES` as the source of truth, reports every disagreement
+with a line number, and exits non-zero. Run it whenever you touch prices,
+shipping or the contact emails. A `worker.js` mismatch is only really fixed once
+you `cd worker && npx wrangler deploy` — a git push does not touch the Worker.
+
 **Checking your work before committing**
 
 ```bash
@@ -76,6 +97,7 @@ Within the n=67 group: very satisfied 22 (32.8%), satisfied 37 (55.2%), slightly
 | `O que o SSP3-Forte pode fazer por Você.txt` | Superseded source text for the info modal — written by the product author |
 | `tools/gen_survey.py`, `tools/gen_info_modal.py` | Generators for the two modals’ three-language markup |
 | `tools/apply_modal.py` | Runs a generator and splices the result into `index.html` |
+| `tools/check_prices.py` | Checks the price in index.html, worker.js and this file still agree |
 | `registo_SSP3forte_ideias.txt` | Notes on trademark registration for the SSP3-Forte name (not website content) |
 | `.gitignore` | Keeps customer data and Cloudflare credentials out of a public repo |
 | `wrangler.jsonc` (root) | Leftover duplicate — the live Worker config is `worker/wrangler.toml` |
