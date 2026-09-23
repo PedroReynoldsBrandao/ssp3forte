@@ -922,6 +922,19 @@
   .blog-card:hover .blog-card-more { color: var(--gold); }
   .blog-all { text-align: center; margin-top: 2.25rem; }
 
+  /* Lista de todos os artigos. Existe para que as ligacoes para cada artigo estejam
+     no HTML: a grelha acima e montada por JS, logo os seus <a> nao aparecem no
+     codigo-fonte que o Googlebot le primeiro. */
+  .blog-index { max-width: 860px; margin: 0 auto 1.75rem; font-size: 13px;
+                line-height: 2; color: var(--text-muted); text-align: center; }
+  .blog-index-label { display: block; font-size: 12px; letter-spacing: 0.06em;
+                      text-transform: uppercase; margin-bottom: 0.4rem; opacity: 0.7; }
+  .blog-index a { color: inherit; text-decoration: none;
+                  border-bottom: 1px solid rgba(0,0,0,0.13); }
+  .blog-index a::after { content: " ·"; border: none; opacity: 0.4; }
+  .blog-index a:last-child::after { content: ""; }
+  .blog-index a:hover { color: var(--green-mid); border-bottom-color: var(--green-mid); }
+
   /* FOOTER */
   /* REFERENCES */
   .references-section { background: var(--cream); border-top: 1px solid var(--border); }
@@ -1988,6 +2001,27 @@
       <p class="section-lead">Uma selecção de artigos sobre a saúde da próstata, publicados ao longo dos anos no blog da Naturalfarma. A selecção muda todas as semanas.</p>
       <div class="blog-grid" id="blog-grid-pt"></div>
       <div class="blog-all">
+        <!-- BLOG INDEX pt : gerado por tools/gen_blog_index.py -->
+        <nav class="blog-index" aria-label="Todos os artigos">
+          <span class="blog-index-label">Todos os artigos</span>
+          <a href="https://problemasnaprostata.blogspot.com/2017/07/prostata-aumentada-mais-de-50-perguntas.html" target="_blank" rel="noopener">Próstata aumentada: mais de 50 perguntas com respostas</a>
+          <a href="https://problemasnaprostata.blogspot.com/2021/12/exame-de-toque.html" target="_blank" rel="noopener">Próstata: o exame de toque</a>
+          <a href="https://problemasnaprostata.blogspot.com/2022/08/exame-psa-total-e-livre-o-que-e-para.html" target="_blank" rel="noopener">O que é o PSA total e o PSA livre?</a>
+          <a href="https://problemasnaprostata.blogspot.com/2022/08/a-saude-da-prostata-esta-relacionada.html" target="_blank" rel="noopener">A saúde da próstata está relacionada com a gordura abdominal</a>
+          <a href="https://problemasnaprostata.blogspot.com/2022/01/a-prostata-aumentada-e-impotencia.html" target="_blank" rel="noopener">A próstata aumentada e a impotência</a>
+          <a href="https://problemasnaprostata.blogspot.com/2018/07/10-atitudes-para-prevenir-problemas-na.html" target="_blank" rel="noopener">10 atitudes para prevenir problemas na próstata</a>
+          <a href="https://problemasnaprostata.blogspot.com/2023/12/prostataapenas-2-colheres-de-acucar-por.html" target="_blank" rel="noopener">Duas colheres de açúcar por dia já fazem diferença</a>
+          <a href="https://problemasnaprostata.blogspot.com/2023/11/prostata-os-beneficios-das-frutas-e.html" target="_blank" rel="noopener">Próstata: os benefícios das frutas e vegetais coloridos</a>
+          <a href="https://problemasnaprostata.blogspot.com/2023/11/cafe-e-bom-para-prostata.html" target="_blank" rel="noopener">O café faz bem à próstata?</a>
+          <a href="https://problemasnaprostata.blogspot.com/2023/11/fumar-e-o-desempenho-sexual-do-homem.html" target="_blank" rel="noopener">Fumar, próstata e desempenho sexual</a>
+          <a href="https://problemasnaprostata.blogspot.com/2018/04/vitamina-d-e-prostata.html" target="_blank" rel="noopener">Vitamina D e a próstata</a>
+          <a href="https://problemasnaprostata.blogspot.com/2018/08/vegetais-indispensaveis-na-nossa.html" target="_blank" rel="noopener">Vegetais indispensáveis que evitam doenças</a>
+          <a href="https://problemasnaprostata.blogspot.com/2017/10/factos-medicos-que-acabaram-por-nao-ser.html" target="_blank" rel="noopener">Factos médicos que acabaram por não ser verdadeiros</a>
+          <a href="https://problemasnaprostata.blogspot.com/2017/04/lacticinios-cancer-na-prostata-e-outros.html" target="_blank" rel="noopener">Lacticínios, próstata e outros problemas</a>
+          <a href="https://problemasnaprostata.blogspot.com/2017/03/colesterol-e-trigliceridos.html" target="_blank" rel="noopener">Colesterol e triglicéridos: o que os valores dizem</a>
+          <a href="https://problemasnaprostata.blogspot.com/2018/05/omega-3-e-prostata.html" target="_blank" rel="noopener">Ómega 3 e a próstata</a>
+        </nav>
+        <!-- /BLOG INDEX pt -->
         <a href="https://problemasnaprostata.blogspot.com/" target="_blank" rel="noopener" class="btn-ghost btn-blog">Ver todos os artigos →</a>
       </div>
     </div>
@@ -1998,6 +2032,27 @@
       <p class="section-lead">Uma seleção de artigos sobre a saúde da próstata, publicados ao longo dos anos no blog da Naturalfarma. A seleção muda toda semana.</p>
       <div class="blog-grid" id="blog-grid-br"></div>
       <div class="blog-all">
+        <!-- BLOG INDEX br : gerado por tools/gen_blog_index.py -->
+        <nav class="blog-index" aria-label="Todos os artigos">
+          <span class="blog-index-label">Todos os artigos</span>
+          <a href="https://problemasnaprostata.blogspot.com/2017/07/prostata-aumentada-mais-de-50-perguntas.html" target="_blank" rel="noopener">Próstata aumentada: mais de 50 perguntas com respostas</a>
+          <a href="https://problemasnaprostata.blogspot.com/2021/12/exame-de-toque.html" target="_blank" rel="noopener">Próstata: o exame de toque</a>
+          <a href="https://problemasnaprostata.blogspot.com/2022/08/exame-psa-total-e-livre-o-que-e-para.html" target="_blank" rel="noopener">O que é o PSA total e o PSA livre?</a>
+          <a href="https://problemasnaprostata.blogspot.com/2022/08/a-saude-da-prostata-esta-relacionada.html" target="_blank" rel="noopener">A saúde da próstata está relacionada com a gordura abdominal</a>
+          <a href="https://problemasnaprostata.blogspot.com/2022/01/a-prostata-aumentada-e-impotencia.html" target="_blank" rel="noopener">A próstata aumentada e a impotência</a>
+          <a href="https://problemasnaprostata.blogspot.com/2018/07/10-atitudes-para-prevenir-problemas-na.html" target="_blank" rel="noopener">10 atitudes para prevenir problemas na próstata</a>
+          <a href="https://problemasnaprostata.blogspot.com/2023/12/prostataapenas-2-colheres-de-acucar-por.html" target="_blank" rel="noopener">Duas colheres de açúcar por dia já fazem diferença</a>
+          <a href="https://problemasnaprostata.blogspot.com/2023/11/prostata-os-beneficios-das-frutas-e.html" target="_blank" rel="noopener">Próstata: os benefícios das frutas e vegetais coloridos</a>
+          <a href="https://problemasnaprostata.blogspot.com/2023/11/cafe-e-bom-para-prostata.html" target="_blank" rel="noopener">O café faz bem à próstata?</a>
+          <a href="https://problemasnaprostata.blogspot.com/2023/11/fumar-e-o-desempenho-sexual-do-homem.html" target="_blank" rel="noopener">Fumar, próstata e desempenho sexual</a>
+          <a href="https://problemasnaprostata.blogspot.com/2018/04/vitamina-d-e-prostata.html" target="_blank" rel="noopener">Vitamina D e a próstata</a>
+          <a href="https://problemasnaprostata.blogspot.com/2018/08/vegetais-indispensaveis-na-nossa.html" target="_blank" rel="noopener">Vegetais indispensáveis que evitam doenças</a>
+          <a href="https://problemasnaprostata.blogspot.com/2017/10/factos-medicos-que-acabaram-por-nao-ser.html" target="_blank" rel="noopener">Fatos médicos que acabaram não sendo verdadeiros</a>
+          <a href="https://problemasnaprostata.blogspot.com/2017/04/lacticinios-cancer-na-prostata-e-outros.html" target="_blank" rel="noopener">Laticínios, próstata e outros problemas</a>
+          <a href="https://problemasnaprostata.blogspot.com/2017/03/colesterol-e-trigliceridos.html" target="_blank" rel="noopener">Colesterol e triglicerídeos: o que os valores dizem</a>
+          <a href="https://problemasnaprostata.blogspot.com/2018/05/omega-3-e-prostata.html" target="_blank" rel="noopener">Ômega 3 e a próstata</a>
+        </nav>
+        <!-- /BLOG INDEX br -->
         <a href="https://problemasnaprostata.blogspot.com/" target="_blank" rel="noopener" class="btn-ghost btn-blog">Ver todos os artigos →</a>
       </div>
     </div>
@@ -2008,6 +2063,18 @@
       <p class="section-lead">A selection of articles on prostate health from the Naturalfarma blog. The selection changes every week.</p>
       <div class="blog-grid" id="blog-grid-en"></div>
       <div class="blog-all">
+        <!-- BLOG INDEX en : gerado por tools/gen_blog_index.py -->
+        <nav class="blog-index" aria-label="All articles">
+          <span class="blog-index-label">All articles</span>
+          <a href="https://bph-prostate-enlarged.blogspot.com/2026/09/what-actually-happens-when-prostate.html" target="_blank" rel="noopener">What actually happens when the prostate grows</a>
+          <a href="https://bph-prostate-enlarged.blogspot.com/2026/09/psa-total-and-free-psa-what-numbers.html" target="_blank" rel="noopener">PSA total and free PSA: what the numbers actually mean</a>
+          <a href="https://bph-prostate-enlarged.blogspot.com/2026/09/belly-fat-and-prostate-health-link-men.html" target="_blank" rel="noopener">Belly fat and prostate health: the link men overlook</a>
+          <a href="https://bph-prostate-enlarged.blogspot.com/2026/09/coffee-caffeine-and-prostate.html" target="_blank" rel="noopener">Coffee, caffeine and the prostate</a>
+          <a href="https://bph-prostate-enlarged.blogspot.com/2026/09/smoking-circulation-and-prostate-health.html" target="_blank" rel="noopener">Smoking, circulation and prostate health</a>
+          <a href="https://bph-prostate-enlarged.blogspot.com/2026/09/colour-on-plate-what-fruit-and.html" target="_blank" rel="noopener">Colour on the plate: what fruit and vegetables actually do</a>
+          <a href="https://bph-prostate-enlarged.blogspot.com/2026/09/vitamin-d-and-prostate-why-deficiency.html" target="_blank" rel="noopener">Vitamin D and the prostate: why deficiency is so common</a>
+        </nav>
+        <!-- /BLOG INDEX en -->
         <a href="https://bph-prostate-enlarged.blogspot.com/" target="_blank" rel="noopener" class="btn-ghost btn-blog">See all articles →</a>
       </div>
     </div>
