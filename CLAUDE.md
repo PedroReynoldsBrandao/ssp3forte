@@ -94,7 +94,6 @@ Within the n=67 group: very satisfied 22 (32.8%), satisfied 37 (55.2%), slightly
 | File | Purpose |
 |---|---|
 | `index.html` | The entire website — HTML, CSS, and JS all in one file |
-| `index-v1.html` / `index-v2.html` | Earlier versions kept for reference |
 | `frasco.jpg` | Product photo used as favicon and hero image |
 | `imgs/` | Ingredient photos (`01`–`08`), flags (`pt`, `br`, `eu`, `world`) |
 | `imgs/zinc.png` | Zinc ingredient photo |
@@ -109,6 +108,18 @@ Within the n=67 group: very satisfied 22 (32.8%), satisfied 37 (55.2%), slightly
 | `tools/gen_blog_index.py` | Writes the crawlable all-articles list into `index.html` from the pools |
 | `registo_SSP3forte_ideias.txt` | Notes on trademark registration for the SSP3-Forte name (not website content) |
 | `.gitignore` | Keeps customer data and Cloudflare credentials out of a public repo |
+
+## Removed: the two old page versions
+
+`index-v1.html` and `index-v2.html` sat in the repo root as "earlier versions kept
+for reference". GitHub Pages serves everything in the root, so both were live at
+`ssp3forte.com/index-v1.html` and `/index-v2.html` — reachable by anyone and
+crawlable by Google, as duplicate content competing with the real page. Nothing on
+the site linked to them. Deleted Oct 2026.
+
+They are not lost: `git show c3aa77e:index-v1.html` and `git show c3aa77e:index-v2.html`
+bring either one back. **Do not restore them to the repo root** — anything placed
+there is published. A reference copy belongs in git history or outside the repo.
 
 ## Multilingual system
 
