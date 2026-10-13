@@ -10,7 +10,7 @@ apresentacao.
 
 Esta versao vende sobre o que e verificavel: fabrico europeu certificado, composicao,
 o inquerito de satisfacao, e conselhos de estilo de vida. Nao inclui as alegacoes
-autorizadas do zinco e da vitamina E porque dependem de o rotulo fornecer >=15% do VRN
+autorizadas do zinco e da vitamina E (acrescentadas em Out/2026 -- ver CLAUDE.md)
 por dose diaria, o que nao esta confirmado. Confirmando-se, podem ser acrescentadas.
 
 O numero citado ("perto de 9 em cada 10") e o do subgrupo n=67 (toma regular + sem medicacao
@@ -37,6 +37,13 @@ T = {
           '<i>(Serenoa repens)</i>, Pygeum africanum, Beta-sitosterol, Zinco, Urtiga <i>(Urtica dioica)</i>, '
           'Semente de abóbora <i>(Cucurbita pepo)</i>, Licopeno e Vitamina E. Cada um está descrito em detalhe, com '
           'as respectivas referências científicas, na secção de ingredientes desta página.'),
+    h_claims='O que se pode afirmar',
+    claims_intro=('Estas são as <b>únicas</b> afirmações que a legislação europeia autoriza para os '
+                  'nutrientes desta fórmula. Constam da lista oficial da União Europeia:'),
+    claims=['O <b>zinco</b> contribui para a manutenção de níveis normais de testosterona no sangue.',
+            'O <b>zinco</b> contribui para a fertilidade e reprodução normais.',
+            'O <b>zinco</b> e a <b>vitamina E</b> contribuem para a protecção das células contra as '
+            'oxidações indesejadas.'],
     h_users='O que dizem os utilizadores',
     users=('Num inquérito de satisfação feito em 2017, <b>perto de 9 em cada 10</b> utilizadores '
            'declararam-se <b>satisfeitos ou muito satisfeitos</b> com a experiência que tiveram com o produto. A base do estudo e os seus limites estão no estudo publicado nesta página.'),
@@ -74,6 +81,13 @@ T = {
           '<i>(Serenoa repens)</i>, Pygeum africanum, Beta-sitosterol, Zinco, Urtiga <i>(Urtica dioica)</i>, '
           'Semente de abóbora <i>(Cucurbita pepo)</i>, Licopeno e Vitamina E. Cada um está descrito em detalhe, com '
           'as respectivas referências científicas, na seção de ingredientes desta página.'),
+    h_claims='O que se pode afirmar',
+    claims_intro=('Estas são as <b>únicas</b> afirmações que a legislação europeia autoriza para os '
+                  'nutrientes desta fórmula. Constam da lista oficial da União Europeia:'),
+    claims=['O <b>zinco</b> contribui para a manutenção de níveis normais de testosterona no sangue.',
+            'O <b>zinco</b> contribui para a fertilidade e reprodução normais.',
+            'O <b>zinco</b> e a <b>vitamina E</b> contribuem para a proteção das células contra as '
+            'oxidações indesejadas.'],
     h_users='O que dizem os usuários',
     users=('Numa pesquisa de satisfação feita em 2017, <b>perto de 9 em cada 10</b> usuários se '
            'declararam <b>satisfeitos ou muito satisfeitos</b> com a experiência que tiveram com o produto. A base do estudo e seus limites estão no estudo publicado nesta página.'),
@@ -111,6 +125,12 @@ T = {
           '<i>(Serenoa repens)</i>, Pygeum africanum, Beta-sitosterol, Zinc, Nettle <i>(Urtica dioica)</i>, '
           'Pumpkin seed <i>(Cucurbita pepo)</i>, Lycopene and Vitamin E. Each one is described in detail, with its '
           'scientific references, in the ingredients section of this page.'),
+    h_claims='What may be stated',
+    claims_intro=('These are the <b>only</b> statements EU law authorises for the nutrients in this '
+                  'formula. They come from the official European Union list:'),
+    claims=['<b>Zinc</b> contributes to the maintenance of normal testosterone levels in the blood.',
+            '<b>Zinc</b> contributes to normal fertility and reproduction.',
+            '<b>Zinc</b> and <b>vitamin E</b> contribute to the protection of cells from oxidative stress.'],
     h_users='What users say',
     users=('In a 2017 satisfaction survey, <b>close to 9 in 10</b> users said they were '
            '<b>satisfied or very satisfied</b> with their experience of the product. The study base and its limits '
@@ -148,6 +168,9 @@ def block(lang):
     o += ['      </ul>',
           '      <h3>%s</h3>' % t['h_what'],
           '      <p>%s</p>' % t['what'],
+          '      <h3>%s</h3>' % t['h_claims'],
+          '      <p>%s</p>' % t['claims_intro'],
+          '      <ul>'] + ['        <li>%s</li>' % li for li in t['claims']] + ['      </ul>',
           '      <h3>%s</h3>' % t['h_users'],
           '      <p>%s</p>' % t['users'],
           '      <p style="margin:0 0 0.85rem;"><button type="button" class="btn-ghost" '

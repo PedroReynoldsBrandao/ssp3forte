@@ -1090,6 +1090,11 @@
   .footer-links { display: flex; gap: 2rem; }
   .footer-links a { font-size: 12px; color: rgba(255,255,255,0.4); text-decoration: none; }
   .footer-links a:hover { color: rgba(255,255,255,0.7); }
+  /* Identificacao legal: discreta, a seguir ao copyright. Visivel, nao escondida --
+     e uma obrigacao de identificacao, nao decoracao. */
+  .footer-legal { font-size: 0.72rem; line-height: 1.6; color: var(--text-muted);
+                  opacity: 0.75; margin: 0.6rem 0 0; }
+
   .footer-copy { font-size: 12px; color: rgba(255,255,255,0.3); width: 100%; }
 
   /* INLINE PRODUCT IMAGE (mobile only) */
@@ -2284,6 +2289,13 @@
     <span data-lang-inline="pt">© 2026 Naturalfarma. Distribuidor exclusivo para Portugal, Angola, Brasil e Europa. O SSP3-Forte é um suplemento alimentar; não substitui aconselhamento médico.</span>
     <span data-lang-inline="en">© 2026 Naturalfarma. Exclusive distributor for Portugal, Angola, Brazil and Europe. SSP3-Forte is a dietary supplement; it does not replace medical advice.</span>
   </p>
+  <!-- Identificacao do operador. O Decreto-Lei 7/2004 (comercio electronico) exige
+       denominacao, morada geografica, contactos e numero de identificacao fiscal.
+       O NIF esta por acrescentar, a pedido do Pedro -- ver CLAUDE.md. A morada e a
+       da loja, nao a residencial. -->
+  <p class="footer-legal">
+    PBRCB — Empresário em Nome Individual · Rua do Grupo I. Popular, n.º 19, 2650-205 Amoreira, Portugal
+  </p>
 </footer>
 
 <script>
@@ -2894,6 +2906,13 @@ funnelEvent('view');
       </ul>
       <h3>O que leva</h3>
       <p>Oito ingredientes de origem vegetal e nutrientes, numa fórmula estável há anos: Saw Palmetto <i>(Serenoa repens)</i>, Pygeum africanum, Beta-sitosterol, Zinco, Urtiga <i>(Urtica dioica)</i>, Semente de abóbora <i>(Cucurbita pepo)</i>, Licopeno e Vitamina E. Cada um está descrito em detalhe, com as respectivas referências científicas, na secção de ingredientes desta página.</p>
+      <h3>O que se pode afirmar</h3>
+      <p>Estas são as <b>únicas</b> afirmações que a legislação europeia autoriza para os nutrientes desta fórmula. Constam da lista oficial da União Europeia:</p>
+      <ul>
+        <li>O <b>zinco</b> contribui para a manutenção de níveis normais de testosterona no sangue.</li>
+        <li>O <b>zinco</b> contribui para a fertilidade e reprodução normais.</li>
+        <li>O <b>zinco</b> e a <b>vitamina E</b> contribuem para a protecção das células contra as oxidações indesejadas.</li>
+      </ul>
       <h3>O que dizem os utilizadores</h3>
       <p>Num inquérito de satisfação feito em 2017, <b>perto de 9 em cada 10</b> utilizadores declararam-se <b>satisfeitos ou muito satisfeitos</b> com a experiência que tiveram com o produto. A base do estudo e os seus limites estão no estudo publicado nesta página.</p>
       <p style="margin:0 0 0.85rem;"><button type="button" class="btn-ghost" onclick="closeInfoModal(); openSurveyModal()">Ver o estudo de satisfação →</button></p>
@@ -2921,6 +2940,13 @@ funnelEvent('view');
       </ul>
       <h3>O que leva</h3>
       <p>Oito ingredientes de origem vegetal e nutrientes, numa fórmula estável há anos: Saw Palmetto <i>(Serenoa repens)</i>, Pygeum africanum, Beta-sitosterol, Zinco, Urtiga <i>(Urtica dioica)</i>, Semente de abóbora <i>(Cucurbita pepo)</i>, Licopeno e Vitamina E. Cada um está descrito em detalhe, com as respectivas referências científicas, na seção de ingredientes desta página.</p>
+      <h3>O que se pode afirmar</h3>
+      <p>Estas são as <b>únicas</b> afirmações que a legislação europeia autoriza para os nutrientes desta fórmula. Constam da lista oficial da União Europeia:</p>
+      <ul>
+        <li>O <b>zinco</b> contribui para a manutenção de níveis normais de testosterona no sangue.</li>
+        <li>O <b>zinco</b> contribui para a fertilidade e reprodução normais.</li>
+        <li>O <b>zinco</b> e a <b>vitamina E</b> contribuem para a proteção das células contra as oxidações indesejadas.</li>
+      </ul>
       <h3>O que dizem os usuários</h3>
       <p>Numa pesquisa de satisfação feita em 2017, <b>perto de 9 em cada 10</b> usuários se declararam <b>satisfeitos ou muito satisfeitos</b> com a experiência que tiveram com o produto. A base do estudo e seus limites estão no estudo publicado nesta página.</p>
       <p style="margin:0 0 0.85rem;"><button type="button" class="btn-ghost" onclick="closeInfoModal(); openSurveyModal()">Ver o estudo de satisfação →</button></p>
@@ -2948,6 +2974,13 @@ funnelEvent('view');
       </ul>
       <h3>What is in it</h3>
       <p>Eight plant-derived ingredients and nutrients, in a formula unchanged for years: Saw Palmetto <i>(Serenoa repens)</i>, Pygeum africanum, Beta-sitosterol, Zinc, Nettle <i>(Urtica dioica)</i>, Pumpkin seed <i>(Cucurbita pepo)</i>, Lycopene and Vitamin E. Each one is described in detail, with its scientific references, in the ingredients section of this page.</p>
+      <h3>What may be stated</h3>
+      <p>These are the <b>only</b> statements EU law authorises for the nutrients in this formula. They come from the official European Union list:</p>
+      <ul>
+        <li><b>Zinc</b> contributes to the maintenance of normal testosterone levels in the blood.</li>
+        <li><b>Zinc</b> contributes to normal fertility and reproduction.</li>
+        <li><b>Zinc</b> and <b>vitamin E</b> contribute to the protection of cells from oxidative stress.</li>
+      </ul>
       <h3>What users say</h3>
       <p>In a 2017 satisfaction survey, <b>close to 9 in 10</b> users said they were <b>satisfied or very satisfied</b> with their experience of the product. The study base and its limits are in the study published on this page.</p>
       <p style="margin:0 0 0.85rem;"><button type="button" class="btn-ghost" onclick="closeInfoModal(); openSurveyModal()">See the satisfaction study →</button></p>
