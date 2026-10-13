@@ -200,14 +200,46 @@ which leaves `/br/` and `/en/` stale — silently, since nothing about a stale c
 looks wrong. Each copy therefore carries `<!-- gerado de index.html sha1:… -->`
 and `check_prices.py` fails when it no longer matches, or when a copy is missing.
 
-**This is the safe half of the job, not the whole of it.** All three pages still
-carry the text of all three languages in the HTML, hidden by CSS. That gives
-Google distinct URLs and hreflang, which is what was missing, but the competing
-text is still on every page. The strong version has each page carry only its own
-language, with the flag buttons navigating between the URLs instead of switching
-in place. That means cutting language blocks out of a 240 KB file and rewiring the
-switcher, and it has to be looked at rendered before it ships — which is why it
-was not done blind in the same pass.
+**The flags navigate between these URLs** (Oct 2026). They are real `<a href>`
+elements — `/`, `/br/`, `/en/` — with `onclick="return irParaLingua(...)"` doing
+the work. Two things this buys that the addresses alone did not: the URL now
+matches the language on screen, so what a visitor copies, bookmarks or forwards
+opens in the language they read (before, it always opened in European Portuguese);
+and Googlebot follows the links from the home page to `/br/` and `/en/`, where
+until now only `sitemap.xml` announced them — a page announced but linked from
+nowhere counts for much less.
+
+`irParaLingua()` switches in place instead of navigating when you are already on
+the target page, and when `location.protocol` is `file:` — a static local copy has
+no `/br/` to go to (see *Checking your work*).
+
+**INT has no URL, deliberately.** It is not a language: it shows the same text as
+EN and only changes the payment options (`.lang-world` hides `.pt-payment-options`
+and `.brl-toggle`). A second address with the same text claiming `hreflang="en"`
+would compete with `/en/`, which is the exact problem per-language URLs were
+introduced to solve. The INT flag therefore goes to `/en/?v=int` and applies the
+variant there.
+
+**A language switch must not count as a second visitor.** The flag link carries
+the funnel session as `?s=…`, and the arriving page adopts it before sending its
+`view`. `/stats` counts distinct sessions, so the repeated `view` folds into the
+first — without this, a Brazilian landing on the pt-PT default and clicking BR
+(the commonest path in the biggest market) would have halved the measured
+conversion rate. The arriving page then strips `s` and `v` with
+`history.replaceState`, keeping any other parameters (a campaign's `utm_*`), so
+nothing of ours ends up in a shared URL or the history. The id is validated
+against `/^[a-z0-9]{8,40}$/` before use. **Nothing is stored on the device, which
+is what keeps the funnel free of a cookie banner** — do not "improve" this by
+putting the session in `sessionStorage`.
+
+The order anchor is remapped on the way (`#order` ⇄ `#encomenda`), so switching
+language while reading the form lands on the form and not at the top of the page.
+
+**What is still outstanding.** All three pages carry the text of all three
+languages in the HTML, hidden by CSS. Distinct URLs, hreflang and navigating flags
+are in place; the competing text is not gone. The strong version has each page
+carry only its own language, which means cutting language blocks out of a 240 KB
+file, and it has to be looked at rendered before it ships.
 
 ## Multilingual system
 
@@ -376,7 +408,7 @@ Fonts loaded from Google Fonts: **Lora** (headings, serif) + **Source Sans 3** (
 
 ## Navigation
 
-**Language bar** — sticky top bar with PT 🇵🇹, BR 🇧🇷, EU 🇬🇧 flag buttons. Clicking BR also activates BRL pricing (equivalent to checking the BRL checkbox). It also carries an **Aviso Legal / Legal Notice** button that opens `#disclaimer-modal`.
+**Language bar** — sticky top bar with four flags: PT 🇵🇹, BR 🇧🇷, EU 🇬🇧 and INT 🌐. They are links, not buttons, and they navigate to that language's URL — see *One URL per language*. Clicking BR also activates BRL pricing (equivalent to checking the BRL checkbox); the BRL checkbox itself only toggles currency and never navigates. It also carries an **Aviso Legal / Legal Notice** button that opens `#disclaimer-modal`.
 
 **Top nav menu** (`#top-nav`) — fixed top-left hamburger button (☰) that expands **downwards into a compact vertical list**: Início/Home, Testemunhos/Testimonials, Encomenda/Order, Perguntas frequentes/FAQ, Artigos. Collapsed it is 38×34px — a gold button with green bars; open it is 178px wide on a `--green-deep` panel and grows to fit (`max-height: 280px`), animating `width` and `max-height`. Links are 13px. It sits at `top: 48px`, and at `top: 66px` below 600px, because the language bar wraps to two rows on phones and the button was covering the PT flag. Closes on link click or outside click. The Artigos/Articles entry is shown in every language, since `#artigos` now has an EN block too. Not hidden on mobile.
 

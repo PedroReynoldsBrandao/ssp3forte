@@ -168,6 +168,7 @@
     background: none;
     border: none;
     cursor: pointer;
+    text-decoration: none;
     padding: 2px 10px;
     display: flex;
     flex-direction: column;
@@ -1232,13 +1233,13 @@
     <button type="button" class="lang-bar-link" onclick="openDisclaimerModal()"><span data-lang-inline="pt">Aviso Legal</span><span data-lang-inline="en">Legal Notice</span></button>
   </div>
   <div class="lang-bar-right">
-    <button class="lang-btn active" onclick="setLang('pt')" id="btn-pt"><img class="flag-img" src="/imgs/flags/pt.svg" alt="PT"><span class="flag-label">PT</span></button>
+    <a class="lang-btn active" href="/" hreflang="pt-PT" onclick="return irParaLingua('pt')" id="btn-pt"><img class="flag-img" src="/imgs/flags/pt.svg" alt="PT"><span class="flag-label">PT</span></a>
     <span class="lang-divider">|</span>
-    <button class="lang-btn" onclick="setLang('br')" id="btn-br"><img class="flag-img" src="/imgs/flags/br.svg" alt="BR"><span class="flag-label">BR</span></button>
+    <a class="lang-btn" href="/br/" hreflang="pt-BR" onclick="return irParaLingua('br')" id="btn-br"><img class="flag-img" src="/imgs/flags/br.svg" alt="BR"><span class="flag-label">BR</span></a>
     <span class="lang-divider">|</span>
-    <button class="lang-btn" onclick="setLang('eu')" id="btn-eu"><img class="flag-img" src="/imgs/flags/eu.svg" alt="EU"><span class="flag-label">EU</span></button>
+    <a class="lang-btn" href="/en/" hreflang="en" onclick="return irParaLingua('eu')" id="btn-eu"><img class="flag-img" src="/imgs/flags/eu.svg" alt="EU"><span class="flag-label">EU</span></a>
     <span class="lang-divider">|</span>
-    <button class="lang-btn" onclick="setLang('world')" id="btn-world"><img class="flag-img" src="/imgs/flags/world.svg" alt="World"><span class="flag-label">INT</span></button>
+    <a class="lang-btn" href="/en/" onclick="return irParaLingua('world')" id="btn-world"><img class="flag-img" src="/imgs/flags/world.svg" alt="World"><span class="flag-label">INT</span></a>
   </div>
 </div>
 
@@ -2304,6 +2305,47 @@ const TITLES = {
   en: 'SSP3-Forte — Natural Prostate Health',
 };
 
+/* ── Uma lingua, um endereco ──────────────────────────────────────────────────
+   As bandeiras navegam para o endereco da lingua em vez de trocarem a lingua no
+   proprio sitio. Quem le em portugues do Brasil fica em /br/, e o endereco que
+   copia, guarda nos favoritos ou manda a alguem abre na lingua que viu -- antes
+   abria sempre em portugues europeu, por muito que a pessoa tivesse trocado.
+
+   Sao <a href> a serio, com onclick a tratar do resto: assim a Google segue-as
+   da pagina inicial para /br/ e /en/. Ate aqui so o sitemap.xml as anunciava, e
+   uma pagina anunciada mas nao ligada de lado nenhum vale muito menos.
+
+   O INT nao tem endereco de proposito. Nao e uma lingua: mostra o mesmo texto
+   que o EN e muda-lhe os meios de pagamento. Um segundo URL com o mesmo texto a
+   reclamar hreflang="en" competiria com o /en/, que e exactamente o problema que
+   os enderecos por lingua vieram resolver. Vai para /en/ e aplica a variante la.
+
+   Leva o identificador da visita no endereco para que trocar de lingua nao
+   apareca no funil como duas pessoas (o /stats conta sessoes distintas, logo o
+   segundo "view" com a mesma sessao nao soma). A pagina de destino le-o e limpa-o
+   do endereco. Nada fica guardado no dispositivo de quem visita. */
+const LANG_URL = { pt: '/', br: '/br/', eu: '/en/', world: '/en/' };
+
+function irParaLingua(region) {
+  const destino = LANG_URL[region];
+  const aqui = location.pathname.replace(/index\.html$/, '');
+  /* Ja estamos na pagina certa -- ou isto esta a correr de um ficheiro local,
+     onde /br/ nao existe (ver "Checking your work" no CLAUDE.md). */
+  if (location.protocol === 'file:' || aqui === destino) { setLang(region); return false; }
+
+  /* A ancora da encomenda muda de nome com a lingua; sem isto quem estivesse a
+     ler o formulario em ingles aterrava no topo da pagina portuguesa. */
+  let hash = location.hash;
+  if (hash === '#order' || hash === '#encomenda') {
+    hash = (region === 'pt' || region === 'br') ? '#encomenda' : '#order';
+  }
+
+  const q = ['s=' + encodeURIComponent(FUNNEL_SESSION)];
+  if (region === 'world') q.push('v=int');
+  location.href = destino + '?' + q.join('&') + hash;
+  return false;
+}
+
 function setLang(region) {
   currentRegion = region;
   const lang = (region === 'eu' || region === 'world') ? 'en' : region === 'br' ? 'br' : 'pt';
@@ -2831,8 +2873,28 @@ setLang('br');   /* pagina de lingua */
 
    Falha em silencio de proposito: medir nunca pode estorvar quem esta a comprar. */
 const FUNNEL = 'https://ssp3forte-orders.leptix.workers.dev/event';
-const FUNNEL_SESSION = Math.random().toString(36).slice(2) + Date.now().toString(36);
+let FUNNEL_SESSION = Math.random().toString(36).slice(2) + Date.now().toString(36);
 const funnelJaEnviado = {};
+
+/* Chegou de outra pagina de lingua (ver irParaLingua): continua a mesma visita em
+   vez de contar como visitante novo, e aplica a variante INT, que nao tem
+   endereco proprio. No fim limpa os parametros do endereco -- nao ficam no que a
+   pessoa copia, nem no historico, nem num endereco partilhado. Os parametros que
+   nao sejam nossos (utm_* de um anuncio, por exemplo) ficam onde estao. */
+(function () {
+  if (!location.search) return;
+  try {
+    const p = new URLSearchParams(location.search);
+    const s = p.get('s');
+    /* so aceitar o formato que nos proprios geramos */
+    if (s && /^[a-z0-9]{8,40}$/.test(s)) FUNNEL_SESSION = s;
+    if (p.get('v') === 'int') setLang('world');
+    if (s === null && !p.has('v')) return;
+    p.delete('s'); p.delete('v');
+    const resto = p.toString();
+    history.replaceState(null, '', location.pathname + (resto ? '?' + resto : '') + location.hash);
+  } catch (e) { /* medir nunca pode estorvar quem esta a comprar */ }
+})();
 
 function funnelLang() {
   const c = document.body.className;
@@ -3245,7 +3307,7 @@ funnelEvent('view');
   </div>
 </div>
   <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"560644b39d6743d4ba01aab270c4c1bf"}'></script>
-<!-- gerado de index.html sha1:3294ce534a08958804f8ed3c4d47450692281b10 -->
+<!-- gerado de index.html sha1:2f2a60d5f5f29ff4b2f540754d7b9e4a1908b194 -->
 </body>
 </html>
 
