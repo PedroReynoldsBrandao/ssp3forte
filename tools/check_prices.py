@@ -23,7 +23,7 @@ precos, portes ou nos emails de contacto.
 Sai com codigo 0 se estiver tudo certo, 1 se houver divergencias.
 Funciona a partir da raiz do repositorio ou de dentro de tools/.
 """
-import io, json, os, re, sys
+import hashlib, io, json, os, re, sys
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -188,6 +188,28 @@ def conferir_dados_estruturados(precos, html, falhas):
                           "reais marcadas na pagina; o inquerito de satisfacao nao serve")
 
 
+def conferir_paginas_de_lingua(falhas):
+    """As copias em /br/ e /en/ sao geradas do index.html e ficam para tras.
+
+    O apply_modal.py e o gen_blog_index.py reescrevem o index.html, e quem nao
+    souber desta dependencia publica um /br/ com os modais antigos sem nada se
+    queixar. Cada copia leva a impressao digital do index.html de onde saiu."""
+    caminho_index = os.path.join(RAIZ, 'index.html')
+    atual = hashlib.sha1(io.open(caminho_index, 'rb').read()).hexdigest()
+    for pasta in ('br', 'en'):
+        f = os.path.join(RAIZ, pasta, 'index.html')
+        if not os.path.exists(f):
+            falhas.append("falta /%s/index.html -- correr: python tools/gen_lang_pages.py" % pasta)
+            continue
+        m = re.search(r'<!-- gerado de index\.html sha1:([0-9a-f]{40}) -->',
+                      io.open(f, encoding='utf-8').read())
+        if not m:
+            falhas.append("/%s/index.html nao tem a marca de origem -- regerar" % pasta)
+        elif m.group(1) != atual:
+            falhas.append("/%s/index.html foi gerado de outra versao do index.html "
+                          "-- correr: python tools/gen_lang_pages.py" % pasta)
+
+
 def conferir_emails(html, js, falhas):
     """Os dois enderecos tem de existir dos dois lados."""
     for email in ("encomendas@ssp3forte.com", "orders@ssp3forte.com"):
@@ -236,6 +258,7 @@ def main():
     conferir_riscados(precos, html, falhas)
     conferir_opcoes(precos, html, falhas)
     conferir_dados_estruturados(precos, html, falhas)
+    conferir_paginas_de_lingua(falhas)
     conferir_emails(html, js, falhas)
     conferir_documentacao(precos, portes, md, falhas)
 

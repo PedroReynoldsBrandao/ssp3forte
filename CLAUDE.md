@@ -112,6 +112,7 @@ Within the n=67 group: very satisfied 22 (32.8%), satisfied 37 (55.2%), slightly
 | `tools/apply_modal.py` | Runs a generator and splices the result into `index.html` |
 | `tools/check_prices.py` | Checks the price in index.html, worker.js and this file still agree |
 | `tools/gen_blog_index.py` | Writes the crawlable all-articles list into `index.html` from the pools |
+| `tools/gen_lang_pages.py` | Builds `/br/` and `/en/` from `index.html`; **run it last** |
 | `_config.yml` | Jekyll exclude list — keeps non-site files from being published |
 | `robots.txt`, `sitemap.xml` | Tell Google what exists; one URL, since the site is one page |
 | `.gitignore` | Keeps customer data and Cloudflare credentials out of a public repo |
@@ -138,9 +139,9 @@ rather than excluded — one filename carried an accent and spaces, which is exa
 where an exclude list fails silently. `git show 0be0a6c:<name>` brings either back.
 
 **SEO, fixed in the same pass.** `robots.txt` points at `sitemap.xml`; the sitemap
-lists the single URL; `index.html` carries `<link rel="canonical">`. There is
-deliberately **no `hreflang`** — it requires one URL per language and all four share
-this one, so any hreflang here would point at itself and say nothing. The `<title>`
+lists the single URL; `index.html` carries `<link rel="canonical">`. `hreflang` arrived with the
+per-language URLs — see *One URL per language*; until those existed there was
+nothing for it to point at. The `<title>`
 used to carry Portuguese and English in one line, diluting both; it is now Portuguese
 in the HTML, with `setLang()` swapping it from `TITLES` for the visitor.
 
@@ -175,6 +176,38 @@ and are not on the page either. For a health product Google weighs who stands be
 the site heavily — it is a "your money or your life" category — so filling those in
 is the single cheapest credibility gain available. Add them to the `Organization`
 block and to the footer together.
+
+## One URL per language
+
+Since Oct 2026 the site is served at three addresses, not one:
+
+| URL | Language | `hreflang` |
+|---|---|---|
+| `/` | European Portuguese, and the default | `pt-PT`, `x-default` |
+| `/br/` | Brazilian Portuguese | `pt-BR` |
+| `/en/` | English | `en` |
+
+All three are built by `tools/gen_lang_pages.py` from `index.html`, which also
+rewrites `sitemap.xml`. Each gets its own `<html lang>`, `<title>` and canonical,
+the same full `hreflang` block, image paths made absolute (a relative `imgs/…`
+under `/br/` would look for `/br/imgs/`), and a `setLang()` call appended to the
+script so the language applies on load — rather than baking a `<body>` class by
+hand, since `setLang` also sets BRL pricing, the default country and the order
+anchor, and duplicating that is how things drift.
+
+**Run it last.** `apply_modal.py` and `gen_blog_index.py` rewrite `index.html`,
+which leaves `/br/` and `/en/` stale — silently, since nothing about a stale copy
+looks wrong. Each copy therefore carries `<!-- gerado de index.html sha1:… -->`
+and `check_prices.py` fails when it no longer matches, or when a copy is missing.
+
+**This is the safe half of the job, not the whole of it.** All three pages still
+carry the text of all three languages in the HTML, hidden by CSS. That gives
+Google distinct URLs and hreflang, which is what was missing, but the competing
+text is still on every page. The strong version has each page carry only its own
+language, with the flag buttons navigating between the URLs instead of switching
+in place. That means cutting language blocks out of a 240 KB file and rewiring the
+switcher, and it has to be looked at rendered before it ships — which is why it
+was not done blind in the same pass.
 
 ## Multilingual system
 

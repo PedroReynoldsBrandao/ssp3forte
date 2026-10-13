@@ -1,12 +1,18 @@
 ﻿<!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-PT">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SSP3-Forte — Saúde Natural da Próstata</title>
 <!-- As quatro linguas vivem neste endereco, trocadas por CSS. Por isso ha um
      so canonico e NAO ha hreflang: hreflang precisa de um URL por lingua. -->
+<!-- HREFLANG : gerado por tools/gen_lang_pages.py -->
 <link rel="canonical" href="https://ssp3forte.com/">
+<link rel="alternate" hreflang="pt-PT" href="https://ssp3forte.com/">
+<link rel="alternate" hreflang="pt-BR" href="https://ssp3forte.com/br/">
+<link rel="alternate" hreflang="en" href="https://ssp3forte.com/en/">
+<link rel="alternate" hreflang="x-default" href="https://ssp3forte.com/">
+<!-- /HREFLANG -->
 <!-- Dados estruturados. Sem aggregateRating: isso exige avaliacoes reais
      marcadas na pagina, e o inquerito de satisfacao nao e um sistema de
      estrelas. Inventar uma classificacao aqui e motivo de penalizacao.
@@ -2304,7 +2310,7 @@ function setLang(region) {
     if (btn) btn.classList.toggle('active', r === region);
   });
 
-  document.documentElement.lang = lang === 'en' ? 'en' : 'pt';
+  document.documentElement.lang = lang === 'en' ? 'en' : (lang === 'br' ? 'pt-BR' : 'pt-PT');
   document.title = TITLES[lang] || TITLES.pt;
   const anchorId = lang === 'en' ? 'order' : 'encomenda';
   const section = document.getElementById('encomenda') || document.getElementById('order');
