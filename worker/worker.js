@@ -347,24 +347,34 @@ function statsHTML(linhas, porDia, falhas, dias) {
   th { font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: #777; }
   .nota { color: #777; font-size: 12px; line-height: 1.6; margin-top: 2rem;
           border-top: 1px solid #eee; padding-top: 1rem; }
+
+  /* A tabela por dia tem 7 colunas e nao cabe num telemovel. Cada tabela rola
+     dentro da sua caixa, para a pagina em si nunca rolar de lado. */
+  .tw { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .tw table.dias { min-width: 460px; }
+  @media (max-width: 600px) {
+    body { margin: 1rem auto; font-size: 13px; }
+    th, td { padding: 5px 7px; }
+    h2 { margin-top: 1.5rem; }
+  }
 </style></head><body>
 <h1>Funil de encomendas</h1>
 <p class="sub">Últimos ${dias} dias. A coluna "queda" é a percentagem que se perde do passo anterior.</p>
 
-<table>
+<div class="tw"><table>
   <tr><th>Passo</th><th style="text-align:right">Visitas</th><th style="text-align:right">Do total</th>
       <th style="text-align:right">Queda</th><th></th></tr>
   ${funil}
-</table>
+</table></div>
 
 <h2>Por dia</h2>
-<table>
+<div class="tw"><table class="dias">
   <tr><th>Dia</th>${PASSOS.map(([, r]) => `<th style="text-align:right">${r.split(' ')[0]}</th>`).join('')}</tr>
   ${tabelaDias}
-</table>
+</table></div>
 
 <h2>Falhas de envio</h2>
-<table><tr><th>Quantas</th><th>Motivo</th></tr>${listaFalhas}</table>
+<div class="tw"><table><tr><th>Quantas</th><th>Motivo</th></tr>${listaFalhas}</table></div>
 
 <p class="nota">
   Cada número é o total de <b>visitas distintas</b> que chegaram ao passo, não de cliques.<br>
