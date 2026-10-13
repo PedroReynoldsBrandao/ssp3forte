@@ -28,7 +28,14 @@ cd ssp3forte
 **Deploying**
 
 - **Site:** push to `main`. GitHub Pages rebuilds in roughly 30–90 seconds. Confirm with `curl -s https://ssp3forte.com/ | grep <something you changed>` rather than trusting the push.
-- **Worker:** `cd worker && npx wrangler deploy`. On Windows PowerShell the execution policy blocks the `npx.ps1` shim — use `npx.cmd wrangler deploy`. **The live config is `worker/wrangler.toml`** (that is the directory you deploy from); the `wrangler.jsonc` at the repo root is a leftover duplicate and is not what ships.
+- **Worker:** `cd worker && npx wrangler deploy`. On Windows PowerShell the execution policy blocks the `npx.ps1` shim — use `npx.cmd wrangler deploy`. **The only config is `worker/wrangler.toml`, and `worker/` is the directory you deploy from.** A `wrangler.jsonc` used to sit at the repo root — same worker name, pointing at the same script, but with no bindings and no cron. Deploying from the root picked it up and shipped a Worker with `env.FUNNEL` undefined, reporting a clean "uploaded" with no bindings listed. It cost a debugging round in Oct 2026 and was deleted. **Do not recreate a second config.** After every deploy, read the bindings Wrangler lists back:
+
+```
+Your Worker has access to the following bindings:
+  env.FUNNEL (ssp3forte-funnel)      D1 Database
+```
+
+No such line means no binding, whatever the upload said. `npx wrangler deploy --dry-run` shows the same list without publishing.
 
 **Editing the two modals**
 
@@ -102,7 +109,6 @@ Within the n=67 group: very satisfied 22 (32.8%), satisfied 37 (55.2%), slightly
 | `tools/gen_blog_index.py` | Writes the crawlable all-articles list into `index.html` from the pools |
 | `registo_SSP3forte_ideias.txt` | Notes on trademark registration for the SSP3-Forte name (not website content) |
 | `.gitignore` | Keeps customer data and Cloudflare credentials out of a public repo |
-| `wrangler.jsonc` (root) | Leftover duplicate — the live Worker config is `worker/wrangler.toml` |
 
 ## Multilingual system
 
