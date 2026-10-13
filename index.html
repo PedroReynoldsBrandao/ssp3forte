@@ -797,6 +797,9 @@
     line-height: 1;
   }
 
+  #confirmWarn { margin-top: 0.9rem; padding-top: 0.9rem; border-top: 1px solid rgba(0,0,0,0.15);
+                 font-size: 0.92rem; line-height: 1.6; }
+
   .success-msg {
     display: none;
     background: var(--green-pale);
@@ -1899,6 +1902,14 @@
     <div class="success-msg" id="successMsg">
       <span data-lang-inline="pt">O seu pedido no site ssp3forte foi efetuado com sucesso. Será enviado um email de confirmação. Por favor, aguarde.</span>
       <span data-lang-inline="en">Your order on ssp3forte.com was successfully placed. A confirmation email will be sent to you shortly. Please wait.</span>
+      <!-- Mostrado so quando o Worker responde confirmationSent:false, ou seja quando
+           o email de confirmacao nao chegou ao cliente (tipicamente endereco mal
+           escrito). O pedido esta registado e a Naturalfarma foi avisada; repetir a
+           submissao so criaria encomendas duplicadas. -->
+      <div id="confirmWarn" style="display:none;">
+        <span data-lang-inline="pt">Não conseguimos enviar o email de confirmação para o endereço que indicou — verifique se está correcto. O seu pedido ficou registado e entraremos em contacto. Não precisa de o submeter outra vez.</span>
+        <span data-lang-inline="en">We could not send the confirmation email to the address you gave — please check that it is correct. Your order has been recorded and we will be in touch. There is no need to submit it again.</span>
+      </div>
     </div>
 
   </div>
@@ -2335,6 +2346,9 @@ async function submitOrder(e) {
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || res.status);
 
+    if (data.confirmationSent === false) {
+      document.getElementById('confirmWarn').style.display = 'block';
+    }
     document.getElementById('successMsg').style.display = 'block';
     form.style.opacity = '0.4';
     form.style.pointerEvents = 'none';

@@ -210,7 +210,7 @@ function buildEmailEN(d, orderNum, p) {
 }
 
 // ── Internal notification to business ───────────────────────────────────────
-function buildInternalEmail(d, orderNum, p) {
+function buildInternalEmail(d, orderNum, p, clientEmailError) {
   const rows = [
     ['Order', orderNum], ['Name', d.name], ['Email', d.email], ['Phone', d.phone || '—'],
     ['DOB', d.dob || '—'], ['Country', d.country], ['Product', `${p.namePT} (${p.code})`],
@@ -218,8 +218,26 @@ function buildInternalEmail(d, orderNum, p) {
     ['State', d.state || '—'], ['Notes', d.notes || '—'],
     ['Payment', paymentLabel(d.paymentMethod, 'pt')], ['Shipping', shippingLabel(d.shippingMethod, 'pt')],
   ].map(([k, v]) => `<tr><td style="padding:4px 12px;color:#555;width:140px;">${k}</td><td style="padding:4px 12px;">${v}</td></tr>`).join('');
+
+  // O cliente nao recebeu a confirmacao -- normalmente porque escreveu mal o
+  // email. A encomenda e valida; falta e contactar a pessoa, por telefone se
+  // houver numero. Antes destes avisos, um caso destes perdia a encomenda toda.
+  const aviso = clientEmailError ? `
+  <div style="border:2px solid #b00020;background:#fff4f4;padding:12px 16px;margin-bottom:16px;">
+    <div style="color:#b00020;font-weight:bold;margin-bottom:6px;">
+      A confirmação não chegou ao cliente — é preciso contactá-lo
+    </div>
+    <div style="font-size:13px;line-height:1.6;color:#333;">
+      O pedido foi registado, mas o email de confirmação para
+      <b>${d.email}</b> falhou. O endereço pode estar mal escrito.
+      ${d.phone ? `Telefone indicado: <b>${d.phone}</b>.` : 'Não foi indicado telefone.'}
+      <div style="color:#777;font-size:12px;margin-top:6px;">Erro: ${clientEmailError}</div>
+    </div>
+  </div>` : '';
+
   return `<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body style="font-family:sans-serif;font-size:14px;">
 <div style="max-width:560px;margin:24px auto;">
+  ${aviso}
   <h2 style="color:#0d3d2b;margin-bottom:4px;">Novo pedido: ${orderNum}</h2>
   <table cellpadding="0" cellspacing="0" style="border-collapse:collapse;width:100%;border:1px solid #e0e0e0;">
     ${rows}
@@ -271,21 +289,45 @@ export default {
       ? `Your order no. ${orderNum}`
       : `O seu pedido n.º ${orderNum}`;
 
+    // A confirmacao ao cliente e o aviso interno sao enviados em separado, e por
+    // esta ordem de prioridade: o aviso interno e o registo da encomenda, a
+    // confirmacao e cortesia.
+    //
+    // Antes os dois estavam no mesmo try, em sequencia, e o sendEmail lanca erro
+    // em qualquer resposta que nao seja OK. Bastava o cliente escrever mal o
+    // proprio email para o primeiro envio falhar, o segundo nunca correr e a
+    // encomenda desaparecer sem ninguem saber -- o cliente via um alerta de erro
+    // e ia-se embora depois de preencher 18 campos. Nao voltar a juntar os dois.
+    let clientEmailError = null;
     try {
       await sendEmail(env.RESEND_API_KEY, {
         from, to: d.email, subject,
         html: isEN ? buildEmailEN(d, orderNum, product) : buildEmailPT(d, orderNum, product),
       });
+    } catch (err) {
+      console.error('confirmacao ao cliente falhou:', err);
+      clientEmailError = err.message;
+    }
+
+    try {
       await sendEmail(env.RESEND_API_KEY, {
         from: isEN ? 'orders@ssp3forte.com' : 'encomendas@ssp3forte.com',
         to: isEN ? 'orders@ssp3forte.com' : 'encomendas@ssp3forte.com',
-        subject: `Novo pedido ${orderNum} — ${d.name}`,
-        html: buildInternalEmail(d, orderNum, product),
+        subject: clientEmailError
+          ? `Novo pedido ${orderNum} — ${d.name} — CONTACTAR: confirmacao nao chegou`
+          : `Novo pedido ${orderNum} — ${d.name}`,
+        html: buildInternalEmail(d, orderNum, product, clientEmailError),
       });
-      return json({ success: true, orderNum });
     } catch (err) {
-      console.error(err);
+      // Falhou o registo da encomenda. Aqui sim vale a pena pedir ao cliente que
+      // tente de novo, porque nao ha nada guardado em lado nenhum.
+      console.error('aviso interno falhou:', err);
       return json({ error: 'Email sending failed', detail: err.message }, 500);
     }
+
+    // A encomenda esta registada. Dizer sucesso ao cliente mesmo que a
+    // confirmacao nao lhe tenha chegado: a pagina avisa-o disso a parte, e repetir
+    // a submissao so geraria encomendas duplicadas.
+    return json({ success: true, orderNum, confirmationSent: !clientEmailError });
   },
 };

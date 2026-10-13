@@ -153,6 +153,29 @@ The Worker:
 3. Sends a **confirmation email to the client** (branded, in their language)
 4. Sends an **internal notification** to `encomendas@ssp3forte.com` or `orders@ssp3forte.com` with a plain data table
 
+**The two emails are sent independently, and the internal one is the order record.**
+Until Oct 2026 both were sequential `await`s inside one `try`, and `sendEmail`
+throws on any non-2xx from Resend. So if the *customer's* confirmation failed —
+most often because they mistyped their own address — the second send never ran,
+`encomendas@` was never told, and the order vanished: the customer got a browser
+`alert()` after filling 18 fields and left, and nobody knew it had happened. In
+any visits-to-orders ratio that person is indistinguishable from someone who never
+cared.
+
+Now: the customer's confirmation is attempted first and its failure is captured,
+not fatal. The internal notification is then sent regardless, and when the
+confirmation failed it carries a red "é preciso contactá-lo" banner with the
+address, the phone number if given, and the Resend error; its subject gains
+"— CONTACTAR: confirmacao nao chegou". Success is returned when the **internal**
+email succeeded, since that is when the order is safe, and the response carries
+`confirmationSent: true|false`. Only a failing internal email returns 500 — that
+is the one case where nothing is recorded and the customer should retry.
+`#confirmWarn` in the page shows on `confirmationSent: false`, telling the
+customer to check their address and that they will be contacted, so they do not
+submit again and create a duplicate. **Do not put the two sends back in one
+`try`.** Verified by running the Worker in Node against stubbed Resend failures
+(none / customer / internal / both).
+
 **Required Worker secret** (set via `wrangler secret put RESEND_API_KEY`):
 - `RESEND_API_KEY` — from [resend.com](https://resend.com) dashboard
 
