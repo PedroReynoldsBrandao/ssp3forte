@@ -7,6 +7,96 @@
 <!-- As quatro linguas vivem neste endereco, trocadas por CSS. Por isso ha um
      so canonico e NAO ha hreflang: hreflang precisa de um URL por lingua. -->
 <link rel="canonical" href="https://ssp3forte.com/">
+<!-- Dados estruturados. Sem aggregateRating: isso exige avaliacoes reais
+     marcadas na pagina, e o inquerito de satisfacao nao e um sistema de
+     estrelas. Inventar uma classificacao aqui e motivo de penalizacao.
+     Os precos estao repetidos aqui -- o tools/check_prices.py verifica-os. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://ssp3forte.com/#naturalfarma",
+      "name": "Naturalfarma",
+      "url": "https://ssp3forte.com/",
+      "email": "encomendas@ssp3forte.com",
+      "logo": "https://ssp3forte.com/frasco.jpg"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://ssp3forte.com/#site",
+      "url": "https://ssp3forte.com/",
+      "name": "SSP3-Forte",
+      "publisher": {
+        "@id": "https://ssp3forte.com/#naturalfarma"
+      },
+      "inLanguage": [
+        "pt-PT",
+        "pt-BR",
+        "en"
+      ]
+    },
+    {
+      "@type": "Product",
+      "@id": "https://ssp3forte.com/#ssp3forte",
+      "name": "SSP3-Forte",
+      "image": "https://ssp3forte.com/frasco.jpg",
+      "description": "Suplemento alimentar com oito ingredientes de origem natural, fabricado na Uniao Europeia sob boas praticas de fabrico (GMP) e com certificacao ISO 22000.",
+      "brand": {
+        "@id": "https://ssp3forte.com/#naturalfarma"
+      },
+      "category": "Suplemento alimentar",
+      "offers": [
+        {
+          "@type": "Offer",
+          "name": "1 frasco",
+          "price": "29.95",
+          "priceCurrency": "EUR",
+          "availability": "https://schema.org/InStock",
+          "url": "https://ssp3forte.com/#precos",
+          "seller": {
+            "@id": "https://ssp3forte.com/#naturalfarma"
+          }
+        },
+        {
+          "@type": "Offer",
+          "name": "Kit 3 frascos",
+          "price": "80.86",
+          "priceCurrency": "EUR",
+          "availability": "https://schema.org/InStock",
+          "url": "https://ssp3forte.com/#precos",
+          "seller": {
+            "@id": "https://ssp3forte.com/#naturalfarma"
+          }
+        },
+        {
+          "@type": "Offer",
+          "name": "1 frasco",
+          "price": "210",
+          "priceCurrency": "BRL",
+          "availability": "https://schema.org/InStock",
+          "url": "https://ssp3forte.com/#precos",
+          "seller": {
+            "@id": "https://ssp3forte.com/#naturalfarma"
+          }
+        },
+        {
+          "@type": "Offer",
+          "name": "Kit 3 frascos",
+          "price": "567",
+          "priceCurrency": "BRL",
+          "availability": "https://schema.org/InStock",
+          "url": "https://ssp3forte.com/#precos",
+          "seller": {
+            "@id": "https://ssp3forte.com/#naturalfarma"
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
 <link rel="icon" type="image/jpeg" href="frasco.jpg">
 <meta name="description" content="SSP3-Forte: suplemento alimentar natural com oito ingredientes, fabricado na UE sob GMP e ISO 22000. Distribuído por Naturalfarma para Portugal, Brasil, Europa.">
 <link rel="preconnect" href="https://fonts.googleapis.com">

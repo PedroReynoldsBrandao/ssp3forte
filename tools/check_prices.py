@@ -23,7 +23,7 @@ precos, portes ou nos emails de contacto.
 Sai com codigo 0 se estiver tudo certo, 1 se houver divergencias.
 Funciona a partir da raiz do repositorio ou de dentro de tools/.
 """
-import io, os, re, sys
+import io, json, os, re, sys
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -152,6 +152,42 @@ def conferir_opcoes(precos, html, falhas):
                           % (rotulo, formata(precos[chave], moeda(chave))))
 
 
+def conferir_dados_estruturados(precos, html, falhas):
+    """Os precos no JSON-LD -- o quinto sitio onde vivem.
+
+    Foram acrescentados em Out/2026 para a Google mostrar preco no resultado da
+    pesquisa. Preco errado aqui e pior do que nao ter nenhum: aparece publicado
+    na pagina de resultados, fora do site, e demora a actualizar."""
+    m = re.search(r'<script type="application/ld\+json">(.*?)</script>', html, re.S)
+    if not m:
+        return                                  # sem JSON-LD, nada a conferir
+    try:
+        d = json.loads(m.group(1))
+    except ValueError as e:
+        falhas.append("o JSON-LD do index.html nao e JSON valido: %s" % e)
+        return
+
+    produtos = [n for n in d.get("@graph", []) if n.get("@type") == "Product"]
+    if not produtos:
+        falhas.append("o JSON-LD nao tem nenhum Product")
+        return
+
+    ofertas = [(o.get("priceCurrency"), valor(str(o.get("price"))))
+               for p in produtos for o in p.get("offers", [])]
+    for chave, esperado in sorted(precos.items()):
+        moe = "BRL" if moeda(chave) == "R$" else "EUR"
+        if (moe, esperado) not in ofertas:
+            falhas.append("o JSON-LD nao anuncia %s para '%s' (anuncia: %s)"
+                          % (formata(esperado, moeda(chave)), chave,
+                             ", ".join("%s %s" % (c, v) for c, v in ofertas if c == moe) or "nada"))
+
+    # uma classificacao inventada aqui e motivo de penalizacao pela Google
+    for p in produtos:
+        if "aggregateRating" in p or "review" in p:
+            falhas.append("o JSON-LD tem aggregateRating/review -- so com avaliacoes "
+                          "reais marcadas na pagina; o inquerito de satisfacao nao serve")
+
+
 def conferir_emails(html, js, falhas):
     """Os dois enderecos tem de existir dos dois lados."""
     for email in ("encomendas@ssp3forte.com", "orders@ssp3forte.com"):
@@ -199,6 +235,7 @@ def main():
     conferir_cartoes(precos, html, falhas)
     conferir_riscados(precos, html, falhas)
     conferir_opcoes(precos, html, falhas)
+    conferir_dados_estruturados(precos, html, falhas)
     conferir_emails(html, js, falhas)
     conferir_documentacao(precos, portes, md, falhas)
 

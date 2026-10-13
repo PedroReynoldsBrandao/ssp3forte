@@ -63,6 +63,13 @@ catch it. **They did: from 20 Jul to 12 Sep 2026 the site charged R$210 while
 every Brazilian confirmation email said R$165**, because the price rise touched
 `index.html` and `CLAUDE.md` and not the Worker.
 
+Since Oct 2026 the price lives in a **fifth** place: the `offers` array of the
+JSON-LD in `<head>`. That one is the worst to get wrong — a stale price there is
+published on Google's results page, outside the site, and is slow to correct. The
+script checks it, and also refuses an `aggregateRating` or `review`: those need real
+reviews marked up on the page, the satisfaction survey is not a star rating, and
+inventing one is grounds for a Google penalty.
+
 The script treats `PRICES` as the source of truth, reports every disagreement
 with a line number, and exits non-zero. Run it whenever you touch prices,
 shipping or the contact emails. A `worker.js` mismatch is only really fixed once
@@ -151,6 +158,23 @@ the site linked to them. Deleted Oct 2026.
 They are not lost: `git show c3aa77e:index-v1.html` and `git show c3aa77e:index-v2.html`
 bring either one back. **Do not restore them to the repo root** — anything placed
 there is published. A reference copy belongs in git history or outside the repo.
+
+## Structured data
+
+`index.html` carries one JSON-LD block in `<head>`: an `Organization` (Naturalfarma),
+a `WebSite`, and a `Product` with four `Offer` entries — the two EUR and the two BRL
+prices. It is what lets Google show price and availability in the result itself.
+
+**No `aggregateRating`, no `review`.** Those require genuine reviews marked up on the
+page. The 2017 satisfaction survey is not a star rating, and fabricating one is
+grounds for a penalty. `tools/check_prices.py` fails if either appears.
+
+The company block is deliberately thin: name, URL, email, logo. **Naturalfarma's
+registered address, phone and tax number are not documented anywhere in this repo**,
+and are not on the page either. For a health product Google weighs who stands behind
+the site heavily — it is a "your money or your life" category — so filling those in
+is the single cheapest credibility gain available. Add them to the `Organization`
+block and to the footer together.
 
 ## Multilingual system
 
