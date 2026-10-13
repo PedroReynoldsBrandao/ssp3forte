@@ -446,19 +446,12 @@ zinc and vitamin E and protection of cells from oxidative stress. They are the s
 statements this product can legally make, and they are framed as *the only* ones
 authorised — which is itself a credibility signal rather than a hedge.
 
-**The dose behind them is not confirmed against the label.** The figures came from a
-reseller page (aveirofarma.pt) read by an AI, not from the product label or a
-manufacturer spec sheet — two intermediaries, neither verified. They imply 10 mg zinc
-(100% NRV) and 7 mg vitamin E (58%), both far above the 15% an authorised claim
-requires, and the percentages are internally consistent with the EU reference values.
-**Confirm against the frasco.** If the real dose falls below 15% NRV the claims become
-unlawful and must come out.
-
-**Selenium was deliberately left out.** The same table lists selenium 34 µg and omits
-beta-sitosterol — the exact opposite of what this site declares, where beta-sitosterol
-has its own ingredient card and three references and selenium appears nowhere. One of
-the two is wrong. Until the label settles it, no selenium claim goes on the site and no
-ingredient list changes.
+**Confirmed against the label in Oct 2026**: zinc 10 mg (100% NRV), vitamin E 7 mg (58%),
+selenium 34 µg (62%) — all far above the 15% an authorised claim requires. Selenium's claims
+were added once the label settled the question: "o selénio contribui para a espermatogénese
+normal", and selenium joins zinc and vitamin E on protection of cells from oxidative stress.
+See *The label, confirmed Oct 2026* under **Ingredients**. If the formula ever changes so that
+a nutrient falls below 15% NRV, its claims become unlawful and must come out.
 
 The modal quotes **"perto de 9 em cada 10" / "close to 9 in 10"** of *users*, unqualified. That figure is the n=67 subgroup (regular use + no medication declared, 88.1%). The number for "users" without qualification is **81.3%** across all 290 respondents, and 81.1% for regular use alone. The unqualified wording was the client’s express decision in Sep 2026, taken after the discrepancy was put to him in writing three times; he stated the responsibility was his. Do not silently "fix" it — and do not extend it to new places without asking him. The full framing remains one click away in `#survey-modal`, which this modal links to. Older source text: `O que o SSP3-Forte pode fazer por Você.txt`.
 
@@ -589,14 +582,40 @@ That is a decision the client took and owns — see the info modal section above
 |---|---|---|---|---|
 | 01 | Saw Palmetto *(Serenoa repens)* | Saw Palmetto *(Serenoa repens)* | `01_sawpalmetto.jpg` | [1,2] |
 | 02 | Pygeum africanum | Pygeum africanum | `02_pygeum_africanum.jfif` | [3,4] |
-| 03 | Beta-Sitosterol | Beta-Sitosterol | `03_beta_sitosterol.png` | [5-7] |
-| 04 | Zinco | Zinc | `04_zinc.png` | [8,9] |
-| 05 | Urtica dioica *(Urtiga)* | Urtica dioica *(Nettle)* | `05_urtica_dioica.png` | [10-12] |
-| 06 | Semente de Abóbora *(Cucurbita pepo)* | Pumpkin Seed *(Cucurbita pepo)* | `06_semente_abobora.png` | [13,14] |
-| 07 | Licopeno | Lycopene | `07_licopeno.png` | [15] |
-| 08 | Vitamina E | Vitamin E | `08_vitamina_e.png` | [16] |
+| 03 | Selénio / Selênio | Selenium | `03_selenio.png` | [5] |
+| 04 | Zinco | Zinc | `04_zinc.png` | [6,7] |
+| 05 | Urtica dioica *(Urtiga)* | Urtica dioica *(Nettle)* | `05_urtica_dioica.png` | [8-10] |
+| 06 | Semente de Abóbora *(Cucurbita pepo)* | Pumpkin Seed *(Cucurbita pepo)* | `06_semente_abobora.png` | [11,12] |
+| 07 | Licopeno | Lycopene | `07_licopeno.png` | [13] |
+| 08 | Vitamina E | Vitamin E | `08_vitamina_e.png` | [14] |
 
-Bibliography has 16 references in PT, BR, and EN. Zinc refs: [8] Costello & Franklin DOI `10.3390/biomedicines10123206`; [9] Chen et al. 2025 DOI `10.1016/j.jtemb.2025.127605`.
+Bibliography has **14** references in PT, BR, and EN. Zinc refs: [6] Costello & Franklin DOI
+`10.3390/biomedicines10123206`; [7] Chen et al. 2025 DOI `10.1016/j.jtemb.2025.127605`.
+Selenium's [5] is Commission Regulation (EU) 432/2012 itself — for an *authorised* claim the
+regulation is the source, and inventing a DOI for a paper nobody checked was the alternative.
+
+### The label, confirmed Oct 2026
+
+Per 2 / 3 capsules: Saw Palmetto 300/450 mg · Pygeum africanum 200/300 mg · Urtiga 200/300 mg ·
+Semente de abóbora 20/30 mg · Licopeno 3,4/5,1 mg · Zinco 10/15 mg (100%/150% NRV) ·
+Vitamina E 7/10,5 mg (58%/88%) · Selénio 34/51 µg (62%/93%).
+
+**Beta-sitosterol was never a declared ingredient.** It had card 03, its own photo and three
+Berges trials, and the label does not list or quantify it — while selenium, which the label
+*does* declare at 62% NRV, appeared nowhere on the site. The three trials tested *isolated*
+beta-sitosterol at a defined dose; what is in this product is whatever comes along with the
+plant extracts, unquantified, so citing them here implied an equivalence that does not exist.
+Card 03 is now Selenium, and beta-sitosterol is named where it is true — as a natural
+phytosterol in the Saw Palmetto and Pygeum descriptions, with no number and no implied dose.
+
+**The ingredient descriptions still carry therapeutic claims** — six of the eight say the
+ingredient improves BPH urinary symptoms, nocturnal frequency or urinary flow. These are the
+same category of claim removed from the info modal in Sep 2026, and botanical claims are "on
+hold" in the EU, so none of them is usable. **This was put to Pedro in Oct 2026 and he chose
+to leave them as they are.** It is his decision and it is recorded here rather than quietly
+re-raised; do not rewrite them without asking him. The new Selenium card is the exception and
+uses the authorised wording, because selenium is the one ingredient whose effect may legally
+be stated.
 
 ## Key conventions
 

@@ -34,7 +34,7 @@ T = {
           'No mercado europeu <b>desde 1995</b>.'],
     h_what='O que leva',
     what=('Oito ingredientes de origem vegetal e nutrientes, numa fórmula estável há anos: Saw Palmetto '
-          '<i>(Serenoa repens)</i>, Pygeum africanum, Beta-sitosterol, Zinco, Urtiga <i>(Urtica dioica)</i>, '
+          '<i>(Serenoa repens)</i>, Pygeum africanum, Selénio, Zinco, Urtiga <i>(Urtica dioica)</i>, '
           'Semente de abóbora <i>(Cucurbita pepo)</i>, Licopeno e Vitamina E. Cada um está descrito em detalhe, com '
           'as respectivas referências científicas, na secção de ingredientes desta página.'),
     h_claims='O que se pode afirmar',
@@ -42,8 +42,9 @@ T = {
                   'nutrientes desta fórmula. Constam da lista oficial da União Europeia:'),
     claims=['O <b>zinco</b> contribui para a manutenção de níveis normais de testosterona no sangue.',
             'O <b>zinco</b> contribui para a fertilidade e reprodução normais.',
-            'O <b>zinco</b> e a <b>vitamina E</b> contribuem para a protecção das células contra as '
-            'oxidações indesejadas.'],
+            'O <b>selénio</b> contribui para a espermatogénese normal.',
+            'O <b>zinco</b>, a <b>vitamina E</b> e o <b>selénio</b> contribuem para a protecção das '
+            'células contra as oxidações indesejadas.'],
     h_users='O que dizem os utilizadores',
     users=('Num inquérito de satisfação feito em 2017, <b>perto de 9 em cada 10</b> utilizadores '
            'declararam-se <b>satisfeitos ou muito satisfeitos</b> com a experiência que tiveram com o produto. A base do estudo e os seus limites estão no estudo publicado nesta página.'),
@@ -78,7 +79,7 @@ T = {
           'No mercado europeu <b>desde 1995</b>.'],
     h_what='O que leva',
     what=('Oito ingredientes de origem vegetal e nutrientes, numa fórmula estável há anos: Saw Palmetto '
-          '<i>(Serenoa repens)</i>, Pygeum africanum, Beta-sitosterol, Zinco, Urtiga <i>(Urtica dioica)</i>, '
+          '<i>(Serenoa repens)</i>, Pygeum africanum, Selênio, Zinco, Urtiga <i>(Urtica dioica)</i>, '
           'Semente de abóbora <i>(Cucurbita pepo)</i>, Licopeno e Vitamina E. Cada um está descrito em detalhe, com '
           'as respectivas referências científicas, na seção de ingredientes desta página.'),
     h_claims='O que se pode afirmar',
@@ -86,8 +87,9 @@ T = {
                   'nutrientes desta fórmula. Constam da lista oficial da União Europeia:'),
     claims=['O <b>zinco</b> contribui para a manutenção de níveis normais de testosterona no sangue.',
             'O <b>zinco</b> contribui para a fertilidade e reprodução normais.',
-            'O <b>zinco</b> e a <b>vitamina E</b> contribuem para a proteção das células contra as '
-            'oxidações indesejadas.'],
+            'O <b>selênio</b> contribui para a espermatogênese normal.',
+            'O <b>zinco</b>, a <b>vitamina E</b> e o <b>selênio</b> contribuem para a proteção das '
+            'células contra as oxidações indesejadas.'],
     h_users='O que dizem os usuários',
     users=('Numa pesquisa de satisfação feita em 2017, <b>perto de 9 em cada 10</b> usuários se '
            'declararam <b>satisfeitos ou muito satisfeitos</b> com a experiência que tiveram com o produto. A base do estudo e seus limites estão no estudo publicado nesta página.'),
@@ -122,7 +124,7 @@ T = {
           'On the European market <b>since 1995</b>.'],
     h_what='What is in it',
     what=('Eight plant-derived ingredients and nutrients, in a formula unchanged for years: Saw Palmetto '
-          '<i>(Serenoa repens)</i>, Pygeum africanum, Beta-sitosterol, Zinc, Nettle <i>(Urtica dioica)</i>, '
+          '<i>(Serenoa repens)</i>, Pygeum africanum, Selenium, Zinc, Nettle <i>(Urtica dioica)</i>, '
           'Pumpkin seed <i>(Cucurbita pepo)</i>, Lycopene and Vitamin E. Each one is described in detail, with its '
           'scientific references, in the ingredients section of this page.'),
     h_claims='What may be stated',
@@ -130,7 +132,9 @@ T = {
                   'formula. They come from the official European Union list:'),
     claims=['<b>Zinc</b> contributes to the maintenance of normal testosterone levels in the blood.',
             '<b>Zinc</b> contributes to normal fertility and reproduction.',
-            '<b>Zinc</b> and <b>vitamin E</b> contribute to the protection of cells from oxidative stress.'],
+            '<b>Selenium</b> contributes to normal spermatogenesis.',
+            '<b>Zinc</b>, <b>vitamin E</b> and <b>selenium</b> contribute to the protection of cells '
+            'from oxidative stress.'],
     h_users='What users say',
     users=('In a 2017 satisfaction survey, <b>close to 9 in 10</b> users said they were '
            '<b>satisfied or very satisfied</b> with their experience of the product. The study base and its limits '
