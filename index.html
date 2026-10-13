@@ -3,7 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SSP3-Forte — Saúde Natural da Próstata | Natural Prostate Health</title>
+<title>SSP3-Forte — Saúde Natural da Próstata</title>
+<!-- As quatro linguas vivem neste endereco, trocadas por CSS. Por isso ha um
+     so canonico e NAO ha hreflang: hreflang precisa de um URL por lingua. -->
+<link rel="canonical" href="https://ssp3forte.com/">
 <link rel="icon" type="image/jpeg" href="frasco.jpg">
 <meta name="description" content="SSP3-Forte: suplemento natural para próstata aumentada. Sem cirurgia, sem efeitos secundários. Distribuído por Naturalfarma para Portugal, Brasil, Europa.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -2193,6 +2196,15 @@ const SHIPPING = { PT: 5.99, default: 9.00 };
 const CURRENCY = { '1x': '€', '3x': '€', '1x-br': 'R$', '3x-br': 'R$' };
 
 let currentRegion = 'pt';
+/* O <title> no HTML esta em portugues, que e a lingua por omissao e a que o
+   Google indexa. Trocar aqui serve o visitante que muda de bandeira. Antes as
+   duas linguas estavam na mesma linha, o que diluia as duas. */
+const TITLES = {
+  pt: 'SSP3-Forte — Saúde Natural da Próstata',
+  br: 'SSP3-Forte — Saúde Natural da Próstata',
+  en: 'SSP3-Forte — Natural Prostate Health',
+};
+
 function setLang(region) {
   currentRegion = region;
   const lang = (region === 'eu' || region === 'world') ? 'en' : region === 'br' ? 'br' : 'pt';
@@ -2203,6 +2215,7 @@ function setLang(region) {
   });
 
   document.documentElement.lang = lang === 'en' ? 'en' : 'pt';
+  document.title = TITLES[lang] || TITLES.pt;
   const anchorId = lang === 'en' ? 'order' : 'encomenda';
   const section = document.getElementById('encomenda') || document.getElementById('order');
   if (section) section.id = anchorId;

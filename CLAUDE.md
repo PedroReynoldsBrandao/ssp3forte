@@ -101,13 +101,44 @@ Within the n=67 group: very satisfied 22 (32.8%), satisfied 37 (55.2%), slightly
 | `worker/worker.js` | Cloudflare Worker — handles order form submissions, sends emails via Resend |
 | `worker/wrangler.toml` | Wrangler config for deploying the Worker |
 | `worker/schema.sql` | Table for the order funnel (D1); the file's header carries the setup commands |
-| `O que o SSP3-Forte pode fazer por Você.txt` | Superseded source text for the info modal — written by the product author |
 | `tools/gen_survey.py`, `tools/gen_info_modal.py` | Generators for the two modals’ three-language markup |
 | `tools/apply_modal.py` | Runs a generator and splices the result into `index.html` |
 | `tools/check_prices.py` | Checks the price in index.html, worker.js and this file still agree |
 | `tools/gen_blog_index.py` | Writes the crawlable all-articles list into `index.html` from the pools |
-| `registo_SSP3forte_ideias.txt` | Notes on trademark registration for the SSP3-Forte name (not website content) |
+| `_config.yml` | Jekyll exclude list — keeps non-site files from being published |
+| `robots.txt`, `sitemap.xml` | Tell Google what exists; one URL, since the site is one page |
 | `.gitignore` | Keeps customer data and Cloudflare credentials out of a public repo |
+
+## What the site publishes, and what it must not
+
+GitHub Pages serves **every file in the repository**, not just the site. In Oct 2026
+that meant `ssp3forte.com/CLAUDE.md` served this document — the client's decision on
+the unqualified 88%, the outstanding-claims list, the survey's internal framing —
+alongside `worker/wrangler.toml` with the Cloudflare account id, the Worker source
+and the generator scripts, all at guessable URLs on the company's own domain.
+
+`_config.yml` now excludes `CLAUDE.md`, `tools/` and `worker/` from the build. They
+stay in the repo and keep working; they are simply no longer served. **Add anything
+that is not the site to that list.** `CNAME`, `robots.txt` and `sitemap.xml` must
+stay published.
+
+This removes them from the domain; **it does not make them private.** The repository
+is public, so the content is still readable on GitHub and in git history. Only making
+the repository private would change that.
+
+Two `.txt` files (the superseded product text and the trademark notes) were deleted
+rather than excluded — one filename carried an accent and spaces, which is exactly
+where an exclude list fails silently. `git show 0be0a6c:<name>` brings either back.
+
+**SEO, fixed in the same pass.** `robots.txt` points at `sitemap.xml`; the sitemap
+lists the single URL; `index.html` carries `<link rel="canonical">`. There is
+deliberately **no `hreflang`** — it requires one URL per language and all four share
+this one, so any hreflang here would point at itself and say nothing. The `<title>`
+used to carry Portuguese and English in one line, diluting both; it is now Portuguese
+in the HTML, with `setLang()` swapping it from `TITLES` for the visitor.
+
+The meta description still reads "Sem cirurgia, sem efeitos secundários" — both on
+the *Global review* list of claims awaiting the client's decision. Left as is.
 
 ## Removed: the two old page versions
 

@@ -1,0 +1,27 @@
+# O GitHub Pages publica, por omissao, TODOS os ficheiros do repositorio. Nao so
+# o site: tambem a documentacao, os scripts e a configuracao do Worker. Em Outubro
+# de 2026 estavam acessiveis em enderecos adivinhaveis:
+#
+#   ssp3forte.com/CLAUDE.md             a documentacao interna inteira
+#   ssp3forte.com/worker/wrangler.toml  o account_id da Cloudflare
+#   ssp3forte.com/worker/worker.js      o codigo do servidor de encomendas
+#   ssp3forte.com/tools/*.py            os geradores
+#
+# Os dois .txt que la estavam foram apagados em vez de excluidos: o nome de um
+# tinha acentos e espacos, e e ai que uma lista de exclusao falha em silencio.
+#
+# Esta lista impede que sejam publicados. Continuam no repositorio e a funcionar
+# como sempre -- so deixam de ser servidos pelo site.
+#
+# ATENCAO: o repositorio e publico, logo o conteudo continua visivel no GitHub e
+# no historico do git. Isto tira-os do dominio da empresa, nao os torna privados.
+# Para privacidade a serio seria preciso tornar o repositorio privado.
+#
+# Ao acrescentar ficheiros que nao sejam o site, juntar aqui.
+exclude:
+  - CLAUDE.md
+  - README.md
+  - .gitignore
+  - _config.yml
+  - tools
+  - worker
