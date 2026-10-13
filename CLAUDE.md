@@ -457,13 +457,29 @@ A pass over all four language variants turned up defects that had been live for 
 - The English blog lead did not mention the weekly rotation, which it now does — the EN pool rotates too.
 - The results callout quoted **Naturalfarma quoting itself**. It now cites the 2017 survey: "Mais de 8 em cada 10 utilizadores inquiridos declararam-se satisfeitos ou muito satisfeitos" — the unconditional 81.3% figure, attributed to a source rather than asserted by the seller.
 
-**Still outstanding, put to the client and awaiting his decision** (all are claims, not defects):
+**The five outstanding claims were resolved in Oct 2026**, on Pedro's instruction
+after more than a month with no decision from the client. All five were therapeutic
+or absolute claims with no basis under Regulation (EC) 1924/2006. What replaced them:
 
-- H1 "Trate a Próstata, **Evite a Cirurgia**" / "avoid surgery" — the surgery-avoidance claim removed from the info modal still sits in the headline.
-- Proof bar "Sem efeitos adversos" / "No adverse effects" — absolute; the FAQ’s "geralmente bem tolerado" is the defensible version.
-- Symptom card: erectile dysfunction "— tratável com abordagem natural" / "treatable with a natural approach".
-- Callout stat: "70% dos homens com HPB têm disfunção eréctil associada. **SSP3-Forte ajudará.**"
-- Section heading "Ingredientes com eficácia comprovada" / "Ingredients with proven efficacy".
+| Was | Is |
+|---|---|
+| H1 "Trate a Próstata, Evite a Cirurgia" / "Treat your prostate, avoid surgery" | "Cuide da Próstata, Naturalmente" / "Care for your prostate, naturally" |
+| Proof bar "Sem efeitos adversos" / "No adverse effects" | "Bem tolerado na generalidade dos casos" / "Well tolerated in most cases" |
+| Symptom card "— tratável com abordagem natural" | clause removed; the card describes the symptom |
+| Callout "70% … SSP3-Forte ajudará." | the 70% stays, the promise goes |
+| "Ingredientes com eficácia comprovada" / "proven efficacy" | "Ingredientes com estudos publicados" / "Ingredients with published research" |
+
+The meta description went with them — it carried "Sem cirurgia, sem efeitos
+secundários" — and now names what is verifiable: eight ingredients, EU manufacture
+under GMP and ISO 22000.
+
+"Estudos publicados" is the honest version of the old heading: there is a 16-entry
+bibliography about the *ingredients*, which is not the same as proven efficacy of
+the *product*. **Do not walk any of these back** without a written decision from the
+client, and note the distinction that heading now draws.
+
+**Untouched, and not part of this:** the "perto de 9 em cada 10" in `#info-modal`.
+That is a decision the client took and owns — see the info modal section above.
 
 ## Ingredients
 
