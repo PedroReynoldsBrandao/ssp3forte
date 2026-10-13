@@ -94,6 +94,7 @@ Within the n=67 group: very satisfied 22 (32.8%), satisfied 37 (55.2%), slightly
 | `CNAME` | GitHub Pages custom domain (`ssp3forte.com`) |
 | `worker/worker.js` | Cloudflare Worker — handles order form submissions, sends emails via Resend |
 | `worker/wrangler.toml` | Wrangler config for deploying the Worker |
+| `worker/schema.sql` | Table for the order funnel (D1); the file's header carries the setup commands |
 | `O que o SSP3-Forte pode fazer por Você.txt` | Superseded source text for the info modal — written by the product author |
 | `tools/gen_survey.py`, `tools/gen_info_modal.py` | Generators for the two modals’ three-language markup |
 | `tools/apply_modal.py` | Runs a generator and splices the result into `index.html` |
@@ -184,6 +185,53 @@ submit again and create a duplicate. **Do not put the two sends back in one
 cd worker
 npx wrangler deploy
 ```
+
+## Order funnel
+
+Cloudflare Web Analytics counts page views and the site is one page, so it cannot
+tell a visitor who reached the order form from one who bounced off the hero. The
+Worker records the funnel itself instead, into a D1 database.
+
+| Step | Recorded by |
+|---|---|
+| `view` | page load |
+| `order_view` | `IntersectionObserver` on `#orderForm` at 20% |
+| `form_start` | first `focusin` or `change` in the form |
+| `submit` | submit handler, before the fetch |
+| `order_ok` / `order_fail` | **the Worker**, not the page — so an outcome is never missed because the browser closed |
+
+`GET /stats?t=<STATS_TOKEN>` returns an HTML funnel: counts per step, share of
+total, drop-off from the previous step, a per-day table and the failure reasons
+grouped. `?dias=N` changes the window from the default 30. Every count is
+**distinct sessions**, not events, so a double submit counts once.
+
+**Setup** — one-off, from `worker/`, and the site runs exactly as before until it
+is done:
+
+```
+npx wrangler d1 create ssp3forte-funnel      # paste database_id into wrangler.toml
+npx wrangler d1 execute ssp3forte-funnel --remote --file=schema.sql
+npx wrangler secret put STATS_TOKEN          # any long random string
+npx wrangler deploy
+```
+
+**Privacy.** Nothing is stored on the visitor's device — no cookies, no
+localStorage — and no IP, user-agent or email is written. `FUNNEL_SESSION` is a
+random value in a JS variable, gone when the page closes, and exists only to link
+the steps of one visit. That is why this needs no cookie banner. **Keep it that
+way:** persisting that id, or storing an IP, turns this into something that needs
+consent under the ePrivacy Directive.
+
+**Measuring must never break an order.** `registar()` returns early without a D1
+binding and swallows every error; `/event` always answers 204; the client's
+`funnelEvent()` catches its own failures. Verified by running the Worker in Node
+with D1 throwing and with D1 absent: the order still returns 200 with
+`success: true`. Do not make any analytics write fatal.
+
+`/stats` is a public URL, hence the token; without `STATS_TOKEN` set it returns
+503 rather than serving openly. There is no rate limiting on `/event`, so the
+counts are honest-but-forgeable — fine for reading your own funnel, not a metric
+to defend.
 
 **Country code logic** in order numbers:
 - `Brasil` / `Brazil` → `BR`

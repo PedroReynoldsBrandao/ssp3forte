@@ -265,21 +265,195 @@ const CORS = {
 const json = (body, status = 200) =>
   new Response(JSON.stringify(body), { status, headers: { 'Content-Type': 'application/json', ...CORS } });
 
+// ── Funil: registo de eventos ────────────────────────────────────────────────
+// Guarda uma linha por passo do funil, para se poder ver ONDE as pessoas param
+// em vez de so saber quantas encomendaram. A Cloudflare Web Analytics conta
+// paginas e o site e uma pagina so, logo nao serve para isto.
+//
+// Nunca pode estragar uma encomenda: todas as escritas passam por aqui e
+// engolem o erro. Sem base de dados ligada, o site funciona exactamente como
+// antes e isto nao faz nada.
+const EVENTOS_DO_CLIENTE = ['view', 'order_view', 'form_start', 'submit'];
+
+async function registar(env, { name, lang, session, detail }) {
+  if (!env.FUNNEL) return false;              // D1 ainda nao ligada
+  const agora = new Date().toISOString();
+  try {
+    await env.FUNNEL.prepare(
+      'INSERT INTO events (ts, day, name, lang, session, detail) VALUES (?, ?, ?, ?, ?, ?)'
+    ).bind(agora, agora.slice(0, 10), name,
+           (lang || '').slice(0, 8) || null,
+           (session || '').slice(0, 40) || null,
+           detail ? String(detail).slice(0, 300) : null).run();
+    return true;
+  } catch (err) {
+    console.error('registo de evento falhou:', err);
+    return false;
+  }
+}
+
+// ── Funil: pagina de estatisticas ────────────────────────────────────────────
+// Protegida por um token, porque sao numeros de negocio num endereco publico:
+//     npx wrangler secret put STATS_TOKEN
+const PASSOS = [
+  ['view',        'Abriu o site'],
+  ['order_view',  'Chegou ao formulário'],
+  ['form_start',  'Começou a preencher'],
+  ['submit',      'Carregou em enviar'],
+  ['order_ok',    'Encomenda registada'],
+  ['order_fail',  'Falhou no envio'],
+];
+
+function statsHTML(linhas, porDia, falhas, dias) {
+  const base = linhas.view || 0;
+  const pct = n => base ? (100 * n / base).toFixed(1) + '%' : '—';
+
+  const funil = PASSOS.map(([k, rotulo], i) => {
+    const n = linhas[k] || 0;
+    const anterior = i > 0 ? (linhas[PASSOS[i - 1][0]] || 0) : null;
+    const queda = (i > 0 && anterior) ? (100 * (anterior - n) / anterior).toFixed(0) + '%' : '';
+    const largura = base ? Math.max(1, Math.round(240 * n / base)) : 1;
+    const cor = k === 'order_fail' ? '#b00020' : '#1a6645';
+    return `<tr>
+      <td>${rotulo}</td>
+      <td style="text-align:right;font-variant-numeric:tabular-nums;"><b>${n}</b></td>
+      <td style="text-align:right;color:#777;">${pct(n)}</td>
+      <td style="text-align:right;color:#b00020;">${k === 'order_fail' ? '' : queda}</td>
+      <td><div style="width:${largura}px;height:11px;background:${cor};"></div></td>
+    </tr>`;
+  }).join('');
+
+  const tabelaDias = porDia.length ? porDia.map(d => `<tr>
+      <td>${d.day}</td>
+      ${PASSOS.map(([k]) => `<td style="text-align:right;font-variant-numeric:tabular-nums;">${d[k] || 0}</td>`).join('')}
+    </tr>`).join('') : `<tr><td colspan="7" style="color:#777;">ainda sem dados</td></tr>`;
+
+  const listaFalhas = falhas.length ? falhas.map(f =>
+    `<tr><td>${f.n}×</td><td style="color:#555;">${f.detail || '—'}</td></tr>`).join('')
+    : `<tr><td colspan="2" style="color:#777;">nenhuma falha registada</td></tr>`;
+
+  return `<!DOCTYPE html><html lang="pt"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Funil — SSP3-Forte</title>
+<style>
+  body { font-family: system-ui, sans-serif; font-size: 14px; color: #222;
+         max-width: 820px; margin: 2rem auto; padding: 0 1rem; }
+  h1 { font-size: 1.3rem; color: #0d3d2b; margin-bottom: .2rem; }
+  h2 { font-size: 1rem; color: #0d3d2b; margin-top: 2rem; }
+  p.sub { color: #777; margin-top: 0; }
+  table { border-collapse: collapse; width: 100%; margin-top: .6rem; }
+  th, td { padding: 5px 9px; border-bottom: 1px solid #eee; text-align: left; }
+  th { font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: #777; }
+  .nota { color: #777; font-size: 12px; line-height: 1.6; margin-top: 2rem;
+          border-top: 1px solid #eee; padding-top: 1rem; }
+</style></head><body>
+<h1>Funil de encomendas</h1>
+<p class="sub">Últimos ${dias} dias. A coluna "queda" é a percentagem que se perde do passo anterior.</p>
+
+<table>
+  <tr><th>Passo</th><th style="text-align:right">Visitas</th><th style="text-align:right">Do total</th>
+      <th style="text-align:right">Queda</th><th></th></tr>
+  ${funil}
+</table>
+
+<h2>Por dia</h2>
+<table>
+  <tr><th>Dia</th>${PASSOS.map(([, r]) => `<th style="text-align:right">${r.split(' ')[0]}</th>`).join('')}</tr>
+  ${tabelaDias}
+</table>
+
+<h2>Falhas de envio</h2>
+<table><tr><th>Quantas</th><th>Motivo</th></tr>${listaFalhas}</table>
+
+<p class="nota">
+  Cada número é o total de <b>visitas distintas</b> que chegaram ao passo, não de cliques.<br>
+  Não se guarda IP, user-agent, email nem nada no dispositivo de quem visita: o
+  identificador de visita é aleatório, vive na memória do browser e desaparece ao
+  fechar a página. Por isso isto não precisa de aviso de cookies.<br>
+  Uma pessoa que abra o site duas vezes conta como duas visitas.
+</p>
+</body></html>`;
+}
+
+async function servirStats(env, url) {
+  if (!env.STATS_TOKEN)
+    return new Response('STATS_TOKEN nao definido. Correr: npx wrangler secret put STATS_TOKEN',
+                        { status: 503, headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
+  if (url.searchParams.get('t') !== env.STATS_TOKEN)
+    return new Response('Not found', { status: 404 });
+  if (!env.FUNNEL)
+    return new Response('Base de dados FUNNEL nao ligada. Ver worker/schema.sql.',
+                        { status: 503, headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
+
+  const dias = Math.min(Math.max(parseInt(url.searchParams.get('dias') || '30', 10) || 30, 1), 365);
+  const desde = new Date(Date.now() - dias * 86400000).toISOString().slice(0, 10);
+
+  // Visitas distintas por passo, nao numero de eventos: quem carrega duas vezes
+  // em enviar nao deve contar duas vezes.
+  const totais = await env.FUNNEL.prepare(
+    `SELECT name, COUNT(DISTINCT COALESCE(session, CAST(id AS TEXT))) AS n
+       FROM events WHERE day >= ? GROUP BY name`).bind(desde).all();
+  const linhas = {};
+  for (const r of totais.results || []) linhas[r.name] = r.n;
+
+  const diario = await env.FUNNEL.prepare(
+    `SELECT day, name, COUNT(DISTINCT COALESCE(session, CAST(id AS TEXT))) AS n
+       FROM events WHERE day >= ? GROUP BY day, name ORDER BY day DESC`).bind(desde).all();
+  const mapa = new Map();
+  for (const r of diario.results || []) {
+    if (!mapa.has(r.day)) mapa.set(r.day, { day: r.day });
+    mapa.get(r.day)[r.name] = r.n;
+  }
+
+  const falhas = await env.FUNNEL.prepare(
+    `SELECT detail, COUNT(*) AS n FROM events
+      WHERE day >= ? AND name = 'order_fail' GROUP BY detail ORDER BY n DESC LIMIT 20`)
+    .bind(desde).all();
+
+  return new Response(statsHTML(linhas, [...mapa.values()], falhas.results || [], dias),
+                      { headers: { 'Content-Type': 'text/html; charset=utf-8',
+                                   'Cache-Control': 'no-store' } });
+}
+
 // ── Main handler ─────────────────────────────────────────────────────────────
 export default {
   async fetch(request, env) {
+    const url = new URL(request.url);
+
     if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: CORS });
+
+    if (request.method === 'GET' && url.pathname === '/stats') return servirStats(env, url);
+
     if (request.method !== 'POST')   return new Response('Method not allowed', { status: 405 });
+
+    // Evento do funil. Responde sempre 204, mesmo que o registo falhe: isto nunca
+    // deve dar erro visivel no site nem atrasar quem esta a comprar.
+    if (url.pathname === '/event') {
+      let e = {};
+      try { e = await request.json(); } catch { /* corpo invalido: ignorar */ }
+      if (EVENTOS_DO_CLIENTE.includes(e.name)) {
+        await registar(env, { name: e.name, lang: e.lang, session: e.session });
+      }
+      return new Response(null, { status: 204, headers: CORS });
+    }
 
     let d;
     try { d = await request.json(); }
     catch { return json({ error: 'Invalid JSON' }, 400); }
 
-    if (!d.name || !d.email || !d.product)
+    if (!d.name || !d.email || !d.product) {
+      await registar(env, { name: 'order_fail', lang: d.lang, session: d.session,
+                            detail: 'campos obrigatorios em falta' });
       return json({ error: 'Missing required fields' }, 400);
+    }
 
     const product = PRODUCTS[d.product];
-    if (!product) return json({ error: 'Unknown product' }, 400);
+    if (!product) {
+      await registar(env, { name: 'order_fail', lang: d.lang, session: d.session,
+                            detail: 'produto desconhecido' });
+      return json({ error: 'Unknown product' }, 400);
+    }
 
     const isEN    = d.lang === 'en';
     const cc      = countryCode(d.country, d.lang);
@@ -322,12 +496,16 @@ export default {
       // Falhou o registo da encomenda. Aqui sim vale a pena pedir ao cliente que
       // tente de novo, porque nao ha nada guardado em lado nenhum.
       console.error('aviso interno falhou:', err);
+      await registar(env, { name: 'order_fail', lang: d.lang, session: d.session,
+                            detail: err.message });
       return json({ error: 'Email sending failed', detail: err.message }, 500);
     }
 
     // A encomenda esta registada. Dizer sucesso ao cliente mesmo que a
     // confirmacao nao lhe tenha chegado: a pagina avisa-o disso a parte, e repetir
     // a submissao so geraria encomendas duplicadas.
+    await registar(env, { name: 'order_ok', lang: d.lang, session: d.session,
+                          detail: clientEmailError ? 'confirmacao ao cliente falhou' : null });
     return json({ success: true, orderNum, confirmationSent: !clientEmailError });
   },
 };

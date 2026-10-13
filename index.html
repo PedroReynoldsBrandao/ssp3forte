@@ -2316,8 +2316,11 @@ async function submitOrder(e) {
 
   const lang = (document.body.classList.contains('lang-en') || document.body.classList.contains('lang-world')) ? 'en' : 'pt';
 
+  funnelEvent('submit');
+
   const payload = {
     lang,
+    session: FUNNEL_SESSION,
     name:    fd.get('name')    || '',
     email:   fd.get('email')   || '',
     phone:   fd.get('phone')   || '',
@@ -2702,6 +2705,65 @@ function renderBlogCards() {
   });
 }
 renderBlogCards();
+
+/* ── Funil de encomendas ──────────────────────────────────────────────────────
+   Marca os passos entre abrir o site e a encomenda ficar registada, para se ver
+   ONDE as pessoas param. A Cloudflare Web Analytics nao serve: conta paginas, e
+   o site e uma pagina so, logo o formulario nao e distinguivel do resto.
+
+   Privacidade: nada e guardado no dispositivo de quem visita -- sem cookies e sem
+   localStorage. FUNNEL_SESSION e aleatorio, vive nesta variavel e desaparece ao
+   fechar a pagina; serve so para ligar os passos de uma mesma visita. Por isso
+   isto nao precisa de aviso de cookies.
+
+   Falha em silencio de proposito: medir nunca pode estorvar quem esta a comprar. */
+const FUNNEL = 'https://ssp3forte-orders.leptix.workers.dev/event';
+const FUNNEL_SESSION = Math.random().toString(36).slice(2) + Date.now().toString(36);
+const funnelJaEnviado = {};
+
+function funnelLang() {
+  const c = document.body.className;
+  return c.includes('lang-br') ? 'br' : (c.includes('lang-pt') ? 'pt' : 'en');
+}
+
+/* Cada passo conta uma vez por visita: quem carrega duas vezes em enviar nao deve
+   aparecer como duas pessoas. */
+function funnelEvent(name) {
+  if (funnelJaEnviado[name]) return;
+  funnelJaEnviado[name] = true;
+  try {
+    fetch(FUNNEL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, lang: funnelLang(), session: FUNNEL_SESSION }),
+      keepalive: true,                     // sobrevive a sair da pagina
+    }).catch(function () {});
+  } catch (e) { /* ignorar */ }
+}
+
+funnelEvent('view');
+
+/* O formulario entrou no ecra -- a pessoa chegou la, viu-o ou nao. */
+(function () {
+  const form = document.getElementById('orderForm');
+  if (!form || !('IntersectionObserver' in window)) return;
+  const obs = new IntersectionObserver(function (entradas) {
+    if (entradas.some(function (e) { return e.isIntersecting; })) {
+      funnelEvent('order_view');
+      obs.disconnect();
+    }
+  }, { threshold: 0.2 });
+  obs.observe(form);
+})();
+
+/* Primeiro toque num campo: aqui e que ha intencao de comprar. */
+(function () {
+  const form = document.getElementById('orderForm');
+  if (!form) return;
+  ['focusin', 'change'].forEach(function (ev) {
+    form.addEventListener(ev, function () { funnelEvent('form_start'); }, { once: true });
+  });
+})();
 
 </script>
 

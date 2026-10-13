@@ -5,3 +5,16 @@ account_id = "a9669b5e19259718c3cad806c06c16a4"
 
 # RESEND_API_KEY is a secret — do NOT put it here.
 # Add it with: wrangler secret put RESEND_API_KEY
+
+# Base de dados do funil de encomendas. Criar uma vez, nesta pasta:
+#     npx wrangler d1 create ssp3forte-funnel
+# colar aqui o database_id devolvido, e depois criar a tabela:
+#     npx wrangler d1 execute ssp3forte-funnel --remote --file=schema.sql
+#
+# Sem isto o site funciona igual; o funil e que nao fica a registar nada.
+# [[d1_databases]]
+# binding = "FUNNEL"
+# database_name = "ssp3forte-funnel"
+# database_id = "COLAR-AQUI-O-ID"
+
+# Token da pagina /stats:  npx wrangler secret put STATS_TOKEN
