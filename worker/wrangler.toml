@@ -12,9 +12,18 @@ account_id = "a9669b5e19259718c3cad806c06c16a4"
 #     npx wrangler d1 execute ssp3forte-funnel --remote --file=schema.sql
 #
 # Sem isto o site funciona igual; o funil e que nao fica a registar nada.
-# [[d1_databases]]
-# binding = "FUNNEL"
-# database_name = "ssp3forte-funnel"
-# database_id = "COLAR-AQUI-O-ID"
+#
+# NOTA: o "binding" e o nome pelo qual o codigo ve a base de dados --
+# env.FUNNEL em worker.js. A Cloudflare sugere "ssp3forte_funnel" no snippet
+# que mostra depois do d1 create; com esse nome o codigo nao a encontrava.
+[[d1_databases]]
+binding = "FUNNEL"
+database_name = "ssp3forte-funnel"
+database_id = "65e8ede9-fde0-4698-95ec-ffd14cee43f1"
 
 # Token da pagina /stats:  npx wrangler secret put STATS_TOKEN
+
+# Relatorio semanal por email: segundas as 8h UTC (9h em Portugal no inverno,
+# 10h no verao). Cron Triggers funcionam no plano gratuito.
+[triggers]
+crons = ["0 8 * * 1"]

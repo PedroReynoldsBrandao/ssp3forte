@@ -376,6 +376,19 @@ function statsHTML(linhas, porDia, falhas, dias) {
 </body></html>`;
 }
 
+/* Conta VISITAS DISTINTAS por passo numa janela de dias, nao numero de eventos:
+   quem carrega duas vezes em enviar nao pode aparecer como duas pessoas. */
+async function contarPassos(env, desde, ate) {
+  const r = await env.FUNNEL.prepare(
+    `SELECT name, COUNT(DISTINCT COALESCE(session, CAST(id AS TEXT))) AS n
+       FROM events WHERE day >= ? AND day <= ? GROUP BY name`).bind(desde, ate).all();
+  const out = {};
+  for (const linha of r.results || []) out[linha.name] = linha.n;
+  return out;
+}
+
+const diaISO = ms => new Date(ms).toISOString().slice(0, 10);
+
 async function servirStats(env, url) {
   if (!env.STATS_TOKEN)
     return new Response('STATS_TOKEN nao definido. Correr: npx wrangler secret put STATS_TOKEN',
@@ -387,15 +400,10 @@ async function servirStats(env, url) {
                         { status: 503, headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
 
   const dias = Math.min(Math.max(parseInt(url.searchParams.get('dias') || '30', 10) || 30, 1), 365);
-  const desde = new Date(Date.now() - dias * 86400000).toISOString().slice(0, 10);
+  const desde = diaISO(Date.now() - dias * 86400000);
+  const hoje = diaISO(Date.now());
 
-  // Visitas distintas por passo, nao numero de eventos: quem carrega duas vezes
-  // em enviar nao deve contar duas vezes.
-  const totais = await env.FUNNEL.prepare(
-    `SELECT name, COUNT(DISTINCT COALESCE(session, CAST(id AS TEXT))) AS n
-       FROM events WHERE day >= ? GROUP BY name`).bind(desde).all();
-  const linhas = {};
-  for (const r of totais.results || []) linhas[r.name] = r.n;
+  const linhas = await contarPassos(env, desde, hoje);
 
   const diario = await env.FUNNEL.prepare(
     `SELECT day, name, COUNT(DISTINCT COALESCE(session, CAST(id AS TEXT))) AS n
@@ -416,8 +424,103 @@ async function servirStats(env, url) {
                                    'Cache-Control': 'no-store' } });
 }
 
+// ── Relatorio semanal por email ──────────────────────────────────────────────
+// Disparado pelo Cron Trigger de wrangler.toml (segundas, 8h UTC). Compara os
+// ultimos 7 dias com os 7 anteriores, porque um numero isolado nao diz nada:
+// o que interessa e se esta a subir ou a descer.
+function setaVariacao(agora, antes) {
+  if (!antes) return agora ? '<span style="color:#1a6645;">novo</span>' : '—';
+  const d = Math.round(100 * (agora - antes) / antes);
+  if (d === 0) return '<span style="color:#777;">igual</span>';
+  const cor = d > 0 ? '#1a6645' : '#b00020';
+  return `<span style="color:${cor};">${d > 0 ? '+' : ''}${d}%</span>`;
+}
+
+function emailSemanalHTML(semana, anterior, de, a) {
+  const base = semana.view || 0;
+  const linhas = PASSOS.map(([k, rotulo]) => {
+    const n = semana[k] || 0;
+    const pct = base ? (100 * n / base).toFixed(1) + '%' : '—';
+    return `<tr>
+      <td style="padding:6px 12px;border-bottom:1px solid #eee;">${rotulo}</td>
+      <td style="padding:6px 12px;border-bottom:1px solid #eee;text-align:right;"><b>${n}</b></td>
+      <td style="padding:6px 12px;border-bottom:1px solid #eee;text-align:right;color:#777;">${pct}</td>
+      <td style="padding:6px 12px;border-bottom:1px solid #eee;text-align:right;">${setaVariacao(n, anterior[k] || 0)}</td>
+    </tr>`;
+  }).join('');
+
+  const encomendas = semana.order_ok || 0;
+  const taxa = base ? (100 * encomendas / base).toFixed(1) + '%' : '—';
+  const falhas = semana.order_fail || 0;
+
+  return `${headerHTML}
+<div style="max-width:560px;margin:24px auto;font-family:sans-serif;font-size:14px;color:#222;">
+  <h2 style="color:#0d3d2b;margin-bottom:2px;">Resumo semanal do site</h2>
+  <p style="color:#777;margin-top:0;">${de} a ${a}. A última coluna compara com os sete dias anteriores.</p>
+
+  <table cellpadding="0" cellspacing="0" style="border-collapse:collapse;width:100%;border:1px solid #e0e0e0;">
+    <tr style="background:#f6f6f4;">
+      <th style="padding:6px 12px;text-align:left;font-size:12px;color:#777;">Passo</th>
+      <th style="padding:6px 12px;text-align:right;font-size:12px;color:#777;">Visitas</th>
+      <th style="padding:6px 12px;text-align:right;font-size:12px;color:#777;">Do total</th>
+      <th style="padding:6px 12px;text-align:right;font-size:12px;color:#777;">vs. semana anterior</th>
+    </tr>
+    ${linhas}
+  </table>
+
+  <p style="margin-top:18px;line-height:1.7;">
+    <b>${base}</b> visitas deram <b>${encomendas}</b> encomenda${encomendas === 1 ? '' : 's'} — taxa de <b>${taxa}</b>.
+    ${falhas ? `<span style="color:#b00020;"><b>${falhas}</b> envio${falhas === 1 ? '' : 's'} falhou nesta semana: ver a página de estatísticas.</span>` : ''}
+  </p>
+
+  <p style="color:#777;font-size:12px;line-height:1.6;border-top:1px solid #eee;padding-top:12px;margin-top:20px;">
+    Com poucas visitas por semana, uma encomenda a mais ou a menos mexe muito na
+    percentagem. Olhar para a tendência de várias semanas, não para o número de uma.<br>
+    Cada número são visitas distintas, não cliques. Não se guarda IP, email nem nada
+    no dispositivo de quem visita.
+  </p>
+</div>`;
+}
+
+async function enviarRelatorioSemanal(env) {
+  if (!env.FUNNEL) { console.error('relatorio semanal: FUNNEL nao ligada'); return; }
+  if (!env.RESEND_API_KEY) { console.error('relatorio semanal: sem RESEND_API_KEY'); return; }
+
+  const agora = Date.now();
+  const inicioSemana = diaISO(agora - 7 * 86400000);
+  const fimSemana = diaISO(agora - 1 * 86400000);          // ate ontem: hoje esta incompleto
+  const inicioAnterior = diaISO(agora - 14 * 86400000);
+  const fimAnterior = diaISO(agora - 8 * 86400000);
+
+  try {
+    const semana = await contarPassos(env, inicioSemana, fimSemana);
+    const anterior = await contarPassos(env, inicioAnterior, fimAnterior);
+
+    // Nada aconteceu: nao vale a pena enviar email nenhum.
+    if (!Object.keys(semana).length) {
+      console.log('relatorio semanal: sem dados, nao enviado');
+      return;
+    }
+
+    await sendEmail(env.RESEND_API_KEY, {
+      from: 'Naturalfarma <encomendas@ssp3forte.com>',
+      to: 'encomendas@ssp3forte.com',
+      subject: `Resumo semanal ssp3forte — ${semana.view || 0} visitas, ${semana.order_ok || 0} encomendas`,
+      html: emailSemanalHTML(semana, anterior, inicioSemana, fimSemana),
+    });
+    console.log('relatorio semanal enviado');
+  } catch (err) {
+    console.error('relatorio semanal falhou:', err);
+  }
+}
+
 // ── Main handler ─────────────────────────────────────────────────────────────
 export default {
+  // Cron Trigger de wrangler.toml: segundas as 8h UTC.
+  async scheduled(event, env, ctx) {
+    ctx.waitUntil(enviarRelatorioSemanal(env));
+  },
+
   async fetch(request, env) {
     const url = new URL(request.url);
 

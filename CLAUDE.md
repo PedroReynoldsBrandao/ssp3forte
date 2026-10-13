@@ -205,15 +205,27 @@ total, drop-off from the previous step, a per-day table and the failure reasons
 grouped. `?dias=N` changes the window from the default 30. Every count is
 **distinct sessions**, not events, so a double submit counts once.
 
-**Setup** — one-off, from `worker/`, and the site runs exactly as before until it
-is done:
+**The D1 database is provisioned** (`ssp3forte-funnel`, id in `wrangler.toml`).
+What remains on a fresh checkout is the table and the token, from `worker/`:
 
 ```
-npx wrangler d1 create ssp3forte-funnel      # paste database_id into wrangler.toml
 npx wrangler d1 execute ssp3forte-funnel --remote --file=schema.sql
 npx wrangler secret put STATS_TOKEN          # any long random string
 npx wrangler deploy
 ```
+
+The binding is `FUNNEL`, which is what `worker.js` reads as `env.FUNNEL`. Cloudflare's
+own snippet after `d1 create` suggests `ssp3forte_funnel`; with that name the code
+would not find the database. Do not rename it to match the snippet.
+
+**Weekly email report.** A Cron Trigger (`[triggers] crons = ["0 8 * * 1"]`, Mondays
+08:00 UTC) calls `scheduled()`, which emails `encomendas@ssp3forte.com` the funnel for
+the last seven full days — up to yesterday, since today is incomplete — next to the
+seven before it, so each row carries a percentage change rather than a bare number.
+It sends nothing at all in a week with no events, and every failure path (no binding,
+no API key, Resend down) logs and returns instead of throwing. Cron Triggers work on
+the free plan. Verified in Node against a two-week fixture: 40 visits / 4 orders
+against 50 / 3, every delta checked by hand.
 
 **Privacy.** Nothing is stored on the visitor's device — no cookies, no
 localStorage — and no IP, user-agent or email is written. `FUNNEL_SESSION` is a
