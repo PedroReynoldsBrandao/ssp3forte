@@ -86,7 +86,11 @@ def preparar(html, pasta, regiao, lang, titulo):
 
     if pasta:
         # em /br/ um caminho relativo procuraria /br/imgs/, que nao existe
-        html = html.replace('src="imgs/', 'src="/imgs/').replace('href="imgs/', 'href="/imgs/')
+        html = (html.replace('src="imgs/', 'src="/imgs/')
+                    .replace('href="imgs/', 'href="/imgs/')
+                    # o data-full do lightbox tambem: em /br/ um "imgs/..." relativo
+                    # so falharia ao ampliar uma foto, que e onde ninguem repara
+                    .replace('data-full="imgs/', 'data-full="/imgs/'))
         html = html.replace('src="frasco.jpg"', 'src="/frasco.jpg"')
         html = html.replace('href="frasco.jpg"', 'href="/frasco.jpg"')
         # aplicar a lingua ao carregar, reutilizando o setLang ja testado
@@ -149,7 +153,7 @@ def main():
             continue
         txt = io.open(os.path.join(ROOT, pasta, 'index.html'), encoding='utf-8').read()
         sem_script = re.sub(r'<script>.*?</script>', '', txt, flags=re.S)
-        maus = [m.group(2) for m in re.finditer(r'(src|href)="([^"]+)"', sem_script)
+        maus = [m.group(2) for m in re.finditer(r'(src|href|data-full)="([^"]+)"', sem_script)
                 if not m.group(2).startswith(('http', '#', 'mailto:', 'data:', '/'))]
         if maus:
             sys.exit('/%s/ ficou com caminhos relativos: %s -- NAO fazer commit'

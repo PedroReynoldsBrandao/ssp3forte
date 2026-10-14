@@ -6,8 +6,9 @@
 O preco esta escrito em varios sitios que nao sabem uns dos outros:
 
     index.html        o objecto PRICES (o calculo), os cartoes de preco em cada
-                      bloco de lingua, as <option> do formulario e o mapa OPT
-    worker/worker.js  a tabela PRODUCTS, que decide o preco que vai no email
+                      bloco de lingua e as <option> do formulario
+    worker/worker.js  a tabela PRODUCTS, que decide o preco que vai no email,
+                      e o shippingLabel, que escreve os portes nesse email
     CLAUDE.md         as tabelas de documentacao
 
 O worker NAO usa o preco que o browser lhe manda -- vai busca-lo a sua propria
@@ -146,10 +147,34 @@ def conferir_opcoes(precos, html, falhas):
                           % (linha, chave, rotulo.strip(),
                              formata(precos[chave], moeda(chave))))
 
-    for chave, rotulo in re.findall(r"'(1x|3x)':\s*'([^']*—[^']*)'", html):
-        if valor(rotulo.split("—")[-1]) != precos.get(chave):
-            falhas.append("index.html: o mapa OPT diz \"%s\", mas o site cobra %s"
-                          % (rotulo, formata(precos[chave], moeda(chave))))
+    # Ate Out/2026 havia um mapa OPT com o preco escrito outra vez, e era preciso
+    # confirma-lo aqui. Os rotulos passaram a ser montados a partir do PRICES, o
+    # que torna aquela divergencia impossivel -- desde que ninguem volte a
+    # escrever um preco dentro do ROTULOS. E isso que se confere agora.
+    m = re.search(r"const ROTULOS\s*=\s*\{(.*?)\n\};", html, re.S)
+    if not m:
+        falhas.append("index.html: nao encontrei o ROTULOS (os nomes dos produtos)")
+    elif re.search(r"€|R\$", m.group(1)):   # "SSP3-Forte" e "3-bottle" tem digitos; um preco tem moeda
+        falhas.append("index.html: o ROTULOS voltou a ter precos escritos a mao -- "
+                      "deve ter so nomes, o preco vem do PRICES")
+
+
+def conferir_portes_do_worker(portes, js, falhas):
+    """Os portes que o email diz ao cliente.
+
+    O shippingLabel do worker tem o valor escrito por extenso dentro do rotulo,
+    longe do SHIPPING do index.html. Em Out/2026 dizia "+€4,99" enquanto o site
+    cobrava €5,99 -- o mesmo erro dos R$165, no mesmo tipo de sitio, e este
+    script passava-lhe ao lado porque so olhava para a tabela PRODUCTS."""
+    ESPERADO = {"portugal": "PT", "europa": "default"}
+    for chave, campo in ESPERADO.items():
+        for m in re.finditer(r"'%s':\s*\{([^}]*)\}" % chave, js):
+            for escrito in re.findall(r"\+€([\d.,]+)\)", m.group(1)):
+                if valor(escrito) != portes[campo]:
+                    falhas.append(
+                        "worker.js: o email diz portes de €%s para '%s', "
+                        "mas o site cobra €%.2f"
+                        % (escrito, chave, portes[campo]))
 
 
 def conferir_dados_estruturados(precos, html, falhas):
@@ -257,6 +282,7 @@ def main():
     conferir_cartoes(precos, html, falhas)
     conferir_riscados(precos, html, falhas)
     conferir_opcoes(precos, html, falhas)
+    conferir_portes_do_worker(portes, js, falhas)
     conferir_dados_estruturados(precos, html, falhas)
     conferir_paginas_de_lingua(falhas)
     conferir_emails(html, js, falhas)

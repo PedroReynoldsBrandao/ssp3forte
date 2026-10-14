@@ -17,16 +17,20 @@ function paymentLabel(val, lang) {
     'ctt':         { pt: 'CTT à cobrança postal',                        en: 'CTT cash on delivery (postal)' },
     'mbway':       { pt: 'MBway (sem portes)',                            en: 'MBway (no shipping fee)' },
     'deposito-br': { pt: 'Depósito ou transferência bancária',            en: 'Bank deposit or transfer' },
+    'pix':         { pt: 'Pix',                                            en: 'Pix' },
   };
-  return map[val]?.[lang] ?? (lang === 'en' ? 'To be confirmed' : 'A confirmar');
+  // Um metodo que este mapa nao conheca mostrava "A confirmar" -- ou seja, uma
+  // opcao nova no site apagava-se a si propria no email que regista a encomenda,
+  // sem erro nenhum. Agora cai no valor em bruto, que e feio mas verdadeiro.
+  return map[val]?.[lang] ?? (val || (lang === 'en' ? 'To be confirmed' : 'A confirmar'));
 }
 function shippingLabel(val, lang) {
   const map = {
-    'portugal':      { pt: 'Correios registado à cobrança — Portugal (+€4,99)', en: 'Registered mail COD — Portugal (+€4.99)' },
+    'portugal':      { pt: 'Correios registado à cobrança — Portugal (+€5,99)', en: 'Registered mail COD — Portugal (+€5.99)' },
     'europa':        { pt: 'Correios registado — Europa (+€9,00)',               en: 'Registered mail — Europe (+€9.00)' },
     'correio-aereo': { pt: 'Correio aéreo — Entrega em mão',                    en: 'Air mail — Home delivery' },
   };
-  return map[val]?.[lang] ?? (lang === 'en' ? 'To be confirmed' : 'A confirmar');
+  return map[val]?.[lang] ?? (val || (lang === 'en' ? 'To be confirmed' : 'A confirmar'));
 }
 
 // ── Product catalogue ────────────────────────────────────────────────────────

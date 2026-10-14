@@ -54,8 +54,8 @@ python tools/check_prices.py
 ```
 
 The price is written in places that do not know about each other: the `PRICES`
-object, the pricing cards in each language block, the form's `<option>` labels
-and the `OPT` map (all in `index.html`), the `PRODUCTS` table in
+object, the pricing cards in each language block and the form's `<option>` labels
+(all in `index.html`), the `PRODUCTS` table and the `shippingLabel` map in
 `worker/worker.js`, and the tables in this file. The Worker deliberately prices
 from its own table rather than from the submitted payload — otherwise anyone
 could forge an order at an invented price — so the two can drift with nothing to
@@ -102,8 +102,8 @@ Within the n=67 group: very satisfied 22 (32.8%), satisfied 37 (55.2%), slightly
 |---|---|
 | `index.html` | The entire website — HTML, CSS, and JS all in one file |
 | `frasco.jpg` | Product photo used as favicon and hero image |
-| `imgs/` | Ingredient photos (`01`–`08`), flags (`pt`, `br`, `eu`, `world`) |
-| `imgs/zinc.png` | Zinc ingredient photo |
+| `imgs/` | Ingredient photos (`01`–`08`) at full size, flags (`pt`, `br`, `eu`, `world`) |
+| `imgs/mini/` | The 252px thumbnails the page actually shows — generated, see *Image weight* |
 | `CNAME` | GitHub Pages custom domain (`ssp3forte.com`) |
 | `worker/worker.js` | Cloudflare Worker — handles order form submissions, sends emails via Resend |
 | `worker/wrangler.toml` | Wrangler config for deploying the Worker |
@@ -113,6 +113,7 @@ Within the n=67 group: very satisfied 22 (32.8%), satisfied 37 (55.2%), slightly
 | `tools/check_prices.py` | Checks the price in index.html, worker.js and this file still agree |
 | `tools/gen_blog_index.py` | Writes the crawlable all-articles list into `index.html` from the pools |
 | `tools/gen_lang_pages.py` | Builds `/br/` and `/en/` from `index.html`; **run it last** |
+| `tools/gen_thumbs.py` | Builds `imgs/mini/` from the ingredient photos; `--check` catches a stale one |
 | `_config.yml` | Jekyll exclude list — keeps non-site files from being published |
 | `robots.txt`, `sitemap.xml` | Tell Google what exists; one URL, since the site is one page |
 | `.gitignore` | Keeps customer data and Cloudflare credentials out of a public repo |
@@ -159,6 +160,48 @@ the site linked to them. Deleted Oct 2026.
 They are not lost: `git show c3aa77e:index-v1.html` and `git show c3aa77e:index-v2.html`
 bring either one back. **Do not restore them to the repo root** — anything placed
 there is published. A reference copy belongs in git history or outside the repo.
+
+## Image weight
+
+The ingredient photos are ~1250×1250 px files of up to 1 MB, and `.ingredient-img`
+draws them in an **84×84 px** square. Until Oct 2026 the page shipped all of them at
+full size, eagerly: **3.70 MB a visit, 3.4 MB of it those eight photos.** Measured in
+Chromium with the network throttled, the page took **18.8 s** to finish loading on weak
+4G. With 252px thumbnails and `loading="lazy"` the same page is **0.67 MB and ~2.4 s**,
+scrolled end to end.
+
+**This was never a Google problem, and it is worth being precise about that.** LCP was
+1.0 s and CLS 0.019 before the change — both green — because the text paints at 0.8 s.
+What it cost was the visitor's mobile data, which in Brazil is the market that matters,
+and photos still arriving while they scroll.
+
+Each `<img class="ingredient-img">` therefore carries:
+
+```html
+src="imgs/mini/03_selenio.jpg" data-full="imgs/03_selenio.png"
+width="84" height="84" loading="lazy" decoding="async"
+```
+
+The lightbox reads `data-full`, so the full-size photo is fetched only when someone
+clicks to zoom. `gen_lang_pages.py` rewrites `data-full` to an absolute path like it
+does `src` — a relative one would break only on zoom under `/br/`, which is exactly
+where nobody would notice.
+
+```bash
+python tools/gen_thumbs.py            # after changing or adding an ingredient photo
+python tools/gen_thumbs.py --check    # fails if one is missing or out of date
+```
+
+It needs ImageMagick (`convert`), which a Windows checkout will not have — but the
+thumbnails are committed, so it only has to run on a machine that has it, and only
+when a photo changes. `imgs/mini/.fontes` holds each source's sha1 so `--check` can
+tell a stale thumbnail from a current one; without it, replacing a photo and
+forgetting this script shows the old picture with no error anywhere.
+
+**Two orphans were deleted in the same pass**: `imgs/zinc.png` (a byte-identical copy
+of `04_zinc.png`, referenced nowhere) and `imgs/03_beta_sitosterol.png`, left over
+from the selenium swap. Together 1.9 MB, served publicly at guessable URLs for no
+reason. `git show` brings either back.
 
 ## Structured data
 
@@ -313,6 +356,29 @@ customer to check their address and that they will be contacted, so they do not
 submit again and create a duplicate. **Do not put the two sends back in one
 `try`.** Verified by running the Worker in Node against stubbed Resend failures
 (none / customer / internal / both).
+
+### Payment methods, and a price that was wrong in the email
+
+**Pix was added for Brazil in Oct 2026**, as the first and pre-selected option, with
+bank transfer kept below it. Until then the only Brazilian option was a bank deposit.
+Pix is how Brazil pays now, and it did not exist when the Webnode store was selling
+well there — so "the form used to convert and no longer does" may be less about the
+form than about the country. **The customer is still contacted afterwards with the
+key; no key is on the site or in the Worker.** Putting it in the confirmation email
+would remove a round trip, and needs the key from Pedro.
+
+**`shippingLabel` told Portuguese customers the wrong price.** It read `+€4,99` while
+`SHIPPING.PT` and the form both said €5,99 — the R$165 bug again, in the same shape,
+in a place `check_prices.py` did not look because it only read `PRODUCTS`. Fixed, and
+`conferir_portes_do_worker()` now reads those labels, verified by putting the old
+value back and watching it fail.
+
+**An unknown payment or shipping value used to become "A confirmar".** Both label maps
+fell back to that string, so adding an option to the site and forgetting the Worker
+would have erased it from the order record with no error — the Pix option would have
+arrived at `encomendas@` as "A confirmar". The fallback now shows the raw value, which
+is ugly and true. **A site change that adds a payment option still needs
+`cd worker && npx wrangler deploy`** to read nicely.
 
 **Required Worker secret** (set via `wrangler secret put RESEND_API_KEY`):
 - `RESEND_API_KEY` — from [resend.com](https://resend.com) dashboard
@@ -566,6 +632,33 @@ Shipping (EUR orders): Portugal €5.99, other countries €9.00. JS `SHIPPING` 
 - **Default country:** "Portugal" for PT/BR, empty for EN/EU
 - **BR flag / BRL checkbox:** activates `brl-pricing` body class, sets country to "Brasil", switches pricing display to BRL. Both the flag button and checkbox are kept in sync.
 - **Submit:** async fetch to Worker; shows success message on screen on success, alert with support email on failure
+
+**The product list is built, not shown as written** (Oct 2026). The four `<option>`
+elements are in the HTML — two in euros, two in reais — and the page used to show all
+four to everyone: a Portuguese visitor saw prices in reais, an English one saw two
+lines in Portuguese. Four choices where there are two, at the single click that decides
+the sale. `aplicarOpcoesDeProduto()` now rebuilds the list for the active currency and
+language, and switching currency keeps the choice (one bottle stays one bottle).
+
+It is called from `setLang()`, from `toggleBRL()` — the currency checkbox changes the
+currency without changing language, so the list follows `brl-pricing`, not the language
+— and once on load, because **`/` never calls `setLang()`** and would otherwise be the
+one page left with all four.
+
+`ROTULOS` holds only the names. **The price comes from `PRICES`**; writing it again
+there would be a sixth place for it to go stale, and the fifth already cost 54 days of
+emails quoting R$165. `check_prices.py` fails if a currency symbol appears in `ROTULOS`.
+
+**Labels are tied to their fields.** Every control has an `id` and its `<label>` a
+matching `for`, which until Oct 2026 none of them had: tapping a label on a phone
+focused nothing, and screen readers could not pair them. The four optional fields
+(date of birth, postal code, state, phone — and the notes box) are marked
+`(opcional)` / `(optional)`; marking the four optional rather than the six required
+is fewer marks and tells the visitor what they may skip, which is the point.
+
+**Date of birth is optional and nothing on the page says why it is asked.** It was
+left in place because no one has said what it is for; if there is no reason, it is a
+field to delete.
 
 ## Deployment
 

@@ -781,6 +781,15 @@
   .order-form { margin-top: 2.5rem; }
   .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
   .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1rem; }
+  /* Dizer o que se pode saltar encurta o formulario aos olhos de quem o ve:
+     sao 4 campos opcionais em 10, e antes pareciam todos exigidos. */
+  .campo-opc {
+    text-transform: none;
+    letter-spacing: 0;
+    font-weight: 400;
+    color: var(--text-muted);
+    margin-left: 6px;
+  }
   .form-group label {
     font-size: 12px;
     font-weight: 500;
@@ -1464,14 +1473,14 @@
           <h2>Ingredientes com estudos publicados</h2>
           <p class="section-lead">O SSP3-Forte combina os melhores extractos vegetais conhecidos para a saúde prostática, numa formulação optimizada.</p>
           <div class="ingredient-list">
-            <div class="ingredient-item"><div class="ingredient-num">01</div><img class="ingredient-img" src="/imgs/01_sawpalmetto.jpg" alt="Saw Palmetto"><div><div class="ingredient-name">Saw Palmetto <em>(Serenoa repens)</em></div><div class="ingredient-desc">Extracto de bagas tradicionalmente utilizado para apoiar a saúde prostática e os sintomas urinários associados à HPB. Contém naturalmente fitosteróis, entre os quais o beta-sitosterol.<sup class="ref">[1,2]</sup></div></div></div>
-            <div class="ingredient-item"><div class="ingredient-num">02</div><img class="ingredient-img" src="/imgs/02_pygeum_africanum.jfif" alt="Pygeum Africanum"><div><div class="ingredient-name">Pygeum africanum</div><div class="ingredient-desc">Extracto da casca de Pygeum africanum associado à melhoria dos sintomas urinários da HPB, incluindo a redução da frequência urinária nocturna. Contém naturalmente fitosteróis, entre os quais o beta-sitosterol.<sup class="ref">[3,4]</sup></div></div></div>
-            <div class="ingredient-item"><div class="ingredient-num">03</div><img class="ingredient-img" src="/imgs/03_selenio.png" alt="Selénio"><div><div class="ingredient-name">Selénio</div><div class="ingredient-desc">Mineral essencial. O selénio contribui para a espermatogénese normal e para a protecção das células contra as oxidações indesejadas.<sup class="ref">[5]</sup></div></div></div>
-            <div class="ingredient-item"><div class="ingredient-num">04</div><img class="ingredient-img" src="/imgs/04_zinc.png" alt="Zinco"><div><div class="ingredient-name">Zinco</div><div class="ingredient-desc">Mineral essencial para a fisiologia prostática. Alterações da homeostase do zinco têm sido associadas a doenças da próstata.<sup class="ref">[6,7]</sup></div></div></div>
-            <div class="ingredient-item"><div class="ingredient-num">05</div><img class="ingredient-img" src="/imgs/05_urtica_dioica.png" alt="Urtica Dioica"><div><div class="ingredient-name">Urtica dioica <em>(Urtiga)</em></div><div class="ingredient-desc">Extracto de raiz de urtiga amplamente estudado em HPB, incluindo formulações combinadas com Saw Palmetto para suporte dos sintomas urinários.<sup class="ref">[8-10]</sup></div></div></div>
-            <div class="ingredient-item"><div class="ingredient-num">06</div><img class="ingredient-img" src="/imgs/06_semente_abobora.png" alt="Semente de Abóbora"><div><div class="ingredient-name">Semente de Abóbora <em>(Cucurbita pepo)</em></div><div class="ingredient-desc">Rica em fitosteróis, zinco e ácidos gordos essenciais. Estudos clínicos sugerem benefícios na melhoria dos sintomas urinários associados à HPB.<sup class="ref">[11,12]</sup></div></div></div>
-            <div class="ingredient-item"><div class="ingredient-num">07</div><img class="ingredient-img" src="/imgs/07_licopeno.png" alt="Licopeno"><div><div class="ingredient-name">Licopeno</div><div class="ingredient-desc">Antioxidante carotenoide estudado pelo seu potencial papel na saúde prostática, com evidência clínica sugerindo redução da progressão da HPB e melhoria dos sintomas urinários.<sup class="ref">[13]</sup></div></div></div>
-            <div class="ingredient-item"><div class="ingredient-num">08</div><img class="ingredient-img" src="/imgs/08_vitamina_e.png" alt="Vitamina E"><div><div class="ingredient-name">Vitamina E</div><div class="ingredient-desc">Antioxidante lipossolúvel que contribui para a protecção das células contra o stress oxidativo, complementando a acção do licopeno e de outros antioxidantes.<sup class="ref">[14]</sup></div></div></div>
+            <div class="ingredient-item"><div class="ingredient-num">01</div><img class="ingredient-img" src="/imgs/mini/01_sawpalmetto.jpg" data-full="/imgs/01_sawpalmetto.jpg" width="84" height="84" loading="lazy" decoding="async" alt="Saw Palmetto"><div><div class="ingredient-name">Saw Palmetto <em>(Serenoa repens)</em></div><div class="ingredient-desc">Extracto de bagas tradicionalmente utilizado para apoiar a saúde prostática e os sintomas urinários associados à HPB. Contém naturalmente fitosteróis, entre os quais o beta-sitosterol.<sup class="ref">[1,2]</sup></div></div></div>
+            <div class="ingredient-item"><div class="ingredient-num">02</div><img class="ingredient-img" src="/imgs/mini/02_pygeum_africanum.jpg" data-full="/imgs/02_pygeum_africanum.jfif" width="84" height="84" loading="lazy" decoding="async" alt="Pygeum Africanum"><div><div class="ingredient-name">Pygeum africanum</div><div class="ingredient-desc">Extracto da casca de Pygeum africanum associado à melhoria dos sintomas urinários da HPB, incluindo a redução da frequência urinária nocturna. Contém naturalmente fitosteróis, entre os quais o beta-sitosterol.<sup class="ref">[3,4]</sup></div></div></div>
+            <div class="ingredient-item"><div class="ingredient-num">03</div><img class="ingredient-img" src="/imgs/mini/03_selenio.jpg" data-full="/imgs/03_selenio.png" width="84" height="84" loading="lazy" decoding="async" alt="Selénio"><div><div class="ingredient-name">Selénio</div><div class="ingredient-desc">Mineral essencial. O selénio contribui para a espermatogénese normal e para a protecção das células contra as oxidações indesejadas.<sup class="ref">[5]</sup></div></div></div>
+            <div class="ingredient-item"><div class="ingredient-num">04</div><img class="ingredient-img" src="/imgs/mini/04_zinc.jpg" data-full="/imgs/04_zinc.png" width="84" height="84" loading="lazy" decoding="async" alt="Zinco"><div><div class="ingredient-name">Zinco</div><div class="ingredient-desc">Mineral essencial para a fisiologia prostática. Alterações da homeostase do zinco têm sido associadas a doenças da próstata.<sup class="ref">[6,7]</sup></div></div></div>
+            <div class="ingredient-item"><div class="ingredient-num">05</div><img class="ingredient-img" src="/imgs/mini/05_urtica_dioica.jpg" data-full="/imgs/05_urtica_dioica.png" width="84" height="84" loading="lazy" decoding="async" alt="Urtica Dioica"><div><div class="ingredient-name">Urtica dioica <em>(Urtiga)</em></div><div class="ingredient-desc">Extracto de raiz de urtiga amplamente estudado em HPB, incluindo formulações combinadas com Saw Palmetto para suporte dos sintomas urinários.<sup class="ref">[8-10]</sup></div></div></div>
+            <div class="ingredient-item"><div class="ingredient-num">06</div><img class="ingredient-img" src="/imgs/mini/06_semente_abobora.jpg" data-full="/imgs/06_semente_abobora.png" width="84" height="84" loading="lazy" decoding="async" alt="Semente de Abóbora"><div><div class="ingredient-name">Semente de Abóbora <em>(Cucurbita pepo)</em></div><div class="ingredient-desc">Rica em fitosteróis, zinco e ácidos gordos essenciais. Estudos clínicos sugerem benefícios na melhoria dos sintomas urinários associados à HPB.<sup class="ref">[11,12]</sup></div></div></div>
+            <div class="ingredient-item"><div class="ingredient-num">07</div><img class="ingredient-img" src="/imgs/mini/07_licopeno.jpg" data-full="/imgs/07_licopeno.png" width="84" height="84" loading="lazy" decoding="async" alt="Licopeno"><div><div class="ingredient-name">Licopeno</div><div class="ingredient-desc">Antioxidante carotenoide estudado pelo seu potencial papel na saúde prostática, com evidência clínica sugerindo redução da progressão da HPB e melhoria dos sintomas urinários.<sup class="ref">[13]</sup></div></div></div>
+            <div class="ingredient-item"><div class="ingredient-num">08</div><img class="ingredient-img" src="/imgs/mini/08_vitamina_e.jpg" data-full="/imgs/08_vitamina_e.png" width="84" height="84" loading="lazy" decoding="async" alt="Vitamina E"><div><div class="ingredient-name">Vitamina E</div><div class="ingredient-desc">Antioxidante lipossolúvel que contribui para a protecção das células contra o stress oxidativo, complementando a acção do licopeno e de outros antioxidantes.<sup class="ref">[14]</sup></div></div></div>
           </div>
         </div>
 
@@ -1482,14 +1491,14 @@
           <h2>Ingredientes com estudos publicados</h2>
           <p class="section-lead">O SSP3-Forte combina os melhores extratos vegetais conhecidos para a saúde prostática, numa formulação otimizada.</p>
           <div class="ingredient-list">
-            <div class="ingredient-item"><div class="ingredient-num">01</div><img class="ingredient-img" src="/imgs/01_sawpalmetto.jpg" alt="Saw Palmetto"><div><div class="ingredient-name">Saw Palmetto <em>(Serenoa repens)</em></div><div class="ingredient-desc">Extrato de bagas tradicionalmente utilizado para apoiar a saúde prostática e os sintomas urinários associados à HPB. Contém naturalmente fitosteróis, entre os quais o beta-sitosterol.<sup class="ref">[1,2]</sup></div></div></div>
-            <div class="ingredient-item"><div class="ingredient-num">02</div><img class="ingredient-img" src="/imgs/02_pygeum_africanum.jfif" alt="Pygeum Africanum"><div><div class="ingredient-name">Pygeum africanum</div><div class="ingredient-desc">Extrato da casca de Pygeum africanum associado à melhoria dos sintomas urinários da HPB, incluindo a redução da frequência urinária noturna. Contém naturalmente fitosteróis, entre os quais o beta-sitosterol.<sup class="ref">[3,4]</sup></div></div></div>
-            <div class="ingredient-item"><div class="ingredient-num">03</div><img class="ingredient-img" src="/imgs/03_selenio.png" alt="Selênio"><div><div class="ingredient-name">Selênio</div><div class="ingredient-desc">Mineral essencial. O selênio contribui para a espermatogênese normal e para a proteção das células contra as oxidações indesejadas.<sup class="ref">[5]</sup></div></div></div>
-            <div class="ingredient-item"><div class="ingredient-num">04</div><img class="ingredient-img" src="/imgs/04_zinc.png" alt="Zinco"><div><div class="ingredient-name">Zinco</div><div class="ingredient-desc">Mineral essencial para a fisiologia prostática. Alterações da homeostase do zinco têm sido associadas a doenças da próstata.<sup class="ref">[6,7]</sup></div></div></div>
-            <div class="ingredient-item"><div class="ingredient-num">05</div><img class="ingredient-img" src="/imgs/05_urtica_dioica.png" alt="Urtica Dioica"><div><div class="ingredient-name">Urtica dioica <em>(Urtiga)</em></div><div class="ingredient-desc">Extrato de raiz de urtiga amplamente estudado em HPB, incluindo formulações combinadas com Saw Palmetto para suporte dos sintomas urinários.<sup class="ref">[8-10]</sup></div></div></div>
-            <div class="ingredient-item"><div class="ingredient-num">06</div><img class="ingredient-img" src="/imgs/06_semente_abobora.png" alt="Semente de Abóbora"><div><div class="ingredient-name">Semente de Abóbora <em>(Cucurbita pepo)</em></div><div class="ingredient-desc">Rica em fitosteróis, zinco e ácidos graxos essenciais. Estudos clínicos sugerem benefícios na melhoria dos sintomas urinários associados à HPB.<sup class="ref">[11,12]</sup></div></div></div>
-            <div class="ingredient-item"><div class="ingredient-num">07</div><img class="ingredient-img" src="/imgs/07_licopeno.png" alt="Licopeno"><div><div class="ingredient-name">Licopeno</div><div class="ingredient-desc">Antioxidante carotenoide estudado pelo seu potencial papel na saúde prostática, com evidência clínica sugerindo redução da progressão da HPB e melhoria dos sintomas urinários.<sup class="ref">[13]</sup></div></div></div>
-            <div class="ingredient-item"><div class="ingredient-num">08</div><img class="ingredient-img" src="/imgs/08_vitamina_e.png" alt="Vitamina E"><div><div class="ingredient-name">Vitamina E</div><div class="ingredient-desc">Antioxidante lipossolúvel que contribui para a proteção das células contra o estresse oxidativo, complementando a ação do licopeno e de outros antioxidantes.<sup class="ref">[14]</sup></div></div></div>
+            <div class="ingredient-item"><div class="ingredient-num">01</div><img class="ingredient-img" src="/imgs/mini/01_sawpalmetto.jpg" data-full="/imgs/01_sawpalmetto.jpg" width="84" height="84" loading="lazy" decoding="async" alt="Saw Palmetto"><div><div class="ingredient-name">Saw Palmetto <em>(Serenoa repens)</em></div><div class="ingredient-desc">Extrato de bagas tradicionalmente utilizado para apoiar a saúde prostática e os sintomas urinários associados à HPB. Contém naturalmente fitosteróis, entre os quais o beta-sitosterol.<sup class="ref">[1,2]</sup></div></div></div>
+            <div class="ingredient-item"><div class="ingredient-num">02</div><img class="ingredient-img" src="/imgs/mini/02_pygeum_africanum.jpg" data-full="/imgs/02_pygeum_africanum.jfif" width="84" height="84" loading="lazy" decoding="async" alt="Pygeum Africanum"><div><div class="ingredient-name">Pygeum africanum</div><div class="ingredient-desc">Extrato da casca de Pygeum africanum associado à melhoria dos sintomas urinários da HPB, incluindo a redução da frequência urinária noturna. Contém naturalmente fitosteróis, entre os quais o beta-sitosterol.<sup class="ref">[3,4]</sup></div></div></div>
+            <div class="ingredient-item"><div class="ingredient-num">03</div><img class="ingredient-img" src="/imgs/mini/03_selenio.jpg" data-full="/imgs/03_selenio.png" width="84" height="84" loading="lazy" decoding="async" alt="Selênio"><div><div class="ingredient-name">Selênio</div><div class="ingredient-desc">Mineral essencial. O selênio contribui para a espermatogênese normal e para a proteção das células contra as oxidações indesejadas.<sup class="ref">[5]</sup></div></div></div>
+            <div class="ingredient-item"><div class="ingredient-num">04</div><img class="ingredient-img" src="/imgs/mini/04_zinc.jpg" data-full="/imgs/04_zinc.png" width="84" height="84" loading="lazy" decoding="async" alt="Zinco"><div><div class="ingredient-name">Zinco</div><div class="ingredient-desc">Mineral essencial para a fisiologia prostática. Alterações da homeostase do zinco têm sido associadas a doenças da próstata.<sup class="ref">[6,7]</sup></div></div></div>
+            <div class="ingredient-item"><div class="ingredient-num">05</div><img class="ingredient-img" src="/imgs/mini/05_urtica_dioica.jpg" data-full="/imgs/05_urtica_dioica.png" width="84" height="84" loading="lazy" decoding="async" alt="Urtica Dioica"><div><div class="ingredient-name">Urtica dioica <em>(Urtiga)</em></div><div class="ingredient-desc">Extrato de raiz de urtiga amplamente estudado em HPB, incluindo formulações combinadas com Saw Palmetto para suporte dos sintomas urinários.<sup class="ref">[8-10]</sup></div></div></div>
+            <div class="ingredient-item"><div class="ingredient-num">06</div><img class="ingredient-img" src="/imgs/mini/06_semente_abobora.jpg" data-full="/imgs/06_semente_abobora.png" width="84" height="84" loading="lazy" decoding="async" alt="Semente de Abóbora"><div><div class="ingredient-name">Semente de Abóbora <em>(Cucurbita pepo)</em></div><div class="ingredient-desc">Rica em fitosteróis, zinco e ácidos graxos essenciais. Estudos clínicos sugerem benefícios na melhoria dos sintomas urinários associados à HPB.<sup class="ref">[11,12]</sup></div></div></div>
+            <div class="ingredient-item"><div class="ingredient-num">07</div><img class="ingredient-img" src="/imgs/mini/07_licopeno.jpg" data-full="/imgs/07_licopeno.png" width="84" height="84" loading="lazy" decoding="async" alt="Licopeno"><div><div class="ingredient-name">Licopeno</div><div class="ingredient-desc">Antioxidante carotenoide estudado pelo seu potencial papel na saúde prostática, com evidência clínica sugerindo redução da progressão da HPB e melhoria dos sintomas urinários.<sup class="ref">[13]</sup></div></div></div>
+            <div class="ingredient-item"><div class="ingredient-num">08</div><img class="ingredient-img" src="/imgs/mini/08_vitamina_e.jpg" data-full="/imgs/08_vitamina_e.png" width="84" height="84" loading="lazy" decoding="async" alt="Vitamina E"><div><div class="ingredient-name">Vitamina E</div><div class="ingredient-desc">Antioxidante lipossolúvel que contribui para a proteção das células contra o estresse oxidativo, complementando a ação do licopeno e de outros antioxidantes.<sup class="ref">[14]</sup></div></div></div>
           </div>
         </div>
 
@@ -1498,14 +1507,14 @@
           <h2>Ingredients with published research</h2>
           <p class="section-lead">SSP3-Forte combines the best known plant extracts for prostate health in an optimised formulation.</p>
           <div class="ingredient-list">
-            <div class="ingredient-item"><div class="ingredient-num">01</div><img class="ingredient-img" src="/imgs/01_sawpalmetto.jpg" alt="Saw Palmetto"><div><div class="ingredient-name">Saw Palmetto <em>(Serenoa repens)</em></div><div class="ingredient-desc">Berry extract traditionally used to support prostate health and urinary symptoms associated with BPH. Naturally contains phytosterols, among them beta-sitosterol.<sup class="ref">[1,2]</sup></div></div></div>
-            <div class="ingredient-item"><div class="ingredient-num">02</div><img class="ingredient-img" src="/imgs/02_pygeum_africanum.jfif" alt="Pygeum Africanum"><div><div class="ingredient-name">Pygeum africanum</div><div class="ingredient-desc">Pygeum africanum bark extract associated with improvement of BPH urinary symptoms, including reduction of nocturnal urinary frequency. Naturally contains phytosterols, among them beta-sitosterol.<sup class="ref">[3,4]</sup></div></div></div>
-            <div class="ingredient-item"><div class="ingredient-num">03</div><img class="ingredient-img" src="/imgs/03_selenio.png" alt="Selenium"><div><div class="ingredient-name">Selenium</div><div class="ingredient-desc">Essential mineral. Selenium contributes to normal spermatogenesis and to the protection of cells from oxidative stress.<sup class="ref">[5]</sup></div></div></div>
-            <div class="ingredient-item"><div class="ingredient-num">04</div><img class="ingredient-img" src="/imgs/04_zinc.png" alt="Zinc"><div><div class="ingredient-name">Zinc</div><div class="ingredient-desc">Essential mineral for prostatic physiology. Changes in zinc homeostasis have been associated with prostate disease.<sup class="ref">[6,7]</sup></div></div></div>
-            <div class="ingredient-item"><div class="ingredient-num">05</div><img class="ingredient-img" src="/imgs/05_urtica_dioica.png" alt="Urtica Dioica"><div><div class="ingredient-name">Urtica dioica <em>(Nettle)</em></div><div class="ingredient-desc">Nettle root extract extensively studied in BPH, including combined formulations with Saw Palmetto for urinary symptom support.<sup class="ref">[8-10]</sup></div></div></div>
-            <div class="ingredient-item"><div class="ingredient-num">06</div><img class="ingredient-img" src="/imgs/06_semente_abobora.png" alt="Pumpkin Seed"><div><div class="ingredient-name">Pumpkin Seed <em>(Cucurbita pepo)</em></div><div class="ingredient-desc">Rich in phytosterols, zinc and essential fatty acids. Clinical studies suggest benefits in improving urinary symptoms associated with BPH.<sup class="ref">[11,12]</sup></div></div></div>
-            <div class="ingredient-item"><div class="ingredient-num">07</div><img class="ingredient-img" src="/imgs/07_licopeno.png" alt="Lycopene"><div><div class="ingredient-name">Lycopene</div><div class="ingredient-desc">Carotenoid antioxidant studied for its potential role in prostate health, with clinical evidence suggesting reduced BPH progression and improved urinary symptoms.<sup class="ref">[13]</sup></div></div></div>
-            <div class="ingredient-item"><div class="ingredient-num">08</div><img class="ingredient-img" src="/imgs/08_vitamina_e.png" alt="Vitamin E"><div><div class="ingredient-name">Vitamin E</div><div class="ingredient-desc">Fat-soluble antioxidant that contributes to the protection of cells against oxidative stress, complementing the action of lycopene and other antioxidants.<sup class="ref">[14]</sup></div></div></div>
+            <div class="ingredient-item"><div class="ingredient-num">01</div><img class="ingredient-img" src="/imgs/mini/01_sawpalmetto.jpg" data-full="/imgs/01_sawpalmetto.jpg" width="84" height="84" loading="lazy" decoding="async" alt="Saw Palmetto"><div><div class="ingredient-name">Saw Palmetto <em>(Serenoa repens)</em></div><div class="ingredient-desc">Berry extract traditionally used to support prostate health and urinary symptoms associated with BPH. Naturally contains phytosterols, among them beta-sitosterol.<sup class="ref">[1,2]</sup></div></div></div>
+            <div class="ingredient-item"><div class="ingredient-num">02</div><img class="ingredient-img" src="/imgs/mini/02_pygeum_africanum.jpg" data-full="/imgs/02_pygeum_africanum.jfif" width="84" height="84" loading="lazy" decoding="async" alt="Pygeum Africanum"><div><div class="ingredient-name">Pygeum africanum</div><div class="ingredient-desc">Pygeum africanum bark extract associated with improvement of BPH urinary symptoms, including reduction of nocturnal urinary frequency. Naturally contains phytosterols, among them beta-sitosterol.<sup class="ref">[3,4]</sup></div></div></div>
+            <div class="ingredient-item"><div class="ingredient-num">03</div><img class="ingredient-img" src="/imgs/mini/03_selenio.jpg" data-full="/imgs/03_selenio.png" width="84" height="84" loading="lazy" decoding="async" alt="Selenium"><div><div class="ingredient-name">Selenium</div><div class="ingredient-desc">Essential mineral. Selenium contributes to normal spermatogenesis and to the protection of cells from oxidative stress.<sup class="ref">[5]</sup></div></div></div>
+            <div class="ingredient-item"><div class="ingredient-num">04</div><img class="ingredient-img" src="/imgs/mini/04_zinc.jpg" data-full="/imgs/04_zinc.png" width="84" height="84" loading="lazy" decoding="async" alt="Zinc"><div><div class="ingredient-name">Zinc</div><div class="ingredient-desc">Essential mineral for prostatic physiology. Changes in zinc homeostasis have been associated with prostate disease.<sup class="ref">[6,7]</sup></div></div></div>
+            <div class="ingredient-item"><div class="ingredient-num">05</div><img class="ingredient-img" src="/imgs/mini/05_urtica_dioica.jpg" data-full="/imgs/05_urtica_dioica.png" width="84" height="84" loading="lazy" decoding="async" alt="Urtica Dioica"><div><div class="ingredient-name">Urtica dioica <em>(Nettle)</em></div><div class="ingredient-desc">Nettle root extract extensively studied in BPH, including combined formulations with Saw Palmetto for urinary symptom support.<sup class="ref">[8-10]</sup></div></div></div>
+            <div class="ingredient-item"><div class="ingredient-num">06</div><img class="ingredient-img" src="/imgs/mini/06_semente_abobora.jpg" data-full="/imgs/06_semente_abobora.png" width="84" height="84" loading="lazy" decoding="async" alt="Pumpkin Seed"><div><div class="ingredient-name">Pumpkin Seed <em>(Cucurbita pepo)</em></div><div class="ingredient-desc">Rich in phytosterols, zinc and essential fatty acids. Clinical studies suggest benefits in improving urinary symptoms associated with BPH.<sup class="ref">[11,12]</sup></div></div></div>
+            <div class="ingredient-item"><div class="ingredient-num">07</div><img class="ingredient-img" src="/imgs/mini/07_licopeno.jpg" data-full="/imgs/07_licopeno.png" width="84" height="84" loading="lazy" decoding="async" alt="Lycopene"><div><div class="ingredient-name">Lycopene</div><div class="ingredient-desc">Carotenoid antioxidant studied for its potential role in prostate health, with clinical evidence suggesting reduced BPH progression and improved urinary symptoms.<sup class="ref">[13]</sup></div></div></div>
+            <div class="ingredient-item"><div class="ingredient-num">08</div><img class="ingredient-img" src="/imgs/mini/08_vitamina_e.jpg" data-full="/imgs/08_vitamina_e.png" width="84" height="84" loading="lazy" decoding="async" alt="Vitamin E"><div><div class="ingredient-name">Vitamin E</div><div class="ingredient-desc">Fat-soluble antioxidant that contributes to the protection of cells against oxidative stress, complementing the action of lycopene and other antioxidants.<sup class="ref">[14]</sup></div></div></div>
           </div>
         </div>
 
@@ -1835,35 +1844,36 @@
     <form class="order-form" id="orderForm" onsubmit="submitOrder(event)">
       <div class="form-row">
         <div class="form-group">
-          <label>
+          <label for="f-name">
             <span data-lang-inline="pt">Nome completo</span>
             <span data-lang-inline="en">Full name</span>
           </label>
-          <input type="text" name="name" required placeholder="João Silva">
+          <input id="f-name" type="text" name="name" required placeholder="João Silva">
         </div>
         <div class="form-group">
-          <label>Email</label>
-          <input type="email" name="email" required placeholder="joao@email.com">
+          <label for="f-email">Email</label>
+          <input id="f-email" type="email" name="email" required placeholder="joao@email.com">
         </div>
       </div>
       <div class="form-row">
         <div class="form-group">
-          <label>
+          <label for="f-country">
             <span data-lang-inline="pt">País</span>
             <span data-lang-inline="en">Country</span>
           </label>
-          <input type="text" name="country" required oninput="updateTotal()" placeholder="ex: Portugal, Brasil, França…" value="Portugal">
+          <input id="f-country" type="text" name="country" required oninput="updateTotal()" placeholder="ex: Portugal, Brasil, França…" value="Portugal">
         </div>
         <div class="form-group">
-          <label>
+          <label for="f-dob">
             <span data-lang-inline="pt">Data de Nascimento</span>
             <span data-lang-inline="en">Date of Birth</span>
+            <span class="campo-opc"><span data-lang-inline="pt">(opcional)</span><span data-lang-inline="en">(optional)</span></span>
           </label>
-          <input type="date" name="dob">
+          <input id="f-dob" type="date" name="dob">
         </div>
       </div>
       <div class="form-group">
-        <label>
+        <label for="productSelect">
           <span data-lang-inline="pt">Produto</span>
           <span data-lang-inline="en">Product</span>
         </label>
@@ -1876,42 +1886,45 @@
         </select>
       </div>
       <div class="form-group">
-        <label>
+        <label for="f-address">
           <span data-lang-inline="pt">Endereço de entrega</span>
           <span data-lang-inline="en">Delivery address</span>
         </label>
-        <input type="text" name="address" required placeholder="Rua / Street, nº">
+        <input id="f-address" type="text" name="address" required placeholder="Rua / Street, nº">
       </div>
       <div class="form-row">
         <div class="form-group">
-          <label>
+          <label for="f-postal">
             <span data-lang-inline="pt">Código Postal (CEP)</span>
             <span data-lang-inline="en">Postal Code (ZIP)</span>
+            <span class="campo-opc"><span data-lang-inline="pt">(opcional)</span><span data-lang-inline="en">(optional)</span></span>
           </label>
-          <input type="text" name="postal" placeholder="0000-000">
+          <input id="f-postal" type="text" name="postal" placeholder="0000-000">
         </div>
         <div class="form-group">
-          <label>
+          <label for="f-city">
             <span data-lang-inline="pt">Cidade</span>
             <span data-lang-inline="en">City</span>
           </label>
-          <input type="text" name="city" required placeholder="Lisboa">
+          <input id="f-city" type="text" name="city" required placeholder="Lisboa">
         </div>
       </div>
       <div class="form-row">
         <div class="form-group">
-          <label>
+          <label for="f-state">
             <span data-lang-inline="pt">Localidade / Estado</span>
             <span data-lang-inline="en">State / Region</span>
+            <span class="campo-opc"><span data-lang-inline="pt">(opcional)</span><span data-lang-inline="en">(optional)</span></span>
           </label>
-          <input type="text" name="state" placeholder="">
+          <input id="f-state" type="text" name="state" placeholder="">
         </div>
         <div class="form-group">
-          <label>
+          <label for="f-phone">
             <span data-lang-inline="pt">Telemóvel / Celular</span>
             <span data-lang-inline="en">Mobile / Cell</span>
+            <span class="campo-opc"><span data-lang-inline="pt">(opcional)</span><span data-lang-inline="en">(optional)</span></span>
           </label>
-          <input type="tel" name="phone" placeholder="+351 912 000 000">
+          <input id="f-phone" type="tel" name="phone" placeholder="+351 912 000 000">
         </div>
       </div>
       <div class="shipping-calc" id="shippingCalc">
@@ -1931,7 +1944,7 @@
       <div class="pt-payment-options">
         <div class="pt-only-payment">
           <div class="form-group">
-            <label>Selecione a forma de pagamento</label>
+            <label for="f-notes">Selecione a forma de pagamento</label>
             <div class="payment-opts">
               <label class="payment-opt">
                 <input type="radio" name="paymentMethod" value="deposito" onchange="updateTotal()" checked>
@@ -1966,7 +1979,11 @@
             <label>Escolha a forma de pagamento</label>
             <div class="payment-opts">
               <label class="payment-opt">
-                <input type="radio" name="paymentMethod" value="deposito-br" checked>
+                <input type="radio" name="paymentMethod" value="pix" checked>
+                Desejo pagar por <strong>Pix</strong>, enviar a chave para o meu email.
+              </label>
+              <label class="payment-opt">
+                <input type="radio" name="paymentMethod" value="deposito-br">
                 Desejo pagar por depósito ou transferência bancária, enviar os dados para o meu email.
               </label>
             </div>
@@ -1987,8 +2004,9 @@
         <label>
           <span data-lang-inline="pt">Notas / questões</span>
           <span data-lang-inline="en">Notes / questions</span>
-        </label>
-        <textarea name="notes" rows="2" placeholder=""></textarea>
+            <span class="campo-opc"><span data-lang-inline="pt">(opcional)</span><span data-lang-inline="en">(optional)</span></span>
+          </label>
+        <textarea id="f-notes" name="notes" rows="2" placeholder=""></textarea>
       </div>
       <p class="form-note">
         <span data-lang-inline="pt">Ao submeter este formulário aceita ser contactado pela Naturalfarma para processar o seu pedido. Os seus dados não são partilhados com terceiros.</span>
@@ -2346,6 +2364,62 @@ function irParaLingua(region) {
   return false;
 }
 
+/* ── A lista de produtos ────────────────────────────────────────────
+   O <select> tem os quatro produtos escritos no HTML -- dois em euros, dois em
+   reais -- e ate Out/2026 mostrava-os todos a toda a gente. Um portugues via
+   precos em reais; um ingles via duas linhas em portugues. Quatro hipoteses onde
+   havia duas, no clique que mais decide da pagina inteira.
+
+   A lista passa a ser montada para a moeda e a lingua activas. A moeda vem da
+   classe brl-pricing e nao da lingua, porque a caixa "ver em reais" tambem a
+   liga sem mudar de lingua.
+
+   Aqui estao so os nomes: o preco vem do PRICES. Escreve-lo outra vez seria um
+   sexto sitio onde ele pode ficar para tras -- e o quinto ja custou 54 dias de
+   emails a dizer R$165 enquanto o site cobrava R$210 (ver check_prices.py). */
+const ROTULOS = {
+  pt: { '1x': 'SSP3-Forte · 1 frasco',  '3x': 'SSP3-Forte · Kit 3 frascos',
+        '1x-br': 'SSP3-Forte · 1 frasco', '3x-br': 'SSP3-Forte · Kit 3 frascos' },
+  en: { '1x': 'SSP3-Forte · 1 bottle',  '3x': 'SSP3-Forte · 3-bottle kit',
+        '1x-br': 'SSP3-Forte · 1 bottle', '3x-br': 'SSP3-Forte · 3-bottle kit' }
+};
+const ESCOLHA = { pt: 'Escolha a sua opção', br: 'Escolha sua opção',
+                  en: 'Choose your option' };
+
+function precoEscrito(chave, lang) {
+  const v = PRICES[chave];
+  if (CURRENCY[chave] === 'R$') return 'R$' + Math.round(v);
+  return '€' + (lang === 'en' ? v.toFixed(2) : v.toFixed(2).replace('.', ','));
+}
+
+function aplicarOpcoesDeProduto() {
+  const sel = document.getElementById('productSelect');
+  if (!sel) return;
+  const cls = document.body.className;
+  const lang = (cls.indexOf('lang-en') >= 0 || cls.indexOf('lang-world') >= 0) ? 'en'
+             : (cls.indexOf('lang-br') >= 0 ? 'br' : 'pt');
+  const nomes = ROTULOS[lang === 'en' ? 'en' : 'pt'];
+  const chaves = cls.indexOf('brl-pricing') >= 0 ? ['1x-br', '3x-br'] : ['1x', '3x'];
+  const antes = sel.value;
+
+  sel.textContent = '';
+  const vazia = document.createElement('option');
+  vazia.value = '';
+  vazia.textContent = ESCOLHA[lang];
+  sel.appendChild(vazia);
+  chaves.forEach(function (k) {
+    const o = document.createElement('option');
+    o.value = k;
+    o.textContent = nomes[k] + ' \u2014 ' + precoEscrito(k, lang === 'en' ? 'en' : 'pt');
+    sel.appendChild(o);
+  });
+
+  /* Trocar de moeda nao deve desfazer a escolha: um frasco continua um frasco. */
+  const EQUIV = { '1x': '1x-br', '3x': '3x-br', '1x-br': '1x', '3x-br': '3x' };
+  if (chaves.indexOf(antes) >= 0) sel.value = antes;
+  else if (chaves.indexOf(EQUIV[antes]) >= 0) sel.value = EQUIV[antes];
+}
+
 function setLang(region) {
   currentRegion = region;
   const lang = (region === 'eu' || region === 'world') ? 'en' : region === 'br' ? 'br' : 'pt';
@@ -2372,17 +2446,7 @@ function setLang(region) {
     document.body.classList.remove('brl-pricing');
   }
 
-  /* The EUR options carried both languages at once ("1 frasco / 1 bottle") with a
-     comma decimal. CSS cannot hide an <option> reliably, so relabel them here. */
-  const OPT = {
-    pt: { '1x': 'SSP3-Forte · 1 frasco — €29,95', '3x': 'SSP3-Forte · Kit 3 frascos — €80,86' },
-    en: { '1x': 'SSP3-Forte · 1 bottle — €29.95',  '3x': 'SSP3-Forte · 3-bottle kit — €80.86' }
-  };
-  const optSet = OPT[lang === 'en' ? 'en' : 'pt'];
-  Object.keys(optSet).forEach(v => {
-    const o = document.querySelector('#productSelect option[value="' + v + '"]');
-    if (o) o.textContent = optSet[v];
-  });
+  aplicarOpcoesDeProduto();
 
   const countryInput = document.querySelector('[name="country"]');
   if (countryInput) {
@@ -2407,6 +2471,7 @@ document.addEventListener('click', function(e) {
 
 function toggleBRL(checked) {
   document.body.classList.toggle('brl-pricing', checked);
+  aplicarOpcoesDeProduto();
   if (checked) {
     currentRegion = 'br';
   } else if (currentRegion === 'br') {
@@ -2525,7 +2590,8 @@ const lb = document.getElementById('lightbox');
 const lbImg = document.getElementById('lightbox-img');
 document.querySelectorAll('.ingredient-img').forEach(img => {
   img.addEventListener('click', () => {
-    lbImg.src = img.src;
+    /* a miniatura chega para o cartao; ao ampliar vai-se buscar o original */
+    lbImg.src = img.dataset.full || img.src;
     lb.classList.add('open');
   });
 });
@@ -2858,6 +2924,11 @@ function renderBlogCards() {
     if (grid) grid.innerHTML = pair[1].map(p => blogCard(p, pair[0])).join('');
   });
 }
+/* A raiz nao chama setLang ao carregar -- a lingua por omissao ja e a do HTML --
+   logo e preciso montar a lista de produtos aqui, ou /  ficava com os quatro
+   produtos nas duas moedas enquanto /br/ e /en/ ficavam certos. */
+aplicarOpcoesDeProduto();
+
 renderBlogCards();
 setLang('eu');   /* pagina de lingua */
 
@@ -3307,7 +3378,7 @@ funnelEvent('view');
   </div>
 </div>
   <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"560644b39d6743d4ba01aab270c4c1bf"}'></script>
-<!-- gerado de index.html sha1:2f2a60d5f5f29ff4b2f540754d7b9e4a1908b194 -->
+<!-- gerado de index.html sha1:97ed3a951db4b6cdf3b97b5c8bf34b050bc34964 -->
 </body>
 </html>
 
