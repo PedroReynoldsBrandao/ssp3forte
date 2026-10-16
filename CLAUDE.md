@@ -75,6 +75,35 @@ with a line number, and exits non-zero. Run it whenever you touch prices,
 shipping or the contact emails. A `worker.js` mismatch is only really fixed once
 you `cd worker && npx wrangler deploy` — a git push does not touch the Worker.
 
+**The script must parse on a 2017 browser**
+
+All the JS is in one `<script>`, so a syntax error the browser does not understand
+rejects **the whole block** — before a line of it runs. That is not a cosmetic loss:
+`submitOrder` stops existing, the `<form>` has no `action` and no `method`, so
+pressing "enviar" reloads the page and throws the order away. No email, no warning,
+nothing in the funnel. That visitor shows up only in Cloudflare Web Analytics, which
+loads its own separate script.
+
+Until Oct 2026 the file used optional chaining (ES2020) in two places, which put the
+floor at **Chrome 80 / Safari 13.1, early 2020** — an iPhone left on iOS 12 could not
+order at all. Replaced by `valorEscolhido()`. The floor is now **ES2017**, set by the
+`async`/`await` in `submitOrder`; moving below that means rewriting it with promises,
+for a far smaller population.
+
+Verified with acorn rather than `node --check`, which runs a modern Node and would
+accept anything:
+
+```bash
+node -e "const a=require('acorn'),fs=require('fs');
+a.parse(fs.readFileSync('_p.js','utf8'),{ecmaVersion:2017})"
+```
+
+Before the change that threw and after it passes. **Do not reintroduce ES2018+ syntax
+here** (`?.`, `??`, `...` in object literals, `Array.flat`, numeric separators).
+`IntersectionObserver` is fine as it is — it is behind an `'IntersectionObserver' in
+window` check, and a missing runtime global only breaks where it is used, not the
+whole script.
+
 **Checking your work before committing**
 
 ```bash
