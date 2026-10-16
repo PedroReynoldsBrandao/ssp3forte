@@ -409,6 +409,54 @@ arrived at `encomendas@` as "A confirmar". The fallback now shows the raw value,
 is ugly and true. **A site change that adds a payment option still needs
 `cd worker && npx wrangler deploy`** to read nicely.
 
+### The order number, and a third party that changed shape
+
+`generateOrderNumber()` asks counterapi.dev for the day's sequence. On 16 Oct 2026 an
+order came through numbered **`20261016undefined SSP3-Forte(UN)`**. The call did not
+fail — counterapi answered 200 with valid JSON that simply had no `count` field, so
+`String(undefined)` produced the word, `padStart` left it alone, and the `try/catch`
+saw nothing wrong because nothing threw.
+
+The lesson is the ordinary one and worth keeping: **validate the value, not just the
+call.** The code now checks `count` is a finite positive number and falls back to two
+random digits otherwise, logging what came back so the next person can see the shape
+that broke it. Verified in Node against `{count: 3}`, `{}`, `{count: 'abc'}` and a
+thrown error.
+
+The fallback is not sequential and two orders on the same day could collide. The
+customer's name is in the subject line, so an order is still identifiable. **If
+counterapi turns out to be permanently broken, move the counter into D1** — the
+database is already bound, and it removes a third party from the ordering path.
+
+### Who the internal notification comes from
+
+It used to go **from `encomendas@ssp3forte.com` to `encomendas@ssp3forte.com`** — the
+same address. It works, and Resend reports "Delivered", but that mail is then
+forwarded to a Gmail account, and Gmail treats mail that appears to come from the
+mailbox's own owner differently: in Oct 2026 an order was thought lost because of it.
+Searching `in:anywhere "Novo pedido"` finds them; the inbox alone may not.
+
+The sender is now `SSP3-Forte <noreply@ssp3forte.com>`, distinct from the recipient.
+**It falls back to the old address if Resend refuses the new one** — an unverified
+sender would otherwise make the Worker return 500 and lose the order, which is the
+exact failure mode this file already learned to avoid. Both attempts are logged, so
+`aviso interno: o remetente noreply@ foi recusado` in the Workers logs means the
+domain needs that address added in Resend. Verified in Node: new sender accepted (one
+attempt), refused (two attempts, delivered by the old one, still 200 and `order_ok`),
+and both refused (500 and `order_fail`).
+
+### The order form has no spam protection
+
+The only "order" the funnel recorded in Oct 2026 was **not an order**: a freelance
+writer's pitch, with a Calendly link in the notes field, a Philadelphia address and a
+product picked at random. It went through the whole funnel — view, form, submit — so
+it was a person or a scripted browser, not a bare POST.
+
+Nothing on the form stops this. A hidden honeypot field would turn most of it away
+without troubling a real visitor, and it matters more than it looks: **spam inflates
+the one number in the funnel that is supposed to mean a sale.** Not done yet; raised
+with Pedro Oct 2026.
+
 ### Logs (Workers Observability)
 
 Added Oct 2026. Before it there were no retained logs at all: an error showed up in

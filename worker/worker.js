@@ -58,15 +58,29 @@ function countryCode(country, lang) {
 // Format: YYYYMMDDnn SSP3-Forte(CC)  e.g. 2026061801 SSP3-Forte(PT)
 async function generateOrderNumber(cc) {
   const date = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+  // Reserva: dois digitos ao acaso. Nao e sequencial e podem repetir-se no mesmo
+  // dia, mas e melhor do que nenhum numero -- e o nome do cliente vai no assunto.
+  const reserva = () => String(Math.floor(Math.random() * 90) + 10);
+  let seq;
   try {
     const res  = await fetch(`https://api.counterapi.dev/v1/ssp3forte-orders/${date}/up`);
     const data = await res.json();
-    const seq  = String(data.count).padStart(2, '0');
-    return `${date}${seq} SSP3-Forte(${cc})`;
-  } catch {
-    const seq = String(Math.floor(Math.random() * 90) + 10);
-    return `${date}${seq} SSP3-Forte(${cc})`;
+    // O counterapi pode responder 200 com um JSON perfeitamente valido que nao
+    // traz o campo count. Nao lanca erro nenhum, por isso o catch nao via nada, e
+    // String(undefined) da a palavra "undefined": em 16/10/2026 saiu um pedido
+    // numerado "20261016undefined". Validar o valor, nao so a chamada.
+    const n = Number(data && data.count);
+    if (Number.isFinite(n) && n > 0) {
+      seq = String(n).padStart(2, '0');
+    } else {
+      console.error('counterapi respondeu sem count utilizavel:', JSON.stringify(data));
+      seq = reserva();
+    }
+  } catch (err) {
+    console.error('counterapi falhou:', err);
+    seq = reserva();
   }
+  return `${date}${seq} SSP3-Forte(${cc})`;
 }
 
 // ── Shared email chrome ──────────────────────────────────────────────────────
@@ -600,22 +614,48 @@ export default {
       clientEmailError = err.message;
     }
 
-    try {
-      await sendEmail(env.RESEND_API_KEY, {
-        from: isEN ? 'orders@ssp3forte.com' : 'encomendas@ssp3forte.com',
-        to: isEN ? 'orders@ssp3forte.com' : 'encomendas@ssp3forte.com',
-        subject: clientEmailError
-          ? `Novo pedido ${orderNum} — ${d.name} — CONTACTAR: confirmacao nao chegou`
-          : `Novo pedido ${orderNum} — ${d.name}`,
-        html: buildInternalEmail(d, orderNum, product, clientEmailError),
-      });
-    } catch (err) {
-      // Falhou o registo da encomenda. Aqui sim vale a pena pedir ao cliente que
-      // tente de novo, porque nao ha nada guardado em lado nenhum.
-      console.error('aviso interno falhou:', err);
+    // O aviso interno ia de encomendas@ PARA encomendas@ -- de si para si proprio.
+    // Isto acaba reencaminhado para uma caixa do Gmail, e o Gmail trata mal
+    // correio que parece vir do dono da caixa: em Out/2026 um pedido chegou a ser
+    // dado como perdido por isso (o Resend dizia "Delivered"). O remetente passa a
+    // ser distinto do destinatario.
+    //
+    // Com rede de seguranca: se o Resend recusar o remetente novo, tenta outra vez
+    // com o antigo, que ja se sabe aceite. Sem isto, um endereco por verificar no
+    // Resend fazia o Worker devolver 500 e a encomenda desaparecia -- exactamente
+    // o modo de falha que este ficheiro ja aprendeu a nao deixar acontecer.
+    const caixa = isEN ? 'orders@ssp3forte.com' : 'encomendas@ssp3forte.com';
+    const assunto = clientEmailError
+      ? `Novo pedido ${orderNum} — ${d.name} — CONTACTAR: confirmacao nao chegou`
+      : `Novo pedido ${orderNum} — ${d.name}`;
+
+    let avisoEnviado = false;
+    let erroDoAviso = null;
+    for (const remetente of [`SSP3-Forte <noreply@ssp3forte.com>`, caixa]) {
+      try {
+        await sendEmail(env.RESEND_API_KEY, {
+          from: remetente,
+          to: caixa,
+          subject: assunto,
+          html: buildInternalEmail(d, orderNum, product, clientEmailError),
+        });
+        if (remetente === caixa) {
+          console.error('aviso interno: o remetente noreply@ foi recusado, usei', caixa);
+        }
+        avisoEnviado = true;
+        break;
+      } catch (err) {
+        console.error('aviso interno falhou com', remetente, ':', err);
+        erroDoAviso = err;
+      }
+    }
+
+    if (!avisoEnviado) {
+      // Falhou o registo da encomenda, pelos dois remetentes. Aqui sim vale a pena
+      // pedir ao cliente que tente de novo, porque nao ha nada guardado em lado nenhum.
       await registar(env, { name: 'order_fail', lang: d.lang, session: d.session,
-                            detail: err.message });
-      return json({ error: 'Email sending failed', detail: err.message }, 500);
+                            detail: erroDoAviso.message });
+      return json({ error: 'Email sending failed', detail: erroDoAviso.message }, 500);
     }
 
     // A encomenda esta registada. Dizer sucesso ao cliente mesmo que a
