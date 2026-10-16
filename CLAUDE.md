@@ -380,6 +380,41 @@ arrived at `encomendas@` as "A confirmar". The fallback now shows the raw value,
 is ugly and true. **A site change that adds a payment option still needs
 `cd worker && npx wrangler deploy`** to read nicely.
 
+### Logs (Workers Observability)
+
+Added Oct 2026. Before it there were no retained logs at all: an error showed up in
+`wrangler tail` while that was open and was gone afterwards, which is useless when an
+order fails and you find out hours later. `worker/wrangler.toml` now carries:
+
+```toml
+[observability.logs]
+enabled = true
+head_sampling_rate = 1
+invocation_logs = true
+persist = true
+
+[observability.traces]
+enabled = false
+```
+
+**It goes in the TOML, not in a JSONC file.** Cloudflare's docs show this block as
+JSON; translate it. A second config at the repo root is what shipped a Worker with no
+bindings in Oct 2026 — see *Deploying*.
+
+Validated with `npx wrangler deploy --dry-run` on wrangler 4.151.1, which accepts
+every key here with no warning. That check is worth something: dropping an invented
+key into the same block makes it print
+`Unexpected fields found in observability field`, so silence means the schema really
+does know these.
+
+**What this now retains.** `sendEmail` throws ``Error(`Resend ${status}: ${body}`)``
+and both email failure paths `console.error` that message. When Resend rejects an
+address it usually echoes the offending field, so **a customer's email address can end
+up in the logs**, and with `persist = true` it stays there. The API key does not — it
+travels in the `Authorization` header, not in the error body. The funnel was built to
+store no personal data at all; this is a separate decision from that one, and it was
+taken deliberately.
+
 **Required Worker secret** (set via `wrangler secret put RESEND_API_KEY`):
 - `RESEND_API_KEY` — from [resend.com](https://resend.com) dashboard
 

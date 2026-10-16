@@ -27,3 +27,29 @@ database_id = "65e8ede9-fde0-4698-95ec-ffd14cee43f1"
 # 10h no verao). Cron Triggers funcionam no plano gratuito.
 [triggers]
 crons = ["0 8 * * 1"]
+
+# Registos (Workers Observability). Ate aqui nao havia nenhum: um erro no Worker
+# aparecia no `wrangler tail` enquanto estivesse aberto e desaparecia a seguir.
+# Com isto ficam guardados e podem ser consultados depois, que e o que faz falta
+# quando uma encomenda falha e so se sabe horas mais tarde.
+#
+# invocation_logs = true acrescenta uma linha por pedido (metodo, caminho, estado)
+# alem do que o codigo escreve com console.*; head_sampling_rate = 1 guarda todos.
+#
+# ATENCAO ao que isto passa a reter. O sendEmail lanca
+#     Error(`Resend ${status}: ${corpo da resposta}`)
+# e as duas falhas de email fazem console.error dessa mensagem. O Resend, quando
+# recusa por validacao, costuma repetir no corpo o campo que falhou -- ou seja, o
+# endereco do cliente pode ir parar aos registos, e com persist = true fica la.
+# A chave da API nao vai: viaja no cabecalho Authorization, nao no corpo do erro.
+#
+# O funil foi desenhado de proposito para nao guardar dado pessoal nenhum (ver
+# "Privacidade" no CLAUDE.md). Isto e uma decisao separada dessa, e foi tomada.
+[observability.logs]
+enabled = true
+head_sampling_rate = 1
+invocation_logs = true
+persist = true
+
+[observability.traces]
+enabled = false
