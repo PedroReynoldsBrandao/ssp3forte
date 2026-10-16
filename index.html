@@ -783,6 +783,13 @@
   .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1rem; }
   /* Dizer o que se pode saltar encurta o formulario aos olhos de quem o ve:
      sao 4 campos opcionais em 10, e antes pareciam todos exigidos. */
+  .shipping-nota {
+    display: none;
+    margin: 10px 0 0;
+    font-size: 0.78rem;
+    line-height: 1.45;
+    color: var(--text-muted);
+  }
   .campo-opc {
     text-transform: none;
     letter-spacing: 0;
@@ -1940,6 +1947,10 @@
           <span>Total</span>
           <span id="calcTotal">—</span>
         </div>
+        <p class="shipping-nota" id="freteNota">
+          <span data-lang-inline="pt">O frete é cobrado em euros e convertido no câmbio do dia; o valor em reais segue no email de confirmação.</span>
+          <span data-lang-inline="en">Shipping is charged in euros and converted at the day's rate; the amount in reais is in the confirmation email.</span>
+        </p>
       </div>
       <div class="pt-payment-options">
         <div class="pt-only-payment">
@@ -1993,7 +2004,7 @@
             <div class="payment-opts">
               <label class="payment-opt">
                 <input type="radio" name="shippingMethod" value="correio-aereo" checked>
-                Frete por correio aéreo - Entrega em mão
+                Frete por correio aéreo - Entrega em mão (+ €9,00)
               </label>
             </div>
           </div>
@@ -2310,7 +2321,11 @@
 
 <script>
 const PRICES = { '1x': 29.95, '3x': 80.86, '1x-br': 210, '3x-br': 567 };
-const SHIPPING = { PT: 5.99, default: 9.00 };
+/* O frete do Brasil esta em EUROS, como os outros: e assim que e cobrado, e
+   convertido no cambio do dia. Nao ha aqui uma taxa de cambio de proposito --
+   uma taxa escrita a mao envelhece sozinha e ninguem repara, que e exactamente
+   como nasceram os R$165 (ver tools/check_prices.py). */
+const SHIPPING = { PT: 5.99, BR: 9.00, default: 9.00 };
 const CURRENCY = { '1x': '€', '3x': '€', '1x-br': 'R$', '3x-br': 'R$' };
 
 let currentRegion = 'pt';
@@ -2504,9 +2519,16 @@ function updateTotal() {
   const curr = CURRENCY[product] || '€';
   const fmt = (v, c) => c === '€' ? '€' + v.toFixed(2).replace('.', ',') : 'R$' + Math.round(v);
   document.getElementById('calcProduct').textContent = fmt(productPrice, curr);
+  const nota = document.getElementById('freteNota');
+  if (nota) nota.style.display = isBR ? 'block' : 'none';
   if (isBR) {
-    document.getElementById('calcShipping').textContent = 'a confirmar';
-    document.getElementById('calcTotal').textContent = 'a confirmar';
+    /* O produto tem preco fixo em reais e o frete e cobrado em euros, logo nao
+       ha um total numa so moeda sem inventar um cambio. "R$210 + €9,00" nao e
+       bonito, mas e um valor que a pessoa conhece: ate Out/2026 dizia aqui "a
+       confirmar", ou seja, pedia-se 13 campos a quem nao sabia quanto ia pagar. */
+    document.getElementById('calcShipping').textContent = fmt(SHIPPING.BR, '€');
+    document.getElementById('calcTotal').textContent =
+      fmt(productPrice, 'R$') + ' + ' + fmt(SHIPPING.BR, '€');
   } else if (isEU) {
     const shippingPrice = SHIPPING.default;
     document.getElementById('calcShipping').textContent = fmt(shippingPrice, '€');

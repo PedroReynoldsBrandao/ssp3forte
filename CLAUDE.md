@@ -625,7 +625,31 @@ or hold a trademark. Nothing about it is published on the site and nothing shoul
 
 JS `PRICES` object: `{ '1x': 29.95, '3x': 80.86, '1x-br': 210, '3x-br': 567 }`
 
-Shipping (EUR orders): Portugal €5.99, other countries €9.00. JS `SHIPPING` object: `{ PT: 5.99, default: 9.00 }`.
+Shipping (EUR orders): Portugal €5.99, other countries €9.00. JS `SHIPPING` object:
+`{ PT: 5.99, BR: 9.00, default: 9.00 }`.
+
+**Brazil's shipping is €9 too, and that is not a slip.** It is quoted and charged in
+euros and converted on the day, which is how Pedro's father prices it. So a Brazilian
+order has a fixed price in reais and a shipping cost in euros, and there is no single
+figure to show without inventing an exchange rate. **Do not put one in the code.** A
+hand-written rate goes stale on its own with nobody watching, which is precisely how
+the R$165 happened. The box therefore reads:
+
+```
+Produto   R$210
+Frete     €9,00
+Total     R$210 + €9,00
+```
+
+with a line under it saying the shipping is converted at the day's rate and the amount
+in reais comes in the confirmation email. Until Oct 2026 both the shipping and the
+total read **"a confirmar"** — thirteen fields asked of someone who did not know what
+they would pay, which is a textbook reason to abandon an order.
+
+A live conversion would give one number, but it means calling a third-party rate API
+from the order page, on a site that today makes no third-party request at all and
+needs no cookie banner because of it. That is a trade to put to Pedro, not to make
+quietly.
 
 ## Order form behaviour
 
@@ -659,6 +683,11 @@ is fewer marks and tells the visitor what they may skip, which is the point.
 **Date of birth is optional and nothing on the page says why it is asked.** It was
 left in place because no one has said what it is for; if there is no reason, it is a
 field to delete.
+
+**Still open in this form:** an EN/EU visitor is offered no payment method and no
+shipping method at all — both blocks are Portugal-only or Brazil-only, so the order
+reaches `orders@` with neither set. And the city placeholder reads "Lisboa" even when
+the country field says "Brasil".
 
 ## Deployment
 

@@ -28,7 +28,7 @@ function shippingLabel(val, lang) {
   const map = {
     'portugal':      { pt: 'Correios registado à cobrança — Portugal (+€5,99)', en: 'Registered mail COD — Portugal (+€5.99)' },
     'europa':        { pt: 'Correios registado — Europa (+€9,00)',               en: 'Registered mail — Europe (+€9.00)' },
-    'correio-aereo': { pt: 'Correio aéreo — Entrega em mão',                    en: 'Air mail — Home delivery' },
+    'correio-aereo': { pt: 'Correio aéreo — Entrega em mão (+€9,00)',           en: 'Air mail — Home delivery (+€9.00)' },
   };
   return map[val]?.[lang] ?? (val || (lang === 'en' ? 'To be confirmed' : 'A confirmar'));
 }

@@ -166,7 +166,7 @@ def conferir_portes_do_worker(portes, js, falhas):
     longe do SHIPPING do index.html. Em Out/2026 dizia "+€4,99" enquanto o site
     cobrava €5,99 -- o mesmo erro dos R$165, no mesmo tipo de sitio, e este
     script passava-lhe ao lado porque so olhava para a tabela PRODUCTS."""
-    ESPERADO = {"portugal": "PT", "europa": "default"}
+    ESPERADO = {"portugal": "PT", "europa": "default", "correio-aereo": "BR"}
     for chave, campo in ESPERADO.items():
         for m in re.finditer(r"'%s':\s*\{([^}]*)\}" % chave, js):
             for escrito in re.findall(r"\+€([\d.,]+)\)", m.group(1)):
