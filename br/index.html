@@ -1955,10 +1955,10 @@
       <div class="pt-payment-options">
         <div class="pt-only-payment">
           <div class="form-group">
-            <label for="f-notes">Selecione a forma de pagamento</label>
+            <label>Selecione a forma de pagamento</label>
             <div class="payment-opts">
               <label class="payment-opt">
-                <input type="radio" name="paymentMethod" value="deposito" onchange="updateTotal()" checked>
+                <input type="radio" name="paymentMethod" value="deposito" onchange="updateTotal()" data-omissao>
                 Depósito ou Transferência bancária
               </label>
               <label class="payment-opt">
@@ -1975,7 +1975,7 @@
             <label>Escolha uma forma de envio</label>
             <div class="payment-opts">
               <label class="payment-opt">
-                <input type="radio" name="shippingMethod" value="portugal" onchange="updateTotal()" checked>
+                <input type="radio" name="shippingMethod" value="portugal" onchange="updateTotal()" data-omissao>
                 Para Portugal, por correios registado à cobrança (+ €5,99)
               </label>
               <label class="payment-opt">
@@ -1990,7 +1990,7 @@
             <label>Escolha a forma de pagamento</label>
             <div class="payment-opts">
               <label class="payment-opt">
-                <input type="radio" name="paymentMethod" value="pix" checked>
+                <input type="radio" name="paymentMethod" value="pix" data-omissao>
                 Desejo pagar por <strong>Pix</strong>, enviar a chave para o meu email.
               </label>
               <label class="payment-opt">
@@ -2003,7 +2003,7 @@
             <label>Escolha um método de frete</label>
             <div class="payment-opts">
               <label class="payment-opt">
-                <input type="radio" name="shippingMethod" value="correio-aereo" checked>
+                <input type="radio" name="shippingMethod" value="correio-aereo" data-omissao>
                 Frete por correio aéreo - Entrega em mão (+ €9,00)
               </label>
             </div>
@@ -2012,7 +2012,7 @@
       </div>
 
       <div class="form-group">
-        <label>
+        <label for="f-notes">
           <span data-lang-inline="pt">Notas / questões</span>
           <span data-lang-inline="en">Notes / questions</span>
             <span class="campo-opc"><span data-lang-inline="pt">(opcional)</span><span data-lang-inline="en">(optional)</span></span>
@@ -2528,7 +2528,36 @@ function valorEscolhido(nome) {
   return el ? el.value : undefined;
 }
 
+/* Os blocos de pagamento portugues e brasileiro estao os dois no formulario e
+   partilham os nomes de grupo (paymentMethod, shippingMethod). Cada um trazia a
+   sua opcao marcada no HTML -- e num grupo de radios so pode haver UMA marcada,
+   por isso o browser ficava com a ultima: o Pix e o correio aereo, ambos no bloco
+   brasileiro, ESCONDIDO. Um cliente portugues que nao tocasse no pagamento
+   enviava "Pix" sem nunca o ter visto. Aconteceu em 18/10/2026.
+
+   Agora so o bloco visivel conta: os radios escondidos ficam desmarcados e
+   desactivados (um input desactivado nao segue no formulario), e a opcao por
+   omissao (data-omissao) so e aplicada se estiver visivel e nada do grupo estiver
+   escolhido. Corre ao carregar, em cada updateTotal -- que o setLang e o
+   toggleBRL ja chamam -- e uma ultima vez antes de enviar. */
+function sincronizarPagamento() {
+  const radios = document.querySelectorAll('#orderForm input[type="radio"]');
+  const grupos = {};
+  radios.forEach(function (r) {
+    const visivel = r.offsetParent !== null;
+    if (!visivel) { r.checked = false; r.disabled = true; }
+    else { r.disabled = false; (grupos[r.name] = grupos[r.name] || []).push(r); }
+  });
+  Object.keys(grupos).forEach(function (nome) {
+    const g = grupos[nome];
+    if (g.some(function (r) { return r.checked; })) return;
+    const omissao = g.filter(function (r) { return r.hasAttribute('data-omissao'); })[0];
+    if (omissao) omissao.checked = true;
+  });
+}
+
 function updateTotal() {
+  sincronizarPagamento();
   const product = document.getElementById('productSelect').value;
   const country = document.querySelector('[name="country"]').value;
   const calc = document.getElementById('shippingCalc');
@@ -2573,6 +2602,7 @@ function updateTotal() {
 async function submitOrder(e) {
   e.preventDefault();
   const form = document.getElementById('orderForm');
+  sincronizarPagamento();                  // nenhum radio escondido segue no pedido
   const fd   = new FormData(form);
 
   const lang = (document.body.classList.contains('lang-en') || document.body.classList.contains('lang-world')) ? 'en' : 'pt';
@@ -2970,6 +3000,7 @@ function renderBlogCards() {
    logo e preciso montar a lista de produtos aqui, ou /  ficava com os quatro
    produtos nas duas moedas enquanto /br/ e /en/ ficavam certos. */
 aplicarOpcoesDeProduto();
+sincronizarPagamento();
 
 renderBlogCards();
 setLang('br');   /* pagina de lingua */
@@ -3420,7 +3451,7 @@ funnelEvent('view');
   </div>
 </div>
   <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"560644b39d6743d4ba01aab270c4c1bf"}'></script>
-<!-- gerado de index.html sha1:f5bd2a0cb92e41d8fb4799d280f7c96ebabdd97a -->
+<!-- gerado de index.html sha1:a5921b38aea847f2845400c369eaf90bad7adc66 -->
 </body>
 </html>
 

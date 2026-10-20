@@ -359,9 +359,9 @@ The order form POSTs JSON to the Cloudflare Worker at `https://ssp3forte-orders.
 
 The Worker:
 1. Validates the payload and identifies the product
-2. Generates a sequential order number via [counterapi.dev](https://counterapi.dev) — format `YYYYMMDD01`, `02`… resets daily
+2. Generates a sequential order number from its own counter in D1 — format `YYYYMMDD01`, `02`… resets daily (see *The order number* below)
 3. Sends a **confirmation email to the client** (branded, in their language)
-4. Sends an **internal notification** to `encomendas@ssp3forte.com` or `orders@ssp3forte.com` with a plain data table
+4. Sends an **internal notification** to `encomendas@ssp3forte.com` or `orders@ssp3forte.com` with a plain data table and an itemised value — bottles, kit discount, shipping, total
 
 **The two emails are sent independently, and the internal one is the order record.**
 Until Oct 2026 both were sequential `await`s inside one `try`, and `sendEmail`
@@ -409,24 +409,67 @@ arrived at `encomendas@` as "A confirmar". The fallback now shows the raw value,
 is ugly and true. **A site change that adds a payment option still needs
 `cd worker && npx wrangler deploy`** to read nicely.
 
-### The order number, and a third party that changed shape
+### The order number
 
-`generateOrderNumber()` asks counterapi.dev for the day's sequence. On 16 Oct 2026 an
-order came through numbered **`20261016undefined SSP3-Forte(UN)`**. The call did not
-fail — counterapi answered 200 with valid JSON that simply had no `count` field, so
-`String(undefined)` produced the word, `padStart` left it alone, and the `try/catch`
-saw nothing wrong because nothing threw.
+**It comes from a counter in D1**, one row per day in the `contadores` table, bumped
+with a single atomic statement:
 
-The lesson is the ordinary one and worth keeping: **validate the value, not just the
-call.** The code now checks `count` is a finite positive number and falls back to two
-random digits otherwise, logging what came back so the next person can see the shape
-that broke it. Verified in Node against `{count: 3}`, `{}`, `{count: 'abc'}` and a
-thrown error.
+```sql
+INSERT INTO contadores (dia, n) VALUES (?, 1)
+ON CONFLICT(dia) DO UPDATE SET n = n + 1 RETURNING n
+```
 
-The fallback is not sequential and two orders on the same day could collide. The
-customer's name is in the subject line, so an order is still identifiable. **If
-counterapi turns out to be permanently broken, move the counter into D1** — the
-database is already bound, and it removes a third party from the ordering path.
+One statement, so two orders at the same moment can never get the same number. The
+table holds the day and a count, nothing about who ordered. Tested against real
+SQLite: 1, 2, 3 on one day, back to 1 the next, and `schema.sql` run twice without
+error.
+
+**How it got here, because each step was a real failure.** The sequence used to come
+from counterapi.dev. On 16 Oct 2026 it started answering 200 with valid JSON and no
+`count` field, so the number came out `20261016undefined` — nothing threw, so the
+`try/catch` saw nothing. Fixed by validating the value; but counterapi kept answering
+without `count`, so from then on **every** order got the fallback, two random digits.
+On 18 Oct one came through as `2026101851`, and Pedro's father read it, reasonably,
+as the 51st order of the day. A random number that looks like a sequence is worse
+than none. The counter moved into D1, which was already bound, and a third party left
+the ordering path.
+
+**If D1 fails, the number carries the time instead** — `20261018-1443`, HHMM in UTC —
+which nobody will read as a count, and the internal email says so in a line under the
+total. An order is never refused because of its number.
+
+**On a fresh checkout or after this change, the table has to exist:**
+
+```
+cd worker
+npx wrangler d1 execute ssp3forte-funnel --remote --file=schema.sql
+```
+
+Safe to run again — everything in it is `IF NOT EXISTS`. Until it has run, every order
+gets the time-stamped number, which is the visible sign that it is missing.
+
+### What the order is worth, in the internal email
+
+Asked for by Pedro's father in Oct 2026, for his own records. Under the data table:
+
+```
+3 × €29,95                €89,85
+Desconto do kit (10%)     −€8,99
+Subtotal                  €80,86
+Portes                    €5,99
+TOTAL                     €86,85
+```
+
+Brazilian orders end `TOTAL  R$567 + €9,00`, for the reason in *Pricing*. MBway shows
+`€0,00 (MBway, sem portes)`. An order with no shipping method — the English form has
+none — uses the site's own rule, Portugal or the rest by country, and says
+`(pelo país indicado)`.
+
+**No price is written again for this.** `discriminar()` parses the unit and kit prices
+out of `PRODUCTS` and the shipping out of the `shippingLabel` text, which are exactly
+the two places `tools/check_prices.py` already guards. Verified in Node against the
+real handler for a Portuguese kit, MBway, a Brazilian kit and an English order with
+no shipping method; the Portuguese kit gives €86,85, the same sum the site shows.
 
 ### Who the internal notification comes from
 
@@ -567,8 +610,10 @@ to defend.
 - EN lang, other → `EU`
 
 **Email routing:**
-- PT/BR orders → from/to `encomendas@ssp3forte.com`
-- EN orders → from/to `orders@ssp3forte.com`
+- PT/BR orders → to `encomendas@ssp3forte.com`
+- EN orders → to `orders@ssp3forte.com`
+- Both from `SSP3-Forte <noreply@ssp3forte.com>`, falling back to the recipient's own
+  address if Resend refuses it — see *Who the internal notification comes from*
 
 ## Design tokens (CSS variables)
 
@@ -795,6 +840,28 @@ is fewer marks and tells the visitor what they may skip, which is the point.
 **Date of birth is optional and nothing on the page says why it is asked.** It was
 left in place because no one has said what it is for; if there is no reason, it is a
 field to delete.
+
+**Only the visible payment block counts.** The Portuguese and Brazilian blocks are
+both in the form and share the group names `paymentMethod` and `shippingMethod`. Each
+used to carry its own `checked` in the HTML — and a radio group can only have one, so
+the browser kept the *last*: Pix and air mail, both in the hidden Brazilian block. On
+18 Oct 2026 a customer in Entroncamento who never touched the payment choice arrived
+as **"Payment: Pix"**. (Before Pix existed the same bug sent `deposito-br`, which read
+plausibly enough that nobody noticed.)
+
+The defaults are now `data-omissao`, not `checked`, and `sincronizarPagamento()`
+unchecks and disables every radio that is not visible — a disabled input is not
+submitted — then applies the visible block's default if nothing in the group is
+chosen. It runs on load, at the top of every `updateTotal()` (which `setLang()` and
+`toggleBRL()` already call) and once more in `submitOrder()`. **Do not put `checked`
+back on any of these radios.** Verified in the browser: PT sends deposito/portugal, BR
+pix/correio-aereo, switching the reais box on and off flips between the two, and EN
+sends neither.
+
+The same pass found that the payment heading label had been wired to the **Notes**
+box (`for="f-notes"`): the regex that added the `for` attributes ran, non-greedy but
+across lines, from that heading to the notes field. Fixed, and every `label[for]` is
+now checked to point at a control in its own `.form-group`.
 
 **Still open in this form:** an EN/EU visitor is offered no payment method and no
 shipping method at all — both blocks are Portugal-only or Brazil-only, so the order

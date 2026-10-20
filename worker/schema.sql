@@ -25,3 +25,15 @@ CREATE TABLE IF NOT EXISTS events (
 CREATE INDEX IF NOT EXISTS idx_events_day     ON events(day);
 CREATE INDEX IF NOT EXISTS idx_events_session ON events(session);
 CREATE INDEX IF NOT EXISTS idx_events_name    ON events(name);
+
+-- Contador das encomendas, uma linha por dia (Out/2026). Substitui o counterapi.dev,
+-- que deixou de devolver o campo count e pos numeros ao acaso nas encomendas.
+-- So guarda o dia e quantas encomendas houve -- nada sobre quem encomendou.
+-- O worker incrementa-o com uma so instrucao atomica:
+--   INSERT INTO contadores (dia, n) VALUES (?, 1)
+--   ON CONFLICT(dia) DO UPDATE SET n = n + 1 RETURNING n
+-- Correr este ficheiro outra vez e seguro: tudo aqui e IF NOT EXISTS.
+CREATE TABLE IF NOT EXISTS contadores (
+  dia TEXT PRIMARY KEY,   -- YYYYMMDD
+  n   INTEGER NOT NULL
+);

@@ -55,32 +55,40 @@ function countryCode(country, lang) {
 }
 
 // ── Order number generator ───────────────────────────────────────────────────
-// Format: YYYYMMDDnn SSP3-Forte(CC)  e.g. 2026061801 SSP3-Forte(PT)
-async function generateOrderNumber(cc) {
-  const date = new Date().toISOString().slice(0, 10).replace(/-/g, '');
-  // Reserva: dois digitos ao acaso. Nao e sequencial e podem repetir-se no mesmo
-  // dia, mas e melhor do que nenhum numero -- e o nome do cliente vai no assunto.
-  const reserva = () => String(Math.floor(Math.random() * 90) + 10);
-  let seq;
-  try {
-    const res  = await fetch(`https://api.counterapi.dev/v1/ssp3forte-orders/${date}/up`);
-    const data = await res.json();
-    // O counterapi pode responder 200 com um JSON perfeitamente valido que nao
-    // traz o campo count. Nao lanca erro nenhum, por isso o catch nao via nada, e
-    // String(undefined) da a palavra "undefined": em 16/10/2026 saiu um pedido
-    // numerado "20261016undefined". Validar o valor, nao so a chamada.
-    const n = Number(data && data.count);
-    if (Number.isFinite(n) && n > 0) {
-      seq = String(n).padStart(2, '0');
-    } else {
-      console.error('counterapi respondeu sem count utilizavel:', JSON.stringify(data));
-      seq = reserva();
+// Format: YYYYMMDDnn SSP3-Forte(CC)  e.g. 2026061801 SSP3-Forte(PT) -- o primeiro do dia
+//
+// Ate Out/2026 a sequencia vinha do counterapi.dev. A 16/10 comecou a responder
+// sem o campo count, e o numero saiu "20261016undefined"; corrigido isso, a
+// reserva de dois digitos ao acaso passou a ser usada em todas as encomendas -- e
+// a de 18/10 saiu "2026101851", que o Sr. leu, com razao, como a 51.a do dia.
+// Um numero ao acaso com cara de sequencia e pior do que nenhum.
+//
+// O contador passou para a D1, que ja esta ligada: uma linha por dia, incrementada
+// de forma atomica (um INSERT ... ON CONFLICT ... RETURNING e uma so instrucao,
+// por isso duas encomendas ao mesmo tempo nunca recebem o mesmo numero). Sai um
+// terceiro do caminho da encomenda.
+//
+// Se a D1 falhar ou a tabela ainda nao existir, o numero leva a HORA em vez de
+// uma sequencia -- 20261018-1443 -- que nao se confunde com uma contagem.
+// Nunca deixa de haver encomenda por causa do numero.
+async function generateOrderNumber(cc, env) {
+  const agora = new Date();
+  const date = agora.toISOString().slice(0, 10).replace(/-/g, '');
+  if (env && env.FUNNEL) {
+    try {
+      const r = await env.FUNNEL.prepare(
+        'INSERT INTO contadores (dia, n) VALUES (?, 1) ' +
+        'ON CONFLICT(dia) DO UPDATE SET n = n + 1 RETURNING n'
+      ).bind(date).first();
+      const n = Number(r && r.n);
+      if (Number.isFinite(n) && n > 0) return `${date}${String(n).padStart(2, '0')} SSP3-Forte(${cc})`;
+      console.error('contador da D1 devolveu', JSON.stringify(r));
+    } catch (err) {
+      console.error('contador da D1 falhou:', err);
     }
-  } catch (err) {
-    console.error('counterapi falhou:', err);
-    seq = reserva();
   }
-  return `${date}${seq} SSP3-Forte(${cc})`;
+  const hora = agora.toISOString().slice(11, 16).replace(':', '');
+  return `${date}-${hora} SSP3-Forte(${cc})`;
 }
 
 // ── Shared email chrome ──────────────────────────────────────────────────────
@@ -228,7 +236,60 @@ function buildEmailEN(d, orderNum, p) {
 }
 
 // ── Internal notification to business ───────────────────────────────────────
+// ── O valor da encomenda, discriminado ───────────────────────────────────────
+// Pedido do Sr. em Out/2026, para o controlo dele: frascos, desconto, portes,
+// total. Nenhum preco e escrito aqui de novo. O preco unitario e o do kit vem
+// da tabela PRODUCTS e os portes do texto do shippingLabel -- os dois sitios que
+// o tools/check_prices.py ja confere contra o site. Um terceiro sitio com
+// numeros seria mais um para ficar para tras, e foi assim que nasceram os R$165.
+function valorDe(txt) {
+  return Number(String(txt).replace(/[^\d,.]/g, '').replace(',', '.'));
+}
+
+function discriminar(d, p) {
+  const reais = p.pricePT.indexOf('R$') === 0;
+  const fmt = v => reais ? 'R$' + Math.round(v) : '€' + v.toFixed(2).replace('.', ',');
+  const eur = v => '€' + v.toFixed(2).replace('.', ',');
+
+  const unitario = valorDe(PRODUCTS[reais ? '1x-br' : '1x'].pricePT);
+  const bruto = Math.round(unitario * p.qty * 100) / 100;
+  const preco = valorDe(p.pricePT);
+  const desconto = Math.round((bruto - preco) * 100) / 100;
+
+  // Portes: MBway nao paga; sem metodo escolhido (o formulario ingles nao tem
+  // nenhum), o mesmo criterio do site -- Portugal ou resto, pelo pais.
+  let metodo = d.shippingMethod;
+  let pelo_pais = false;
+  if (!metodo && !reais) {
+    metodo = String(d.country || '').toLowerCase().indexOf('port') >= 0 ? 'portugal' : 'europa';
+    pelo_pais = true;
+  }
+  let portes = null;
+  if (d.paymentMethod === 'mbway') portes = 0;
+  else {
+    const m = shippingLabel(metodo, 'pt').match(/\+€([\d.,]+)\)/);
+    if (m) portes = valorDe(m[1]);
+  }
+
+  const linhas = [[`${p.qty} × ${fmt(unitario)}`, fmt(bruto)]];
+  if (desconto > 0) {
+    const pct = Math.round(100 * desconto / bruto);
+    linhas.push([`Desconto do kit (${pct}%)`, '−' + fmt(desconto)]);
+    linhas.push(['Subtotal', fmt(preco)]);
+  }
+  linhas.push(['Portes', portes === null ? 'a confirmar'
+    : portes === 0 ? '€0,00 (MBway, sem portes)'
+    : eur(portes) + (pelo_pais ? ' (pelo país indicado)' : '')]);
+
+  let total;
+  if (portes === null) total = fmt(preco) + ' + portes';
+  else if (reais) total = portes ? `${fmt(preco)} + ${eur(portes)}` : fmt(preco);
+  else total = eur(preco + portes);
+  return { linhas, total };
+}
+
 function buildInternalEmail(d, orderNum, p, clientEmailError) {
+  const valor = discriminar(d, p);
   const rows = [
     ['Order', orderNum], ['Name', d.name], ['Email', d.email], ['Phone', d.phone || '—'],
     ['DOB', d.dob || '—'], ['Country', d.country], ['Product', `${p.namePT} (${p.code})`],
@@ -260,6 +321,12 @@ function buildInternalEmail(d, orderNum, p, clientEmailError) {
   <table cellpadding="0" cellspacing="0" style="border-collapse:collapse;width:100%;border:1px solid #e0e0e0;">
     ${rows}
   </table>
+  <h3 style="color:#0d3d2b;margin:20px 0 6px;">Valor da encomenda</h3>
+  <table cellpadding="0" cellspacing="0" style="border-collapse:collapse;width:100%;border:1px solid #e0e0e0;">
+    ${valor.linhas.map(([k, v]) => `<tr><td style="padding:4px 12px;color:#555;">${k}</td><td style="padding:4px 12px;text-align:right;">${v}</td></tr>`).join('')}
+    <tr style="border-top:2px solid #0d3d2b;"><td style="padding:6px 12px;font-weight:bold;">TOTAL</td><td style="padding:6px 12px;text-align:right;font-weight:bold;">${valor.total}</td></tr>
+  </table>
+  ${String(orderNum).indexOf('-') > 0 ? '<p style="color:#777;font-size:12px;">O número leva a hora (HHMM, UTC) porque o contador do dia não respondeu. Não é uma contagem.</p>' : ''}
 </div></body></html>`;
 }
 
@@ -588,7 +655,7 @@ export default {
 
     const isEN    = d.lang === 'en';
     const cc      = countryCode(d.country, d.lang);
-    const orderNum = await generateOrderNumber(cc);
+    const orderNum = await generateOrderNumber(cc, env);
     const from    = isEN ? 'Naturalfarma <orders@ssp3forte.com>' : 'Naturalfarma <encomendas@ssp3forte.com>';
     const subject = isEN
       ? `Your order no. ${orderNum}`
