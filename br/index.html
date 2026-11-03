@@ -1948,8 +1948,8 @@
           <span id="calcTotal">—</span>
         </div>
         <p class="shipping-nota" id="freteNota">
-          <span data-lang-inline="pt">O frete é cobrado em euros e convertido no câmbio do dia; o valor em reais segue no email de confirmação.</span>
-          <span data-lang-inline="en">Shipping is charged in euros and converted at the day's rate; the amount in reais is in the confirmation email.</span>
+          <span data-lang-inline="pt">O frete é cobrado em euros e convertido no câmbio do dia; o valor final em reais segue quando confirmarmos o pedido.</span>
+          <span data-lang-inline="en">Shipping is charged in euros and converted at the day's rate; we will send the final amount in reais when we confirm your order.</span>
         </p>
       </div>
       <div class="pt-payment-options">
@@ -1964,10 +1964,6 @@
               <label class="payment-opt">
                 <input type="radio" name="paymentMethod" value="ctt" onchange="updateTotal()">
                 CTT à cobrança postal
-              </label>
-              <label class="payment-opt">
-                <input type="radio" name="paymentMethod" value="mbway" onchange="updateTotal()">
-                Pague por MBway e envie o valor <strong>SEM portes</strong>
               </label>
             </div>
           </div>
@@ -2583,16 +2579,11 @@ function updateTotal() {
     document.getElementById('calcShipping').textContent = fmt(shippingPrice, '€');
     document.getElementById('calcTotal').textContent = fmt(productPrice + shippingPrice, '€');
   } else {
-    const mbway = valorEscolhido('paymentMethod') === 'mbway';
     let shippingPrice;
-    if (mbway) {
-      shippingPrice = 0;
-    } else {
-      const shippingRadio = valorEscolhido('shippingMethod');
-      if (shippingRadio === 'portugal') shippingPrice = SHIPPING.PT;
-      else if (shippingRadio === 'europa') shippingPrice = SHIPPING.default;
-      else shippingPrice = country.toLowerCase().includes('port') ? SHIPPING.PT : SHIPPING.default;
-    }
+    const shippingRadio = valorEscolhido('shippingMethod');
+    if (shippingRadio === 'portugal') shippingPrice = SHIPPING.PT;
+    else if (shippingRadio === 'europa') shippingPrice = SHIPPING.default;
+    else shippingPrice = country.toLowerCase().includes('port') ? SHIPPING.PT : SHIPPING.default;
     document.getElementById('calcShipping').textContent = fmt(shippingPrice, '€');
     document.getElementById('calcTotal').textContent = fmt(productPrice + shippingPrice, '€');
   }
@@ -3451,7 +3442,7 @@ funnelEvent('view');
   </div>
 </div>
   <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"560644b39d6743d4ba01aab270c4c1bf"}'></script>
-<!-- gerado de index.html sha1:a5921b38aea847f2845400c369eaf90bad7adc66 -->
+<!-- gerado de index.html sha1:ea24aa246321f134773686d24aa8e95cfa914a97 -->
 </body>
 </html>
 

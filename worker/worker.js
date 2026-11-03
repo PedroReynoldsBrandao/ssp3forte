@@ -15,7 +15,6 @@ function paymentLabel(val, lang) {
   const map = {
     'deposito':    { pt: 'Depósito ou Transferência bancária',             en: 'Bank deposit or transfer' },
     'ctt':         { pt: 'CTT à cobrança postal',                        en: 'CTT cash on delivery (postal)' },
-    'mbway':       { pt: 'MBway (sem portes)',                            en: 'MBway (no shipping fee)' },
     'deposito-br': { pt: 'Depósito ou transferência bancária',            en: 'Bank deposit or transfer' },
     'pix':         { pt: 'Pix',                                            en: 'Pix' },
   };
@@ -131,6 +130,7 @@ function addressBlock(d) {
 
 // ── PT / BR confirmation email ───────────────────────────────────────────────
 function buildEmailPT(d, orderNum, p) {
+  const v = discriminar(d, p, 'pt');
   const isBR = d.product.endsWith('-br') || (d.country || '').toLowerCase().includes('brasil');
   const addrLabel = isBR ? 'Endereço de entrega' : 'Morada para entrega';
   return `<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body style="margin:0;padding:0;background:#f5f5f0;font-family:Georgia,serif;">
@@ -154,18 +154,11 @@ function buildEmailPT(d, orderNum, p) {
       <tr style="border-bottom:1px solid #e0ddd5;">
         <td style="padding:10px 12px;">${p.namePT}<br><span style="font-size:11px;color:#7a7d72;">Ref: ${p.code}</span></td>
         <td align="center" style="padding:10px 12px;">${p.qty}</td>
-        <td align="right"  style="padding:10px 12px;">${p.pricePT}</td>
-        <td align="right"  style="padding:10px 12px;">${p.pricePT}</td>
-      </tr>
-      <tr>
-        <td colspan="3" align="right" style="padding:8px 12px;font-weight:bold;">Envio:</td>
-        <td align="right" style="padding:8px 12px;">A confirmar</td>
-      </tr>
-      <tr style="background:#e8f4ee;font-weight:bold;">
-        <td colspan="3" align="right" style="padding:8px 12px;">Total:</td>
-        <td align="right" style="padding:8px 12px;">${p.pricePT} + envio</td>
-      </tr>
+        <td align="right"  style="padding:10px 12px;">${v.unitario}</td>
+        <td align="right"  style="padding:10px 12px;">${v.bruto}</td>
+      </tr>${linhasDoCliente(v, 'Total')}
     </table>
+    ${v.nota ? `<p style="font-size:13px;color:#555;margin:-12px 0 24px;">${v.nota}</p>` : ''}
 
     <table width="100%" cellpadding="0" cellspacing="0" style="font-size:14px;margin-bottom:24px;">
       <tr><td style="padding:3px 0;color:#7a7d72;width:170px;">Forma de pagamento:</td><td>${paymentLabel(d.paymentMethod, 'pt')}</td></tr>
@@ -185,6 +178,7 @@ function buildEmailPT(d, orderNum, p) {
 
 // ── EN confirmation email ────────────────────────────────────────────────────
 function buildEmailEN(d, orderNum, p) {
+  const v = discriminar(d, p, 'en');
   return `<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body style="margin:0;padding:0;background:#f5f5f0;font-family:Georgia,serif;">
 <div style="max-width:600px;margin:32px auto;background:#fff;">
   ${headerHTML}
@@ -206,18 +200,11 @@ function buildEmailEN(d, orderNum, p) {
       <tr style="border-bottom:1px solid #e0ddd5;">
         <td style="padding:10px 12px;">${p.nameEN}<br><span style="font-size:11px;color:#7a7d72;">Ref: ${p.code}</span></td>
         <td align="center" style="padding:10px 12px;">${p.qty}</td>
-        <td align="right"  style="padding:10px 12px;">${p.priceEN}</td>
-        <td align="right"  style="padding:10px 12px;">${p.priceEN}</td>
-      </tr>
-      <tr>
-        <td colspan="3" align="right" style="padding:8px 12px;font-weight:bold;">Shipping:</td>
-        <td align="right" style="padding:8px 12px;">To be confirmed</td>
-      </tr>
-      <tr style="background:#e8f4ee;font-weight:bold;">
-        <td colspan="3" align="right" style="padding:8px 12px;">Total:</td>
-        <td align="right" style="padding:8px 12px;">${p.priceEN} + shipping</td>
-      </tr>
+        <td align="right"  style="padding:10px 12px;">${v.unitario}</td>
+        <td align="right"  style="padding:10px 12px;">${v.bruto}</td>
+      </tr>${linhasDoCliente(v, 'Total')}
     </table>
+    ${v.nota ? `<p style="font-size:13px;color:#555;margin:-12px 0 24px;">${v.nota}</p>` : ''}
 
     <table width="100%" cellpadding="0" cellspacing="0" style="font-size:14px;margin-bottom:24px;">
       <tr><td style="padding:3px 0;color:#7a7d72;width:170px;">Payment method:</td><td>${paymentLabel(d.paymentMethod, 'en')}</td></tr>
@@ -246,50 +233,80 @@ function valorDe(txt) {
   return Number(String(txt).replace(/[^\d,.]/g, '').replace(',', '.'));
 }
 
-function discriminar(d, p) {
+function discriminar(d, p, lang) {
+  const en = lang === 'en';
   const reais = p.pricePT.indexOf('R$') === 0;
-  const fmt = v => reais ? 'R$' + Math.round(v) : '€' + v.toFixed(2).replace('.', ',');
-  const eur = v => '€' + v.toFixed(2).replace('.', ',');
+  const eur = v => '€' + (en ? v.toFixed(2) : v.toFixed(2).replace('.', ','));
+  const fmt = v => reais ? 'R$' + Math.round(v) : eur(v);
 
   const unitario = valorDe(PRODUCTS[reais ? '1x-br' : '1x'].pricePT);
   const bruto = Math.round(unitario * p.qty * 100) / 100;
   const preco = valorDe(p.pricePT);
   const desconto = Math.round((bruto - preco) * 100) / 100;
 
-  // Portes: MBway nao paga; sem metodo escolhido (o formulario ingles nao tem
-  // nenhum), o mesmo criterio do site -- Portugal ou resto, pelo pais.
+  // Portes sem metodo escolhido: o formulario ingles nao tem nenhum, e o site
+  // mostra-lhe sempre os €9,00 do resto do mundo (o ramo isEU do updateTotal).
+  // O email tem de dizer o mesmo numero que o site mostrou. Fora disso, o
+  // criterio de reserva e o pais, como no site.
   let metodo = d.shippingMethod;
   let pelo_pais = false;
-  if (!metodo && !reais) {
-    metodo = String(d.country || '').toLowerCase().indexOf('port') >= 0 ? 'portugal' : 'europa';
+  if (!metodo) {
+    metodo = reais ? 'correio-aereo'
+      : (d.lang !== 'en' && String(d.country || '').toLowerCase().indexOf('port') >= 0)
+        ? 'portugal' : 'europa';
     pelo_pais = true;
   }
   let portes = null;
-  if (d.paymentMethod === 'mbway') portes = 0;
-  else {
-    const m = shippingLabel(metodo, 'pt').match(/\+€([\d.,]+)\)/);
-    if (m) portes = valorDe(m[1]);
-  }
+  const m = shippingLabel(metodo, 'pt').match(/\+€([\d.,]+)\)/);
+  if (m) portes = valorDe(m[1]);
 
-  const linhas = [[`${p.qty} × ${fmt(unitario)}`, fmt(bruto)]];
+  const extra = [];
   if (desconto > 0) {
     const pct = Math.round(100 * desconto / bruto);
-    linhas.push([`Desconto do kit (${pct}%)`, '−' + fmt(desconto)]);
-    linhas.push(['Subtotal', fmt(preco)]);
+    extra.push([en ? `Kit discount (${pct}%)` : `Desconto do kit (${pct}%)`, '−' + fmt(desconto)]);
+    extra.push(['Subtotal', fmt(preco)]);
   }
-  linhas.push(['Portes', portes === null ? 'a confirmar'
-    : portes === 0 ? '€0,00 (MBway, sem portes)'
-    : eur(portes) + (pelo_pais ? ' (pelo país indicado)' : '')]);
+  extra.push([en ? 'Shipping' : (reais ? 'Frete' : 'Portes'),
+    portes === null ? (en ? 'to be confirmed' : 'a confirmar')
+    : eur(portes) + (pelo_pais && d.lang !== 'en' ? ' (pelo país indicado)' : '')]);
 
   let total;
-  if (portes === null) total = fmt(preco) + ' + portes';
-  else if (reais) total = portes ? `${fmt(preco)} + ${eur(portes)}` : fmt(preco);
+  if (portes === null) total = fmt(preco) + (en ? ' + shipping' : ' + portes');
+  else if (reais) total = `${fmt(preco)} + ${eur(portes)}`;
   else total = eur(preco + portes);
-  return { linhas, total };
+
+  // O frete do Brasil e cobrado em euros e convertido no cambio do dia, por isso
+  // um pedido em reais nao tem um total numa so moeda. Dizer porque, em vez de
+  // deixar o cliente a pensar que falta um numero.
+  const nota = reais && portes !== null
+    ? (en ? 'Shipping is charged in euros and converted at the day\'s rate; we will send the final amount in reais when we confirm your order.'
+          : 'O frete é cobrado em euros e convertido no câmbio do dia; o valor final em reais segue quando confirmarmos o pedido.')
+    : '';
+
+  return { unitario: fmt(unitario), bruto: fmt(bruto),
+           linhas: [[`${p.qty} × ${fmt(unitario)}`, fmt(bruto)]].concat(extra),
+           extra, total, nota };
+}
+
+// As linhas de baixo da tabela do cliente: desconto, subtotal, portes e total,
+// com os mesmos numeros do aviso interno. Ate Nov/2026 o cliente lia aqui
+// "Envio: A confirmar / Total: €29,95 + envio" depois de o site lhe ter
+// mostrado o total certo, e "Preço unit." do kit dizia €80,86.
+function linhasDoCliente(v, rotuloTotal) {
+  const td = 'padding:8px 12px;';
+  return v.extra.map(([k, val]) => `
+      <tr>
+        <td colspan="3" align="right" style="${td}">${k}:</td>
+        <td align="right" style="${td}">${val}</td>
+      </tr>`).join('') + `
+      <tr style="background:#e8f4ee;font-weight:bold;">
+        <td colspan="3" align="right" style="${td}">${rotuloTotal}:</td>
+        <td align="right" style="${td}">${v.total}</td>
+      </tr>`;
 }
 
 function buildInternalEmail(d, orderNum, p, clientEmailError) {
-  const valor = discriminar(d, p);
+  const valor = discriminar(d, p, 'pt');
   const rows = [
     ['Order', orderNum], ['Name', d.name], ['Email', d.email], ['Phone', d.phone || '—'],
     ['DOB', d.dob || '—'], ['Country', d.country], ['Product', `${p.namePT} (${p.code})`],
@@ -326,7 +343,7 @@ function buildInternalEmail(d, orderNum, p, clientEmailError) {
     ${valor.linhas.map(([k, v]) => `<tr><td style="padding:4px 12px;color:#555;">${k}</td><td style="padding:4px 12px;text-align:right;">${v}</td></tr>`).join('')}
     <tr style="border-top:2px solid #0d3d2b;"><td style="padding:6px 12px;font-weight:bold;">TOTAL</td><td style="padding:6px 12px;text-align:right;font-weight:bold;">${valor.total}</td></tr>
   </table>
-  ${String(orderNum).indexOf('-') > 0 ? '<p style="color:#777;font-size:12px;">O número leva a hora (HHMM, UTC) porque o contador do dia não respondeu. Não é uma contagem.</p>' : ''}
+  ${/^\d{8}-\d{4}/.test(String(orderNum)) ? '<p style="color:#777;font-size:12px;">O número leva a hora (HHMM, UTC) porque o contador do dia não respondeu. Não é uma contagem.</p>' : ''}
 </div></body></html>`;
 }
 

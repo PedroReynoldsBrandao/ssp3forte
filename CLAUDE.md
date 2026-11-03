@@ -448,7 +448,7 @@ npx wrangler d1 execute ssp3forte-funnel --remote --file=schema.sql
 Safe to run again — everything in it is `IF NOT EXISTS`. Until it has run, every order
 gets the time-stamped number, which is the visible sign that it is missing.
 
-### What the order is worth, in the internal email
+### What the order is worth, in both emails
 
 Asked for by Pedro's father in Oct 2026, for his own records. Under the data table:
 
@@ -460,16 +460,45 @@ Portes                    €5,99
 TOTAL                     €86,85
 ```
 
-Brazilian orders end `TOTAL  R$567 + €9,00`, for the reason in *Pricing*. MBway shows
-`€0,00 (MBway, sem portes)`. An order with no shipping method — the English form has
-none — uses the site's own rule, Portugal or the rest by country, and says
-`(pelo país indicado)`.
+Brazilian orders end `TOTAL  R$567 + €9,00`, for the reason in *Pricing*, and the
+shipping line reads `Frete`. An order with no shipping method — the English form has
+none — gets **the figure the site showed it**: €9,00 for an English visitor (the
+`isEU` branch of `updateTotal` always shows the rest-of-world rate), and otherwise
+the site's own rule, Portugal or the rest by country, marked `(pelo país indicado)`.
 
-**No price is written again for this.** `discriminar()` parses the unit and kit prices
-out of `PRODUCTS` and the shipping out of the `shippingLabel` text, which are exactly
-the two places `tools/check_prices.py` already guards. Verified in Node against the
-real handler for a Portuguese kit, MBway, a Brazilian kit and an English order with
-no shipping method; the Portuguese kit gives €86,85, the same sum the site shows.
+**The customer's confirmation carries the same numbers** since Nov 2026, in their
+language (`€29.95` in English). Until then it read "Envio: A confirmar / Total: €29,95
++ envio" — straight after the site had shown the customer the real total — and the
+kit's "Preço unit." column said €80,86. It came to light in Pedro's test order of
+2 Nov. A Brazilian confirmation adds one line explaining that the freight is in euros
+and the final amount in reais follows when the order is confirmed; the site's note
+under the total says the same thing (it used to promise the reais amount "no email de
+confirmação", which the automatic email cannot give).
+
+**No price is written again for this.** `discriminar(d, p, lang)` parses the unit and
+kit prices out of `PRODUCTS` and the shipping out of the `shippingLabel` text, which
+are exactly the two places `tools/check_prices.py` already guards, and both emails
+call it. Verified in Node against the real handler: a Portuguese bottle €35,94, a kit
+to Spain €89,86, a Brazilian kit R$567 + €9,00, an English bottle €38.95 — and in the
+browser the site shows the same €35,94 and R$210 + €9,00.
+
+**The "o número leva a hora" line under the total** shows only when the number has
+the `YYYYMMDD-HHMM` shape. Between 20 Oct and Nov 2026 it was tested with
+`indexOf('-') > 0`, which every number passes because of the hyphen in `SSP3-Forte` —
+so every internal email claimed the counter had failed. Now `/^\d{8}-\d{4}/`, checked
+with D1 working and with D1 throwing.
+
+### MBway was removed (Nov 2026)
+
+At Pedro's father's decision. It was a third Portuguese payment option, "Pague por
+MBway e envie o valor SEM portes", and nothing else on the form knew what it meant:
+the shipping method stayed on "Correios registado à cobrança (+€5,99)", so an order
+read *MBway, no shipping* and *cash on delivery, +€5,99* at once — which is how Pedro's
+test order of 2 Nov arrived. The radio, the `updateTotal` branch, the label in
+`paymentLabel` and the `€0,00` case in `discriminar` are all gone. A page cached from
+before the change that still sends `mbway` arrives with the raw value and the normal
+shipping, which is visible and harmless. **Do not bring it back without deciding what
+it does to shipping.**
 
 ### Who the internal notification comes from
 
