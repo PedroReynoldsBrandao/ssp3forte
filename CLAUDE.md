@@ -475,6 +475,16 @@ and the final amount in reais follows when the order is confirmed; the site's no
 under the total says the same thing (it used to promise the reais amount "no email de
 confirmação", which the automatic email cannot give).
 
+**The Brazilian confirmation is in Brazilian Portuguese** (Nov 2026). Brazilian
+customers get `buildEmailPT`, and until then only the address heading changed — the
+rest read "entraremos em contacto", "Com os melhores cumprimentos" and "O seu pedido
+n.º". `ehBR(d)` (a `-br` product or a country containing "brasil") now switches the
+greeting to "Olá,", the body to "entraremos em contato em breve", the subject to "Seu
+pedido nº" and the sign-off to "Atenciosamente". Checked by submitting the real form
+on `/`, `/br/`, `/en/` and `/en/?v=int` in Chromium, putting each captured payload
+through the Worker and rendering the email: every total matched what the page had
+shown.
+
 **No price is written again for this.** `discriminar(d, p, lang)` parses the unit and
 kit prices out of `PRODUCTS` and the shipping out of the `shippingLabel` text, which
 are exactly the two places `tools/check_prices.py` already guards, and both emails

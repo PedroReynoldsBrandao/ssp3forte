@@ -101,9 +101,9 @@ const headerHTML = `
   <div style="clear:both;"></div>
 </div>`;
 
-const footerPT = `
+const footerPT = br => `
 <div style="margin-top:32px;padding-top:16px;border-top:1px solid #e8f4ee;color:#7a7d72;font-size:13px;">
-  <p style="margin:0 0 8px;">Com os melhores cumprimentos,<br>
+  <p style="margin:0 0 8px;">${br ? 'Atenciosamente,' : 'Com os melhores cumprimentos,'}<br>
   <strong style="color:#0d3d2b;">Naturalfarma</strong></p>
   <p style="margin:0;font-size:11px;">
     <a href="https://www.ssp3forte.com" style="color:#1a6645;">ssp3forte.com</a> ·
@@ -129,19 +129,28 @@ function addressBlock(d) {
 }
 
 // ── PT / BR confirmation email ───────────────────────────────────────────────
+// O cliente brasileiro le portugues do Brasil, como no site (ver a tabela PT/BR
+// do CLAUDE.md). Ate Nov/2026 so a morada mudava; o resto ia em portugues
+// europeu -- "entraremos em contacto", "Com os melhores cumprimentos".
+function ehBR(d) {
+  return String(d.product || '').endsWith('-br') || String(d.country || '').toLowerCase().includes('brasil');
+}
+
 function buildEmailPT(d, orderNum, p) {
   const v = discriminar(d, p, 'pt');
-  const isBR = d.product.endsWith('-br') || (d.country || '').toLowerCase().includes('brasil');
+  const isBR = ehBR(d);
   const addrLabel = isBR ? 'Endereço de entrega' : 'Morada para entrega';
   return `<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body style="margin:0;padding:0;background:#f5f5f0;font-family:Georgia,serif;">
 <div style="max-width:600px;margin:32px auto;background:#fff;">
   ${headerHTML}
   <div style="padding:32px;">
-    <p style="margin-top:0;">Caro ${d.name},</p>
-    <p>Recebemos o seu pedido e entraremos em contacto brevemente para confirmar os detalhes de pagamento e envio.</p>
+    <p style="margin-top:0;">${isBR ? `Olá, ${d.name},` : `Caro ${d.name},`}</p>
+    <p>${isBR
+      ? 'Recebemos seu pedido e entraremos em contato em breve para confirmar os detalhes de pagamento e envio.'
+      : 'Recebemos o seu pedido e entraremos em contacto brevemente para confirmar os detalhes de pagamento e envio.'}</p>
 
     <div style="background:#e8f4ee;border-left:3px solid #1a6645;padding:14px 18px;margin:24px 0;">
-      <strong>Pedido n.º ${orderNum}</strong>
+      <strong>Pedido ${isBR ? 'nº' : 'n.º'} ${orderNum}</strong>
     </div>
 
     <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;font-size:14px;margin-bottom:24px;">
@@ -171,7 +180,7 @@ function buildEmailPT(d, orderNum, p) {
     </div>
 
     ${d.notes ? `<div style="font-size:14px;margin-bottom:16px;"><strong>Comentários adicionais:</strong><br>${d.notes}</div>` : ''}
-    ${footerPT}
+    ${footerPT(isBR)}
   </div>
 </div></body></html>`;
 }
@@ -676,7 +685,7 @@ export default {
     const from    = isEN ? 'Naturalfarma <orders@ssp3forte.com>' : 'Naturalfarma <encomendas@ssp3forte.com>';
     const subject = isEN
       ? `Your order no. ${orderNum}`
-      : `O seu pedido n.º ${orderNum}`;
+      : ehBR(d) ? `Seu pedido nº ${orderNum}` : `O seu pedido n.º ${orderNum}`;
 
     // A confirmacao ao cliente e o aviso interno sao enviados em separado, e por
     // esta ordem de prioridade: o aviso interno e o registo da encomenda, a
