@@ -41,16 +41,60 @@ const PRODUCTS = {
 };
 
 // ── Country code helper ──────────────────────────────────────────────────────
-function countryCode(country, lang) {
-  const c = (country || '').toLowerCase();
-  if (c.includes('brasil') || c.includes('brazil'))         return 'BR';
-  if (c.includes('portugal'))                                return 'PT';
-  if (c.includes('angola'))                                  return 'AO';
-  if (c.includes('moçambique') || c.includes('mozambique')) return 'MZ';
-  if (c.includes('cabo verde') || c.includes('cape verde')) return 'CV';
-  if (c.includes('timor'))                                   return 'TL';
-  if (lang === 'en')                                         return 'EU';
-  return (c.trim().slice(0, 2) || 'XX').toUpperCase();
+// O sufixo do numero, "SSP3-Forte(PT)", e o que o Sr. le primeiro. Ate Nov/2026
+// qualquer pais fora de seis lusofonos virava "EU" no formulario ingles -- uma
+// encomenda dos EUA saia "(EU)" -- e no portugues as duas primeiras letras do
+// que o cliente escreveu ("Espanha" dava "ES" por sorte, "Suica" dava "SU").
+// Agora e o codigo ISO de cada pais da lista, em portugues ou ingles, com ou sem
+// acentos; um pais que a lista nao conheca da "INT", que nao finge ser nada --
+// o pais escrito pelo cliente vem sempre na tabela do email.
+const PAISES = [
+  ['PT', ['portugal']],
+  ['BR', ['brasil', 'brazil']],
+  ['AO', ['angola']],
+  ['MZ', ['mocambique', 'mozambique']],
+  ['CV', ['cabo verde', 'cape verde']],
+  ['GW', ['guine bissau', 'guinea bissau']],
+  ['ST', ['sao tome']],
+  ['TL', ['timor']],
+  ['MO', ['macau', 'macao']],
+  ['ES', ['espanha', 'spain', 'espana']],
+  ['FR', ['franca', 'france']],
+  ['DE', ['alemanha', 'germany', 'deutschland']],
+  ['GB', ['reino unido', 'united kingdom', 'uk', 'u k', 'gra bretanha', 'great britain',
+          'inglaterra', 'england', 'escocia', 'scotland', 'pais de gales', 'wales']],
+  ['IE', ['irlanda', 'ireland']],
+  ['IT', ['italia', 'italy']],
+  ['CH', ['suica', 'switzerland', 'schweiz', 'suisse', 'svizzera']],
+  ['LU', ['luxemburgo', 'luxembourg']],
+  ['BE', ['belgica', 'belgium', 'belgique', 'belgie']],
+  ['NL', ['paises baixos', 'holanda', 'netherlands', 'holland', 'nederland']],
+  ['AT', ['austria', 'osterreich']],
+  ['PL', ['polonia', 'poland', 'polska']],
+  ['SE', ['suecia', 'sweden']],
+  ['NO', ['noruega', 'norway']],
+  ['DK', ['dinamarca', 'denmark']],
+  ['FI', ['finlandia', 'finland']],
+  ['GR', ['grecia', 'greece']],
+  ['AD', ['andorra']],
+  ['US', ['estados unidos', 'united states', 'usa', 'u s a', 'us', 'u s', 'eua']],
+  ['CA', ['canada']],
+  ['VE', ['venezuela']],
+  ['AR', ['argentina']],
+  ['UY', ['uruguai', 'uruguay']],
+  ['ZA', ['africa do sul', 'south africa']],
+  ['AU', ['australia']],
+];
+
+function countryCode(country) {
+  // Sem acentos, minusculas, pontuacao como espaco: "Suíça", "U.S.A." e
+  // "Guiné-Bissau" ficam "suica", "u s a" e "guine bissau".
+  const c = ' ' + String(country || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase().replace(/[^a-z]+/g, ' ').trim() + ' ';
+  for (const [codigo, nomes] of PAISES) {
+    if (nomes.some(n => c.indexOf(' ' + n + ' ') >= 0)) return codigo;
+  }
+  return 'INT';
 }
 
 // ── Order number generator ───────────────────────────────────────────────────
@@ -680,7 +724,7 @@ export default {
     }
 
     const isEN    = d.lang === 'en';
-    const cc      = countryCode(d.country, d.lang);
+    const cc      = countryCode(d.country);
     const orderNum = await generateOrderNumber(cc, env);
     const from    = isEN ? 'Naturalfarma <orders@ssp3forte.com>' : 'Naturalfarma <encomendas@ssp3forte.com>';
     const subject = isEN

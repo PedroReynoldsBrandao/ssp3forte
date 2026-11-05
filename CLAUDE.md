@@ -642,11 +642,16 @@ with D1 throwing and with D1 absent: the order still returns 200 with
 counts are honest-but-forgeable — fine for reading your own funnel, not a metric
 to defend.
 
-**Country code logic** in order numbers:
-- `Brasil` / `Brazil` → `BR`
-- `Portugal` → `PT`
-- `Angola` → `AO`
-- EN lang, other → `EU`
+**Country code in the order number** (`SSP3-Forte(PT)`) — the ISO code from the
+`PAISES` table in `worker.js`: about thirty countries, each under its Portuguese and
+English names, matched without accents or punctuation, so "Suíça", "U.S.A." and
+"Guiné-Bissau" give `CH`, `US` and `GW`. **A country not in the table gives `INT`**;
+the country as the customer wrote it is always in the email's data table.
+
+Until Nov 2026 only six Lusophone countries were recognised. Anything else on the
+English form became `EU` — an order from the United States arrived as `(EU)` — and on
+the Portuguese form the first two letters of whatever was typed (`Suíça` → `SU`). Add
+a country to `PAISES` when one turns up as `INT`. Tested against 34 spellings.
 
 **Email routing:**
 - PT/BR orders → to `encomendas@ssp3forte.com`
