@@ -6,6 +6,85 @@ Single-page marketing website for **SSP3-Forte**, a natural prostate-health supp
 
 **Stack:** Pure HTML + CSS + vanilla JS in a single source file, **`fonte.html`**, which holds all three languages. No framework, no npm. One Python script, `tools/gen_lang_pages.py`, turns it into the three published pages — `index.html`, `br/index.html`, `en/index.html` — each carrying only its own language. **Edit `fonte.html`, never the three generated pages** (see *One URL per language*).
 
+## Start here: the rules that are easy to break
+
+The detail behind each is further down; this is the list to read first.
+
+1. **Edit `fonte.html`, never `index.html`, `br/` or `en/`.** Then
+   `python tools/gen_lang_pages.py` and `python tools/check_prices.py`, then push.
+   An edit made straight to a generated page — on GitHub's web editor included — is
+   lost at the next generation. *One URL per language*.
+2. **A push does not touch the Worker.** Any change to `worker/worker.js` is live only
+   after `cd worker && npx.cmd wrangler deploy` on Pedro's Windows machine, and only if
+   the output lists `env.FUNNEL (ssp3forte-funnel) D1 Database`. Compare the upload
+   size with a `--dry-run` from here. *Deploying*.
+3. **The repo is public.** No customer data (`satisfaction_dataset/` stays out), no
+   secrets (`RESEND_API_KEY` lives only in Cloudflare), no NIF on the page until Pedro
+   says so, nothing about the revoked Spanish company.
+4. **The live site can differ from the repo.** Cloudflare sits in front of it: its
+   managed robots.txt blocked AI crawlers for months while the repo's file allowed
+   everything. Check the live URL, not the file. *AI crawlers are allowed*.
+5. **Decisions already taken — do not reopen them unasked:** the ingredient
+   descriptions stay as written; the unqualified "perto de 9 em cada 10" in the info
+   modal is the client's call; the replaced claims stay replaced; MBway stays out;
+   AI crawlers stay allowed; no exchange rate written into the code; nothing stored on
+   the visitor's device.
+6. **The script must parse as ES2017.** One syntax error kills the order form
+   silently. Check with acorn. *The script must parse on a 2017 browser*.
+
+## Pending and open items (as of 11 Nov 2026)
+
+Kept here so they survive between sessions. Remove an item when it is done.
+
+**Waiting on Pedro (actions only he can take)**
+
+- **Worker deploy** of commits `11dacf0` (Brazilian confirmation in Brazilian
+  Portuguese) and `f79ee44` (real country code in the order number, `(INT)` for an
+  unknown one). Dry-run: **32.10 KiB** with the `env.FUNNEL` binding. The last deploy
+  Pedro made was 30.49 KiB, after `0d4b109`.
+- **Confirm the internal order emails reach `leptix@gmail.com`.** Never verified from
+  here — the Gmail connector reaches only Pedro's own account. Ways to check: search
+  `in:anywhere "Novo pedido 2026110201"` in that mailbox (the test order of 2 Nov), or
+  Cloudflare → Email → Email Routing → Activity Log. Then a fresh test order after the
+  deploy above.
+- **Check the live site after the one-language pages (`035499a`)**: `/`, `/br/`, `/en/`
+  look as before, and `ssp3forte.com/fonte.html` answers **404**. This environment
+  cannot reach ssp3forte.com through its proxy, so the 404 has not been seen.
+- **Perplexity** was reported blocked by Cloudflare's network-level bot blocking, not
+  by robots.txt. Turning off the managed robots.txt does not change that; Pedro's
+  father re-running his check will show whether "Block AI bots" / Bot Fight Mode in
+  Cloudflare still needs switching off.
+- **The NIF decision** — see *Who sells*.
+- **Read `/stats`** with the token and share the numbers; nobody has read the funnel
+  in earnest yet.
+
+**Raised, not done — Pedro said "as coisas pequenas deixa tar, mais tarde trato delas"**
+
+- The EN/INT form offers **no payment and no shipping method** ("To be confirmed").
+- **Honeypot** field against spam on the order form — spam counts as a sale in the
+  funnel. *The order form has no spam protection*.
+- **Pix key** in the Brazilian confirmation email (needs the key from Pedro).
+- The city placeholder reads **"Lisboa"** when the country is Brazil.
+- `/stats` header should say "data since 13/10 — N days" instead of "last 30 days".
+- On `/en/` the site shows `€29,95` with a comma while the email shows `€29.95`.
+- A **live exchange rate** for Brazil — a third-party request on a site that makes
+  none today; Pedro's trade to make. *Pricing*.
+- **Repeat customers**: the old Webnode shop had "cliente já registado", so a returning
+  buyer reordered without retyping. For a supplement taken over months that is likely
+  where the business is; a light version is worth thinking about one day.
+- Request indexing of the English articles in Search Console; review the Brazilian
+  orders of 20 Jul–12 Sep 2026, whose emails quoted R$165; moving the blog to
+  `ssp3forte.com/artigos/`; the stale branches `cloudflare/*` and `teste-permissao-tmp`
+  (cannot be deleted from this environment).
+
+**The conversation still to have: traffic.** Pedro asked to keep this idea ("guarda
+essa ideia dos anúncios"). The old Webnode shop brought **over 1,100 Brazilian
+customers with paid ads**, through a form worse than this one — so the form was never
+the reason it converted, the traffic was. Paid ads bring people who have decided to
+buy; the blog and Facebook bring people reading about the prostate. With ~290 visits
+a month no amount of form tuning produces orders. If ads come back, the honeypot
+above becomes urgent, since spam volume comes with them.
+
 ## Working on another machine
 
 Everything the site needs is in the repo. Three things are **not**, and they are the ones that catch you out.
