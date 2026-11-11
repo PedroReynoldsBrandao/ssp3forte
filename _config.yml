@@ -18,7 +18,11 @@
 # Para privacidade a serio seria preciso tornar o repositorio privado.
 #
 # Ao acrescentar ficheiros que nao sejam o site, juntar aqui.
+#
+# fonte.html e a origem das tres paginas, com as tres linguas la dentro. Se fosse
+# publicada, seria uma quarta pagina a competir com elas na Google.
 exclude:
+  - fonte.html
   - CLAUDE.md
   - README.md
   - .gitignore

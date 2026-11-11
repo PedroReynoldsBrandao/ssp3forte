@@ -5,7 +5,7 @@
 
 O preco esta escrito em varios sitios que nao sabem uns dos outros:
 
-    index.html        o objecto PRICES (o calculo), os cartoes de preco em cada
+    fonte.html        o objecto PRICES (o calculo), os cartoes de preco em cada
                       bloco de lingua e as <option> do formulario
     worker/worker.js  a tabela PRODUCTS, que decide o preco que vai no email,
                       e o shippingLabel, que escreve os portes nesse email
@@ -17,14 +17,14 @@ decisao certa, mas tem este custo: os dois ficheiros podem afastar-se sem que
 nada de alarme. Foi o que aconteceu entre 20/07/2026 e 12/09/2026, com o site a
 mostrar R$210 e os emails a dizerem R$165 durante 54 dias.
 
-Este script trata o objecto PRICES do index.html como a fonte da verdade e
+Este script trata o objecto PRICES da fonte.html como a fonte da verdade e
 compara tudo o resto com ele. Corre-o antes de publicar sempre que mexeres em
 precos, portes ou nos emails de contacto.
 
 Sai com codigo 0 se estiver tudo certo, 1 se houver divergencias.
 Funciona a partir da raiz do repositorio ou de dentro de tools/.
 """
-import hashlib, io, json, os, re, sys
+import io, json, os, re, sys
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -59,7 +59,7 @@ def formata(v, c):
 def ler_precos(html):
     m = re.search(r"const PRICES\s*=\s*\{([^}]*)\}", html)
     if not m:
-        sys.exit("nao encontrei o objecto PRICES no index.html")
+        sys.exit("nao encontrei o objecto PRICES na fonte.html")
     return {k: round(float(v), 2)
             for k, v in re.findall(r"'([^']+)'\s*:\s*([0-9.]+)", m.group(1))}
 
@@ -67,7 +67,7 @@ def ler_precos(html):
 def ler_portes(html):
     m = re.search(r"const SHIPPING\s*=\s*\{([^}]*)\}", html)
     if not m:
-        sys.exit("nao encontrei o objecto SHIPPING no index.html")
+        sys.exit("nao encontrei o objecto SHIPPING na fonte.html")
     return {k: round(float(v), 2)
             for k, v in re.findall(r"(\w+)\s*:\s*([0-9.]+)", m.group(1))}
 
@@ -110,7 +110,7 @@ def conferir_cartoes(precos, html, falhas):
 
     for simbolo, v, linha in vistos:
         if v not in [p for k, p in precos.items() if moeda(k) == simbolo]:
-            falhas.append("index.html:%d cartao mostra %s, que nao esta em PRICES"
+            falhas.append("fonte.html:%d cartao mostra %s, que nao esta em PRICES"
                           % (linha, formata(v, simbolo)))
 
     # cada preco tem de aparecer pelo menos num cartao
@@ -131,7 +131,7 @@ def conferir_riscados(precos, html, falhas):
             continue
         if valor(escrito) != round(base * 3, 2):
             falhas.append(
-                "index.html:%d preco riscado diz %s, mas 3 frascos a %s dao %s"
+                "fonte.html:%d preco riscado diz %s, mas 3 frascos a %s dao %s"
                 % (linha, escrito, formata(base, c), formata(base * 3, c)))
 
 
@@ -143,7 +143,7 @@ def conferir_opcoes(precos, html, falhas):
             continue
         linha = html[:m.start()].count("\n") + 1
         if valor(rotulo.split("—")[-1]) != precos[chave]:
-            falhas.append("index.html:%d a opcao '%s' diz \"%s\", mas o site cobra %s"
+            falhas.append("fonte.html:%d a opcao '%s' diz \"%s\", mas o site cobra %s"
                           % (linha, chave, rotulo.strip(),
                              formata(precos[chave], moeda(chave))))
 
@@ -153,9 +153,9 @@ def conferir_opcoes(precos, html, falhas):
     # escrever um preco dentro do ROTULOS. E isso que se confere agora.
     m = re.search(r"const ROTULOS\s*=\s*\{(.*?)\n\};", html, re.S)
     if not m:
-        falhas.append("index.html: nao encontrei o ROTULOS (os nomes dos produtos)")
+        falhas.append("fonte.html: nao encontrei o ROTULOS (os nomes dos produtos)")
     elif re.search(r"€|R\$", m.group(1)):   # "SSP3-Forte" e "3-bottle" tem digitos; um preco tem moeda
-        falhas.append("index.html: o ROTULOS voltou a ter precos escritos a mao -- "
+        falhas.append("fonte.html: o ROTULOS voltou a ter precos escritos a mao -- "
                       "deve ter so nomes, o preco vem do PRICES")
 
 
@@ -163,7 +163,7 @@ def conferir_portes_do_worker(portes, js, falhas):
     """Os portes que o email diz ao cliente.
 
     O shippingLabel do worker tem o valor escrito por extenso dentro do rotulo,
-    longe do SHIPPING do index.html. Em Out/2026 dizia "+€4,99" enquanto o site
+    longe do SHIPPING da fonte.html. Em Out/2026 dizia "+€4,99" enquanto o site
     cobrava €5,99 -- o mesmo erro dos R$165, no mesmo tipo de sitio, e este
     script passava-lhe ao lado porque so olhava para a tabela PRODUCTS."""
     ESPERADO = {"portugal": "PT", "europa": "default", "correio-aereo": "BR"}
@@ -189,7 +189,7 @@ def conferir_dados_estruturados(precos, html, falhas):
     try:
         d = json.loads(m.group(1))
     except ValueError as e:
-        falhas.append("o JSON-LD do index.html nao e JSON valido: %s" % e)
+        falhas.append("o JSON-LD da fonte.html nao e JSON valido: %s" % e)
         return
 
     produtos = [n for n in d.get("@graph", []) if n.get("@type") == "Product"]
@@ -214,32 +214,36 @@ def conferir_dados_estruturados(precos, html, falhas):
 
 
 def conferir_paginas_de_lingua(falhas):
-    """As copias em /br/ e /en/ sao geradas do index.html e ficam para tras.
+    """index.html, /br/ e /en/ sao gerados da fonte.html e ficam para tras.
 
-    O apply_modal.py e o gen_blog_index.py reescrevem o index.html, e quem nao
-    souber desta dependencia publica um /br/ com os modais antigos sem nada se
-    queixar. Cada copia leva a impressao digital do index.html de onde saiu."""
-    caminho_index = os.path.join(RAIZ, 'index.html')
-    atual = hashlib.sha1(io.open(caminho_index, 'rb').read()).hexdigest()
-    for pasta in ('br', 'en'):
-        f = os.path.join(RAIZ, pasta, 'index.html')
-        if not os.path.exists(f):
-            falhas.append("falta /%s/index.html -- correr: python tools/gen_lang_pages.py" % pasta)
-            continue
-        m = re.search(r'<!-- gerado de index\.html sha1:([0-9a-f]{40}) -->',
-                      io.open(f, encoding='utf-8').read())
-        if not m:
-            falhas.append("/%s/index.html nao tem a marca de origem -- regerar" % pasta)
-        elif m.group(1) != atual:
-            falhas.append("/%s/index.html foi gerado de outra versao do index.html "
-                          "-- correr: python tools/gen_lang_pages.py" % pasta)
+    O apply_modal.py e o gen_blog_index.py reescrevem a fonte.html, e quem nao
+    souber desta dependencia publica as paginas antigas sem nada se queixar. Ao
+    contrario de uma impressao digital, regerar em memoria e comparar apanha
+    tambem quem editou uma pagina gerada a mao -- alteracao que se perderia na
+    proxima geracao."""
+    sys.path.insert(0, os.path.join(RAIZ, 'tools'))
+    import gen_lang_pages as g
+    saida = g.gerar()
+    falhas.extend(g.verificar(saida))
+    for caminho, conteudo in sorted(saida.items()):
+        nome = os.path.relpath(caminho, RAIZ).replace(os.sep, '/')
+        if not os.path.exists(caminho):
+            falhas.append("falta %s -- correr: python tools/gen_lang_pages.py" % nome)
+        elif io.open(caminho, encoding='utf-8', newline='').read() != conteudo:
+            falhas.append("%s nao bate com a fonte.html (desactualizado ou editado a mao) "
+                          "-- correr: python tools/gen_lang_pages.py" % nome)
+
+    # a origem tem as tres linguas e nao pode ser publicada: competiria com /
+    cfg = io.open(os.path.join(RAIZ, '_config.yml'), encoding='utf-8').read()
+    if not re.search(r'^\s*-\s*fonte\.html\s*$', cfg, re.M):
+        falhas.append("_config.yml nao exclui a fonte.html -- seria publicada")
 
 
 def conferir_emails(html, js, falhas):
     """Os dois enderecos tem de existir dos dois lados."""
     for email in ("encomendas@ssp3forte.com", "orders@ssp3forte.com"):
         if email not in html:
-            falhas.append("o index.html nao menciona %s" % email)
+            falhas.append("a fonte.html nao menciona %s" % email)
         if email not in js:
             falhas.append("o worker.js nao menciona %s" % email)
 
@@ -271,7 +275,7 @@ def conferir_documentacao(precos, portes, md, falhas):
 # ── ponto de entrada ─────────────────────────────────────────────────────────
 
 def main():
-    html = ler("index.html")
+    html = ler("fonte.html")
     js = ler(os.path.join("worker", "worker.js"))
     md = ler("CLAUDE.md")
 
@@ -288,7 +292,7 @@ def main():
     conferir_emails(html, js, falhas)
     conferir_documentacao(precos, portes, md, falhas)
 
-    print("precos no site (fonte: o objecto PRICES do index.html)")
+    print("precos no site (fonte: o objecto PRICES da fonte.html)")
     for chave, v in sorted(precos.items()):
         print("   %-7s %s" % (chave, formata(v, moeda(chave))))
     print("portes: Portugal €%.2f, resto €%.2f" % (portes["PT"], portes["default"]))

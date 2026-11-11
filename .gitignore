@@ -17,3 +17,6 @@ tools/survey_modal_v2.txt
 _p.js
 _rev-*.html
 _t-*.html
+
+# cache do python ao importar tools/gen_lang_pages.py
+__pycache__/

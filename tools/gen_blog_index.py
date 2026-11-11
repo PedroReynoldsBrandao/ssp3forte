@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
-"""Gera a lista de todos os artigos do blog, em HTML, dentro do index.html.
+"""Gera a lista de todos os artigos do blog, em HTML, dentro da fonte.html.
+
+Depois e preciso regerar as paginas publicadas:  python tools/gen_lang_pages.py
 
     python tools/gen_blog_index.py
 
@@ -20,8 +22,8 @@ Este script escreve, dentro do bloco .blog-all de cada lingua, uma lista simples
 com TODOS os artigos da reserva. Ficam sempre no HTML, sao visiveis, e apontam
 para onde dizem apontar -- nada escondido.
 
-A fonte continua a ser BLOG_POSTS / BLOG_POSTS_EN: o script le-as do proprio
-index.html e deriva a lista. Nao ha titulos duplicados a mao para ficarem
+A fonte continua a ser BLOG_POSTS / BLOG_POSTS_EN: o script le-as da propria
+fonte.html e deriva a lista. Nao ha titulos duplicados a mao para ficarem
 dessincronizados. Corre-o depois de acrescentares um artigo a qualquer reserva.
 
 E idempotente: correr sem alterar nada reproduz o ficheiro byte a byte, incluindo
@@ -31,7 +33,7 @@ import io, os, re, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
-INDEX = os.path.join(ROOT, 'index.html')
+INDEX = os.path.join(ROOT, 'fonte.html')
 
 CR, LF = chr(13), chr(10)
 CRLF = CR + LF
@@ -51,7 +53,7 @@ def ler_reserva(html, nome):
     """Extrai [(url, {campo: valor})] de BLOG_POSTS / BLOG_POSTS_EN."""
     m = re.search(r'const ' + nome + r'\s*=\s*\[(.*?)\n\];', html, re.S)
     if not m:
-        sys.exit('nao encontrei %s no index.html' % nome)
+        sys.exit('nao encontrei %s na fonte.html' % nome)
 
     entradas = []
     for bruto in re.findall(r'\{(.*?)\}\s*,?\s*(?=\{|$)', m.group(1), re.S):
@@ -86,7 +88,7 @@ def main():
     for lingua, reserva, campo, rotulo in LINGUAS:
         ini, fim = INICIO % lingua, FIM % lingua
         if ini not in s or fim not in s:
-            sys.exit('faltam os marcadores de "%s" no index.html '
+            sys.exit('faltam os marcadores de "%s" na fonte.html '
                      '(procurei %s)' % (lingua, ini))
 
         entradas = ler_reserva(s, reserva)

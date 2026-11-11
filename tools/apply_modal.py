@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
-"""Corre um gerador de modal e cola o resultado no index.html.
+"""Corre um gerador de modal e cola o resultado na fonte.html.
+
+Depois e preciso regerar as paginas publicadas:  python tools/gen_lang_pages.py
 
     python tools/apply_modal.py info      -> #info-modal
     python tools/apply_modal.py survey    -> #survey-modal
@@ -13,14 +15,14 @@ E idempotente: correr sem alterar nada reproduz o ficheiro byte a byte, incluind
 os fins-de-linha. Isso torna-o seguro de correr so para confirmar o estado.
 
 Depois de correr, confirmar a sintaxe do JS da pagina antes do commit:
-    python -c "import io,re; s=io.open('index.html',encoding='utf-8').read(); io.open('_p.js','w',encoding='utf-8').write(re.findall(r'<script>(.*?)</script>',s,re.S)[0])"
+    python -c "import io,re; s=io.open('fonte.html',encoding='utf-8').read(); io.open('_p.js','w',encoding='utf-8').write(re.findall(r'<script>(.*?)</script>',s,re.S)[0])"
     node --check _p.js
 """
 import io, os, subprocess, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
-INDEX = os.path.join(ROOT, 'index.html')
+INDEX = os.path.join(ROOT, 'fonte.html')
 
 CR = chr(13)
 LF = chr(10)

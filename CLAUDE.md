@@ -4,7 +4,7 @@
 
 Single-page marketing website for **SSP3-Forte**, a natural prostate-health supplement distributed by Naturalfarma. Hosted at [ssp3forte.com](https://ssp3forte.com) via GitHub Pages (repo: `PedroReynoldsBrandao/ssp3forte`).
 
-**Stack:** Pure HTML + CSS + vanilla JS in a single file (`index.html`). No build tools, no framework, no npm. What you edit is what ships.
+**Stack:** Pure HTML + CSS + vanilla JS in a single source file, **`fonte.html`**, which holds all three languages. No framework, no npm. One Python script, `tools/gen_lang_pages.py`, turns it into the three published pages — `index.html`, `br/index.html`, `en/index.html` — each carrying only its own language. **Edit `fonte.html`, never the three generated pages** (see *One URL per language*).
 
 ## Working on another machine
 
@@ -15,7 +15,7 @@ git clone https://github.com/PedroReynoldsBrandao/ssp3forte.git
 cd ssp3forte
 ```
 
-**Prerequisites:** git, Python 3 (the two modal generators, no third-party packages), Node (only for `node --check` and `npx wrangler`), curl. Nothing to install, no `npm install`, no build step.
+**Prerequisites:** git, Python 3 (needed for every site change, since the published pages are generated — no third-party packages), Node (only for `node --check` and `npx wrangler`), curl. Nothing to install, no `npm install`, no build step.
 
 **What is not in the repo, and why**
 
@@ -27,7 +27,7 @@ cd ssp3forte
 
 **Deploying**
 
-- **Site:** push to `main`. GitHub Pages rebuilds in roughly 30–90 seconds. Confirm with `curl -s https://ssp3forte.com/ | grep <something you changed>` rather than trusting the push.
+- **Site:** `python tools/gen_lang_pages.py`, then `python tools/check_prices.py`, then push to `main`. GitHub Pages rebuilds in roughly 30–90 seconds. Confirm with `curl -s https://ssp3forte.com/ | grep <something you changed>` rather than trusting the push.
 - **Worker:** `cd worker && npx wrangler deploy`. On Windows PowerShell the execution policy blocks the `npx.ps1` shim — use `npx.cmd wrangler deploy`. **The only config is `worker/wrangler.toml`, and `worker/` is the directory you deploy from.** A `wrangler.jsonc` used to sit at the repo root — same worker name, pointing at the same script, but with no bindings and no cron. Deploying from the root picked it up and shipped a Worker with `env.FUNNEL` undefined, reporting a clean "uploaded" with no bindings listed. It cost a debugging round in Oct 2026 and was deleted. **Do not recreate a second config.** After every deploy, read the bindings Wrangler lists back:
 
 ```
@@ -39,7 +39,7 @@ No such line means no binding, whatever the upload said. `npx wrangler deploy --
 
 **Editing the two modals**
 
-Do not hand-edit the three language blocks in `index.html`. Edit the generator, then splice:
+Do not hand-edit the three language blocks in `fonte.html`. Edit the generator, then splice (and regenerate the pages afterwards):
 
 ```bash
 python tools/apply_modal.py both     # or: info | survey
@@ -55,7 +55,7 @@ python tools/check_prices.py
 
 The price is written in places that do not know about each other: the `PRICES`
 object, the pricing cards in each language block and the form's `<option>` labels
-(all in `index.html`), the `PRODUCTS` table and the `shippingLabel` map in
+(all in `fonte.html`), the `PRODUCTS` table and the `shippingLabel` map in
 `worker/worker.js`, and the tables in this file. The Worker deliberately prices
 from its own table rather than from the submitted payload — otherwise anyone
 could forge an order at an invented price — so the two can drift with nothing to
@@ -107,10 +107,10 @@ whole script.
 **Checking your work before committing**
 
 ```bash
-python -c "import io,re; s=io.open('index.html',encoding='utf-8').read(); io.open('_p.js','w',encoding='utf-8').write(re.findall(r'<script>(.*?)</script>',s,re.S)[0])" && node --check _p.js && rm _p.js
+python -c "import io,re; s=io.open('fonte.html',encoding='utf-8').read(); io.open('_p.js','w',encoding='utf-8').write(re.findall(r'<script>(.*?)</script>',s,re.S)[0])" && node --check _p.js && rm _p.js
 ```
 
-All the CSS and JS is inside `index.html`, so a stray quote takes the whole page down with no build step to catch it. To read a language variant as a visitor sees it, write `index.html` out with `<body class="lang-pt|lang-br|lang-en|lang-world">` and open that file — the switching is pure CSS, so a static copy renders correctly (the JS-rendered blog grid will be empty).
+All the CSS and JS is inside `fonte.html`, so a stray quote takes the whole page down with no build step to catch it. To read a language variant locally, open `fonte.html` itself as a file and use the flags — it still carries all three languages and `irParaLingua()` switches in place there; or serve the repo (`npx http-server -s .`) and open `/`, `/br/`, `/en/`. A generated page opened as a `file:` has only its own language and its flags lead nowhere.
 
 ## Survey figures (so the site is maintainable without the dataset)
 
@@ -129,7 +129,8 @@ Within the n=67 group: very satisfied 22 (32.8%), satisfied 37 (55.2%), slightly
 
 | File | Purpose |
 |---|---|
-| `index.html` | The entire website — HTML, CSS, and JS all in one file |
+| `fonte.html` | **The source** — the entire website, HTML, CSS and JS, all three languages. Not published (`_config.yml`) |
+| `index.html`, `br/index.html`, `en/index.html` | **Generated** from `fonte.html`, one language each. Do not edit |
 | `frasco.jpg` | Product photo used as favicon and hero image |
 | `imgs/` | Ingredient photos (`01`–`08`) at full size, flags (`pt`, `br`, `eu`, `world`) |
 | `imgs/mini/` | The 252px thumbnails the page actually shows — generated, see *Image weight* |
@@ -138,10 +139,10 @@ Within the n=67 group: very satisfied 22 (32.8%), satisfied 37 (55.2%), slightly
 | `worker/wrangler.toml` | Wrangler config for deploying the Worker |
 | `worker/schema.sql` | Table for the order funnel (D1); the file's header carries the setup commands |
 | `tools/gen_survey.py`, `tools/gen_info_modal.py` | Generators for the two modals’ three-language markup |
-| `tools/apply_modal.py` | Runs a generator and splices the result into `index.html` |
-| `tools/check_prices.py` | Checks the price in index.html, worker.js and this file still agree |
-| `tools/gen_blog_index.py` | Writes the crawlable all-articles list into `index.html` from the pools |
-| `tools/gen_lang_pages.py` | Builds `/br/` and `/en/` from `index.html`; **run it last** |
+| `tools/apply_modal.py` | Runs a generator and splices the result into `fonte.html` |
+| `tools/check_prices.py` | Checks the price in fonte.html, worker.js and this file still agree, and that the generated pages match the source |
+| `tools/gen_blog_index.py` | Writes the crawlable all-articles list into `fonte.html` from the pools |
+| `tools/gen_lang_pages.py` | Builds `/`, `/br/` and `/en/` from `fonte.html`; **run it last**; `--check` changes nothing |
 | `tools/gen_thumbs.py` | Builds `imgs/mini/` from the ingredient photos; `--check` catches a stale one |
 | `_config.yml` | Jekyll exclude list — keeps non-site files from being published |
 | `robots.txt`, `sitemap.xml` | Tell Google what exists; one URL, since the site is one page |
@@ -169,7 +170,7 @@ rather than excluded — one filename carried an accent and spaces, which is exa
 where an exclude list fails silently. `git show 0be0a6c:<name>` brings either back.
 
 **SEO, fixed in the same pass.** `robots.txt` points at `sitemap.xml`; the sitemap
-lists the single URL; `index.html` carries `<link rel="canonical">`. `hreflang` arrived with the
+lists the single URL; `fonte.html` carries `<link rel="canonical">`. `hreflang` arrived with the
 per-language URLs — see *One URL per language*; until those existed there was
 nothing for it to point at. The `<title>`
 used to carry Portuguese and English in one line, diluting both; it is now Portuguese
@@ -249,7 +250,7 @@ reason. `git show` brings either back.
 
 ## Structured data
 
-`index.html` carries one JSON-LD block in `<head>`: an `Organization` (Naturalfarma),
+`fonte.html` (and so every page) carries one JSON-LD block in `<head>`: an `Organization` (Naturalfarma),
 a `WebSite`, and a `Product` with four `Offer` entries — the two EUR and the two BRL
 prices. It is what lets Google show price and availability in the result itself.
 
@@ -274,18 +275,46 @@ Since Oct 2026 the site is served at three addresses, not one:
 | `/br/` | Brazilian Portuguese | `pt-BR` |
 | `/en/` | English | `en` |
 
-All three are built by `tools/gen_lang_pages.py` from `index.html`, which also
-rewrites `sitemap.xml`. Each gets its own `<html lang>`, `<title>` and canonical,
-the same full `hreflang` block, image paths made absolute (a relative `imgs/…`
-under `/br/` would look for `/br/imgs/`), and a `setLang()` call appended to the
-script so the language applies on load — rather than baking a `<body>` class by
-hand, since `setLang` also sets BRL pricing, the default country and the order
-anchor, and duplicating that is how things drift.
+All three are built by `tools/gen_lang_pages.py` from **`fonte.html`**, which also
+rewrites `sitemap.xml`. Each gets its own `<html lang>`, `<title>`, meta description
+and canonical, the same full `hreflang` block, image paths made absolute (a relative
+`imgs/…` under `/br/` would look for `/br/imgs/`), its `<body class>` already set,
+and a `setLang()` call appended to the script — `setLang` also sets BRL pricing, the
+default country and the order anchor, and duplicating that is how things drift.
 
-**Run it last.** `apply_modal.py` and `gen_blog_index.py` rewrite `index.html`,
-which leaves `/br/` and `/en/` stale — silently, since nothing about a stale copy
-looks wrong. Each copy therefore carries `<!-- gerado de index.html sha1:… -->`
-and `check_prices.py` fails when it no longer matches, or when a copy is missing.
+**Each page carries only its own language** (Nov 2026). Until then all three pages
+held the text of all three languages, hidden by CSS — Google read the Brazilian and
+English text on the Portuguese page, and the three competed. The generator now cuts
+every `[data-lang]` and `[data-lang-inline]` element that the page's body class would
+hide, following the *CONTENT SWITCHING* CSS exactly (`FICA` in the script: `lang-br`
+keeps the inline `pt` spans, not the `pt-only` ones), and drops the HTML comments —
+internal notes and generator markers — while leaving `<script>` and `<style>`
+untouched. 264 KB a page became ~185 KB. **The source stays one file with all three
+languages, on purpose**: three hand-edited pages would be three places for the same
+change, and the R$165 came from exactly that.
+
+Verified before it shipped by serving the old and the new pages side by side in
+Chromium: full-page screenshots at 1280px **identical to the pixel** for `/`, `/br/`,
+`/en/`, `/en/?v=int` and `/` with the reais box ticked; visible text and the three
+modals identical; no JS errors; the real form submitted in eight cases (PT, BR, EN,
+INT, kits, Germany, US, Brazil on EN) sending byte-identical payloads and showing
+identical totals; flags navigating `/` → `/br/` → `/en/` → INT in place → `/`.
+
+**Run it last, and never edit its output.** `apply_modal.py` and `gen_blog_index.py`
+rewrite `fonte.html`, which leaves the three pages stale — silently, since nothing
+about a stale page looks wrong. `check_prices.py` regenerates all three in memory and
+fails if any file on disk differs, which catches a stale page **and** a hand edit to
+a generated one (that edit would vanish at the next run). It also fails if
+`_config.yml` stops excluding `fonte.html`: published, the source would be a fourth
+page competing with the other three. Each generated page opens with a comment saying
+it is generated. The script itself refuses to write when a page lost the order form,
+a modal or the hero, when another language's text survived, or when the `<div>`s no
+longer balance.
+
+**A JS lookup into another language's block now returns `null`.** Nothing did that
+when this was introduced — `renderBlogCards()` already skipped missing grids, and
+every other id the script reads sits outside the language blocks — but new code must
+check for `null` the same way. The three-page comparison above is the test to rerun.
 
 **The flags navigate between these URLs** (Oct 2026). They are real `<a href>`
 elements — `/`, `/br/`, `/en/` — with `onclick="return irParaLingua(...)"` doing
@@ -297,8 +326,10 @@ until now only `sitemap.xml` announced them — a page announced but linked from
 nowhere counts for much less.
 
 `irParaLingua()` switches in place instead of navigating when you are already on
-the target page, and when `location.protocol` is `file:` — a static local copy has
-no `/br/` to go to (see *Checking your work*).
+the target page (EN ⇄ INT on `/en/`), and when `location.protocol` is `file:` — a
+local copy has no `/br/` to go to (see *Checking your work*). Either way only if
+the target language's text is on the page: on a generated page it is not, and
+switching in place would leave it blank.
 
 **INT has no URL, deliberately.** It is not a language: it shows the same text as
 EN and only changes the payment options (`.lang-world` hides `.pt-payment-options`
@@ -322,15 +353,10 @@ putting the session in `sessionStorage`.
 The order anchor is remapped on the way (`#order` ⇄ `#encomenda`), so switching
 language while reading the form lands on the form and not at the top of the page.
 
-**What is still outstanding.** All three pages carry the text of all three
-languages in the HTML, hidden by CSS. Distinct URLs, hreflang and navigating flags
-are in place; the competing text is not gone. The strong version has each page
-carry only its own language, which means cutting language blocks out of a 240 KB
-file, and it has to be looked at rendered before it ships.
 
 ## Multilingual system
 
-The site supports three language variants switched at runtime via CSS class on `<body>`:
+`fonte.html` carries three language variants switched via CSS class on `<body>`. **The published pages keep only one each** — the generator cuts the rest (see *One URL per language*) — so everything below describes the source:
 
 | Class | Language | Flag | Button ID |
 |---|---|---|---|
@@ -728,7 +754,7 @@ To add an article to the pool: append one entry to `BLOG_POSTS` — `u` (url), `
 **All-articles list (`.blog-index`)** — under each grid, a plain list of *every*
 article in that language's pool, generated by `tools/gen_blog_index.py` between
 `<!-- BLOG INDEX xx -->` markers. Run it after adding an article to either pool;
-it reads `BLOG_POSTS` / `BLOG_POSTS_EN` straight out of `index.html`, so there are
+it reads `BLOG_POSTS` / `BLOG_POSTS_EN` straight out of `fonte.html`, so there are
 no titles duplicated by hand, and it is idempotent.
 
 It exists for crawlability, not decoration. The grid above it is built by JS into
