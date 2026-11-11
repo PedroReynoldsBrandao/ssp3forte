@@ -178,6 +178,21 @@ in the HTML, with `setLang()` swapping it from `TITLES` for the visitor.
 The meta description still reads "Sem cirurgia, sem efeitos secundários" — both on
 the *Global review* list of claims awaiting the client's decision. Left as is.
 
+**AI crawlers are allowed, all of them** (Nov 2026, at Pedro's father's request). The
+repo's `robots.txt` always said `Allow: /` to everyone, but Cloudflare's *managed
+robots.txt* was on and prepended its own block in front of it, served live at
+`ssp3forte.com/robots.txt` and invisible in the repo: `Content-Signal:
+search=yes,ai-train=no,use=reference` and `Disallow: /` for some thirty training
+crawlers — GPTBot, ClaudeBot, Google-Extended, Applebot-Extended, CCBot, Amazonbot,
+meta-externalagent among them. A third-party check also reported PerplexityBot as
+blocked, which is not in that list, so that one came from Cloudflare's network-level
+bot blocking rather than from the file. Pedro switched the managed robots.txt off in
+the Cloudflare dashboard; the live file is now exactly the repo's. The reasoning: this
+is a small seller's marketing page, and a model that never read it cannot mention the
+product when someone asks. **Do not turn the Cloudflare setting back on**, and when
+checking what crawlers see, read the live URL, not the repo file — the two differed
+for months without anyone knowing.
+
 ## Removed: the two old page versions
 
 `index-v1.html` and `index-v2.html` sat in the repo root as "earlier versions kept
