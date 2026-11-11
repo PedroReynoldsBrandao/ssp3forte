@@ -77,6 +77,14 @@ Kept here so they survive between sessions. Remove an item when it is done.
   `ssp3forte.com/artigos/`; the stale branches `cloudflare/*` and `teste-permissao-tmp`
   (cannot be deleted from this environment).
 
+**Reviewed and set aside (Nov 2026).** An AI audit Pedro's father ran proposed, besides
+the base64 image and WhatsApp (both done): hreflang (already there since Oct), https for
+images (all already https; only the ebook link was http, now fixed), width/height on
+images (CLS measured 0.019, green), `aggregateRating` in the schema (**no** — no real
+reviews, see *Structured data*), `FAQPage` schema, long-tail FAQ questions, bullet
+summaries, a multi-step form, MB Way/Multibanco back, photos or video in testimonials.
+Pedro: "de resto não vejo nada que seja relevante". Do not re-propose them unasked.
+
 **The conversation still to have: traffic.** Pedro asked to keep this idea ("guarda
 essa ideia dos anúncios"). The old Webnode shop brought **over 1,100 Brazilian
 customers with paid ads**, through a form worse than this one — so the form was never
@@ -322,6 +330,12 @@ when a photo changes. `imgs/mini/.fontes` holds each source's sha1 so `--check` 
 tell a stale thumbnail from a current one; without it, replacing a photo and
 forgetting this script shows the old picture with no error anywhere.
 
+**The hero photo was inline base64 until Nov 2026** — a 51 KB `data:image/jpeg` string
+inside the HTML, byte-identical to `frasco.jpg`, which the page already loads as the
+favicon and in the three hero cards. Every page carried it as text, uncached, and it
+was 28% of each page. It is now `src="frasco.jpg"`: pages went from ~185 KB to ~138 KB,
+the hero is identical to the pixel. **Do not paste images into the HTML as base64.**
+
 **Two orphans were deleted in the same pass**: `imgs/zinc.png` (a byte-identical copy
 of `04_zinc.png`, referenced nowhere) and `imgs/03_beta_sitosterol.png`, left over
 from the selenium swap. Together 1.9 MB, served publicly at guessable URLs for no
@@ -463,6 +477,20 @@ When editing copy: every user-facing string must exist in all three variants (pt
 ## Blog links per language
 
 PT/BR point at problemasnaprostata.blogspot.com; EN/INT point at bph-prostate-enlarged.blogspot.com. That covers three places: the hero "Saber mais" / "Learn more" dropdown, the FAQ call-to-action, and the footer (the footer link is split with `data-lang-inline`). Check all three whenever either blog URL changes.
+
+## WhatsApp
+
+Added Nov 2026 at Pedro's request: **+351 969 658 376**. A round green button fixed at
+the bottom-right of every page, opening `wa.me/351969658376` with a message already
+typed in the page's language ("Olá! Tenho uma pergunta…" / "…uma dúvida…" for Brazil /
+"Hello! I have a question…"), plus a plain "WhatsApp" link in the footer. Three
+`<a class="whatsapp-btn">` with `data-lang-inline` `pt-only` / `br` / `en`, so the
+generator leaves one per page. It is a link, not a widget script: nothing is requested
+from WhatsApp until someone taps it, so the site still makes no third-party request and
+needs no cookie banner. `z-index: 900`, below the menu (950) and the modals (999), so it
+never covers an open window. The icon is the Simple Icons WhatsApp path (CC0).
+
+It is not counted in the funnel: `/event` would need a new step name in the Worker.
 
 ## Contact emails
 
